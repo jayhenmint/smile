@@ -187,20 +187,25 @@ CREATE TRIGGER learners_smile_id_immutable BEFORE UPDATE ON learners
 
 CREATE TABLE guardians (
   id           UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-  user_id      UUID REFERENCES users(id),   -- set if guardian has portal access
+  school_id    INT NOT NULL REFERENCES schools(id) ON DELETE RESTRICT,
+  user_id      UUID REFERENCES users(id) ON DELETE RESTRICT, -- future portal link, not teacher input
   full_name    TEXT NOT NULL,
   relationship TEXT NOT NULL,
   phone        TEXT,
   email        TEXT,
-  address      TEXT
+  address      TEXT,
+  UNIQUE (school_id, id)
 );
 
 CREATE TABLE learner_guardians (
-  learner_id         UUID REFERENCES learners(id) ON DELETE CASCADE,
-  guardian_id        UUID REFERENCES guardians(id) ON DELETE CASCADE,
-  is_primary         BOOLEAN DEFAULT FALSE,
-  is_emergency       BOOLEAN DEFAULT FALSE,
-  PRIMARY KEY (learner_id, guardian_id)
+  school_id          INT NOT NULL REFERENCES schools(id) ON DELETE RESTRICT,
+  learner_id         UUID NOT NULL,
+  guardian_id        UUID NOT NULL,
+  is_primary         BOOLEAN NOT NULL DEFAULT FALSE,
+  is_emergency       BOOLEAN NOT NULL DEFAULT FALSE,
+  PRIMARY KEY (learner_id, guardian_id),
+  FOREIGN KEY (school_id, learner_id) REFERENCES learners(school_id, id) ON DELETE CASCADE,
+  FOREIGN KEY (school_id, guardian_id) REFERENCES guardians(school_id, id) ON DELETE CASCADE
 );
 
 -- Duplicate check for learners without an LRN: the app warns (does not block) when the same

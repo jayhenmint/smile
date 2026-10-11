@@ -126,11 +126,19 @@ export default function Learners({ learners, text, created, duplicateWarning }: 
                                         <td className="px-5 py-5">
                                             <span className="rounded-md bg-teal-50 px-2 py-1 text-teal-700">{text.non_graded}</span>
                                         </td>
-                                        {[t.plan, t.review, t.guardians].map((label) => (
+                                        {[t.plan, t.review].map((label) => (
                                             <td key={label} className="text-muted-foreground px-5 py-5">
                                                 —
                                             </td>
                                         ))}
+                                        <td className="px-5 py-5">
+                                            <Link
+                                                href={`/learners/${learner.id}/guardians`}
+                                                className="text-primary inline-flex min-h-11 items-center underline-offset-4 hover:underline"
+                                            >
+                                                {text.contacts}
+                                            </Link>
+                                        </td>
                                     </tr>
                                 ))}
                             </tbody>

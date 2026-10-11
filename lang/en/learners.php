@@ -2,6 +2,7 @@
 
 return [
     'learners' => 'Learners',
+    'contacts' => 'Manage contacts',
     'add' => 'Add learner', 'identity' => 'Learner identity', 'enrollment' => 'Initial enrollment',
     'first_name' => 'First name', 'last_name' => 'Last name', 'middle_name' => 'Middle name (optional)',
     'birthdate' => 'Date of birth', 'sex' => 'Sex (optional)', 'M' => 'Male', 'F' => 'Female',
