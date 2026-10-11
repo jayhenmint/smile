@@ -34,7 +34,7 @@ docker compose up -d
 
 Stopping preserves the database. Avoid `docker compose down -v`, which deletes it. SNEDY uses different containers and ports; these commands manage only the `smile` Compose project.
 
-Public registration is disabled. Seed the five required role definitions with `docker compose exec php php artisan db:seed`; this creates no default accounts. Schools and user membership are implemented with scoped access. Administrator provisioning and school setup screens remain unfinished. No SMILE learner tables exist yet.
+Public registration is disabled. Seed the five required role definitions with `docker compose exec php php artisan db:seed`; this creates no default accounts. Schools and user membership are implemented with scoped access. Local first-account provisioning is described below; administrator management and school setup screens remain unfinished. No SMILE learner tables exist yet.
 
 The existing `smile_testing` PostgreSQL database is reserved for tests. To run backend tests there instead of the default in-memory SQLite:
 
@@ -43,3 +43,11 @@ docker compose exec -T -e DB_CONNECTION=pgsql -e DB_DATABASE=smile_testing php p
 ```
 
 Never use `smile_dev` for tests: test migrations can reset their target database.
+
+For the first local development login, an operator can run:
+
+```powershell
+docker compose exec -T php php artisan smile:create-local-teacher --school="Example Development School" --name="Example Teacher" --email="teacher@example.test"
+```
+
+This works only with `APP_ENV=local` and no existing accounts. It creates a development school and a teacher with both `school_admin` and `sped_teacher`, and prints a generated password once. Save it privately and change it in Settings after login. Repeating the command refuses to change existing accounts. Email verification is not marked complete by this command. Production provisioning and account management screens remain unfinished.

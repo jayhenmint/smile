@@ -5,7 +5,7 @@ The agent reads this file at the start of every session and updates it at the en
 ## Current status
 
 - **Current phase:** Phase 1 (Foundation)
-- **Current step:** Schools and school_id scoping complete; stage awaits push approval. Next: first administrator account provisioning and school setup screens.
+- **Current step:** School foundation pushed with approval; initial local teacher account provisioned and login verified. Next: school setup screens and administrator account management.
 - **Last updated:** 2026-10-11
 
 ## Phase checklist
@@ -16,7 +16,8 @@ The agent reads this file at the start of every session and updates it at the en
 - [x] Public registration disabled
 - [x] Roles set up (spatie/laravel-permission), including teacher dual-role support
 - [x] Composer dependency security update (audit clear on 2026-10-11)
-- [ ] First administrator accounts provisioned after school membership is established
+- [x] First local teacher account provisioned with school_admin and sped_teacher roles
+- [ ] Administrator account management and school setup screens
 - [x] Schools table and school_id scoping
 - [ ] School years, sections, section_teachers
 - [ ] Learners, guardians, disabilities, enrollments (generated SMILE ID, optional LRN rules)
@@ -57,6 +58,7 @@ Not started. See `PROJECT_SPEC.md`.
 - School and user queries are globally scoped to the signed-in user's school; guests, inactive users, and accounts without a school receive no school-owned records. System administrators can access school metadata but receive no school-owned records, even when also assigned a teacher role.
 - Authentication, remember-token, and password-broker account lookups bypass only the school scope so login can establish a school context; these lookups require an active account. School membership and activation cannot be mass-assigned.
 - User school_id may be null for global system administrators or parents as the schema permits. Parent access to linked learners remains to be implemented separately; no learner records exist yet.
+- The developer can bootstrap the first local teacher with smile:create-local-teacher. It requires APP_ENV=local and an empty users table, creates a development school, generates a cryptographic password, and grants only school_admin and sped_teacher. It does not verify email automatically or reset existing accounts. Production provisioning remains separate work.
 
 ## Open questions (waiting on the school or division)
 
@@ -68,7 +70,7 @@ Not started. See `PROJECT_SPEC.md`.
 
 ## Known issues and notes
 
-- Learner features and the five required learner authorization tests are not implemented. School metadata, user membership, school policies, and isolation tests exist; administrator provisioning and school management screens remain unfinished. There is no public account creation.
+- Learner features and the five required learner authorization tests are not implemented. School metadata, user membership, school policies, isolation tests, and local first-account provisioning exist; administrator account management, production provisioning, and school management screens remain unfinished. There is no public account creation.
 - Backend tests pass using both in-memory SQLite and the separate PostgreSQL test database.
 - Frontend Vitest and a dedicated type-check script are not configured.
 - Schema reconciliation is still needed: school_id on remaining school-owned tables, Spatie audit storage, consent timing, and preservation of retired SMILE IDs. User school_id, phone, and is_active fields are now implemented; school deletion is restricted while users reference it.
@@ -86,3 +88,4 @@ Not started. See `PROJECT_SPEC.md`.
 | 2026-10-11 | Installed Spatie roles; added five role definitions, dual-role tests, and no automatic role/permission grants. Aligned empty starter user/session keys to UUIDs in place with a locked guard; updated schema.sql for Laravel auth names and Spatie tables. Removed the default shared-password account seed and nonexistent Boost hook. SQLite and isolated PostgreSQL: 33 tests passed each (80 assertions); Pint and Composer validation passed. Dev migrations and role seed applied. | Address 41 existing dependency advisories, then build school membership and initial account provisioning. |
 | 2026-10-11 | Updated the 12 advisory-affected Composer packages and required dependencies (57 version updates). Audit now has zero advisories; Composer validation and platform requirements passed. SQLite and isolated PostgreSQL: 33 tests passed each (80 assertions). Frontend build passed, login HTTP 200, and dev migration status verified. Recorded mandatory owner approval before every push in AGENTS.md. Stage committed locally; push awaits approval. | Obtain push approval; then build schools and school_id scoping before initial administrator accounts. |
 | 2026-10-11 | Dependency update b91ffbd was pushed with owner approval. Added schools, user membership fields, school metadata policy, global school scopes, and active-only authentication lookup. Added isolation, policy, inactive-account, login, and protected membership tests. SQLite and isolated PostgreSQL: 43 tests passed each (130 assertions); Pint, TypeScript, and frontend build passed. Fixed starter form typings and expressed the existing blend mode through Tailwind to pass TypeScript; corrected frontend UUID user ID type. Dev migration applied and login HTTP 200. | Obtain approval before pushing this school foundation stage; then provision first administrators and add school setup screens. |
+| 2026-10-11 | Pushed school foundation 97614e0 with explicit approval. Added local-only first-teacher command with input validation, generated password, dual roles, and refusal to change existing accounts. Provisioned a fake development school and local teacher; real HTTP login reached dashboard with status 200. Credentials shared privately in the conversation, never committed. SQLite and PostgreSQL: 46 tests passed each (152 assertions); Pint passed. | Owner tests login; obtain approval before pushing the new account-setup commit. Next: school setup screens and administrator account management. |
