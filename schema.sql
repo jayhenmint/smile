@@ -117,6 +117,25 @@ CREATE TABLE section_teachers (
   FOREIGN KEY (school_id, user_id) REFERENCES users(school_id, id) ON DELETE CASCADE
 );
 
+-- ============ GLOBAL SMILE ID RESERVATIONS ============
+-- Technical identifier namespace: no school_id, learner link, or personal data.
+-- Retain every issued ID permanently, even if a learner record is later removed.
+-- Allocate inside the learner-creation transaction; retry primary-key collisions.
+CREATE TABLE smile_id_reservations (
+  smile_id VARCHAR(11) PRIMARY KEY CHECK (smile_id ~ '^SM-[A-HJ-NP-Z2-9]{8}$')
+);
+CREATE FUNCTION prevent_smile_id_reservation_change() RETURNS trigger AS $$
+BEGIN
+  RAISE EXCEPTION 'Reserved SMILE IDs cannot be changed or removed';
+END;
+$$ LANGUAGE plpgsql;
+CREATE TRIGGER smile_id_reservations_immutable
+  BEFORE UPDATE OR DELETE ON smile_id_reservations
+  FOR EACH ROW EXECUTE FUNCTION prevent_smile_id_reservation_change();
+CREATE TRIGGER smile_id_reservations_no_truncate
+  BEFORE TRUNCATE ON smile_id_reservations
+  FOR EACH STATEMENT EXECUTE FUNCTION prevent_smile_id_reservation_change();
+
 -- ============ LEARNERS ============
 CREATE TABLE learners (
   id              UUID PRIMARY KEY DEFAULT gen_random_uuid(),
@@ -129,6 +148,8 @@ CREATE TABLE learners (
   -- Random and not built from name, birthdate, or LRN, so it reveals nothing about the learner.
   -- Suggested format: 'SM-' + 8 characters from A-Z (minus I, O) and 2-9, e.g. 'SM-7K3QX9PD'.
   -- Generate it in the app (retry on collision). The unique constraint is the safety net.
+  -- Future learner migration must link this field to smile_id_reservations and
+  -- prevent learner ID edits; the registry alone does not enforce that link yet.
   smile_id        TEXT NOT NULL UNIQUE CHECK (smile_id ~ '^SM-[A-HJ-NP-Z2-9]{8}$'),
   -- LRN is optional. The SMILE ID identifies the learner when there is no LRN yet.
   lrn_status      TEXT NOT NULL DEFAULT 'pending' CHECK (lrn_status IN ('pending','issued','needs_correction')),
@@ -227,7 +248,7 @@ INSERT INTO document_types (name, required_for, from_party) VALUES
  ('SPED teacher recommendation','mainstreaming','school'),
  ('IEP team meeting record','mainstreaming','school'),
  ('Placement decision record','enrollment','school'),
- ('SPED assessment form (needed before SNEd learner can be enrolled / moved to graded)','both','school'),
+ ('SPED assessment form (may follow non-graded enrollment; required for graded level change)','both','school'),
  ('SDO approval for non-graded to graded change','mainstreaming','school'),
  ('Height/weight record (baseline)','enrollment','school');
 

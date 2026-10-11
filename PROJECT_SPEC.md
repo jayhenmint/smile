@@ -41,6 +41,7 @@ The **teacher is the main user.** In a one-teacher school there is no SPED coord
 - **LRN**: DepEd's 12-digit Learner Reference Number. **Optional.** Unique when present, permanent, issued through the LIS. The tool stores it and does not generate it. It can be empty while a learner waits for approval or has none yet (`lrn_status`). A learner without an LRN is still fully identified by the SMILE ID. `lrn_status = 'issued'` requires an LRN.
 - **Duplicates without an LRN:** when adding a learner with no LRN, warn (never block) if the same name and birthdate already exist in the school.
 - **Non-graded learners**: SNEd learners are non-graded and are re-enrolled every year in a non-graded class. `grade_level` stays empty until a formal change.
+- **Enrollment with pending documents (owner-confirmed):** learners may enroll during the ongoing school year even when supporting documents or the SPED assessment document are missing. Track missing items for follow-up rather than blocking non-graded enrollment. The teacher may assess through observed manifestations and teacher-conducted tests; medical/doctor documentation is supporting evidence when available. Documents accepted by the teacher may be submitted later, before the school year ends. Teacher observations are not medical diagnoses. Parental consent must already be obtained before saving learner data, but the signed copy may follow later. Phase 1 must record the teacher's confirmation of existing consent; this does not require every attachment before enrollment.
 - **School groupings**: Level 1 means 2 to under 3 years studied in the school; Level 2 means 3 through 4 years, including exactly 3 and exactly 4; Level 3 means more than 4 through 6 years. Transition Program means ages 15–21. These owner-confirmed school groupings are separate from graded levels. Year-counting rules remain unresolved; never assign or promote automatically. See `docs/CURRICULUM_REPORT_REFERENCE.md`.
 - **Reporting periods**: SF9 indicator columns 1–3 mean Term 1, Term 2, and Term 3. Use exactly three teacher-remarks/parent-signature rows with those labels, with no fourth row. Teacher remarks and a parent signature are required every term; preserve the rest of the supplied Annex format. Plan periods per school year, with three terms for SY 2026–2027 and historical periods preserved. Dates and signature recording require confirmation.
 - **Non-graded to graded**: needs the SPED assessment form and Schools Division Office (SDO) approval. Tracked in `learner_level_changes`. The tool records evidence and decisions. It never decides readiness.
@@ -102,6 +103,8 @@ Done when: the teacher can produce the reports DepEd and the school ask for with
 
 ## 5. Required documents (tracked by the tool)
 
+These are checklist/follow-up requirements, not blanket prerequisites for non-graded enrollment. The owner permits later submission before school-year end, subject to teacher acceptance. Consent itself must be obtained before data collection; its signed copy may follow. Approved graded-level changes retain their assessment/SDO requirements.
+
 **Enrollment, from parents:** enrollment form, PSA birth certificate, previous report card or SF9/SF10 (transferees), ID photos if required, consent forms (enrollment, data privacy, media, services)
 
 **Enrollment, disability-specific:** medical or diagnostic report from a qualified professional, therapy records, PWD ID (optional), medication and health info, prior IEP
@@ -157,6 +160,7 @@ Learner data is sensitive: medical and disability records of minors, under the D
 - Audit log for views, edits, and exports of learner records
 - Encrypt health and diagnosis fields
 - Parental consent recorded before data collection
+- Phase 1 records the teacher's confirmation that parental consent has already been obtained; the signed copy may be submitted later and tracked in the document checklist. Phase 4's broader transition consent workflow remains later work.
 - HTTPS only, private file storage, daily backups
 - Check hosting rules with the school or division before choosing a host
 

@@ -40,6 +40,8 @@ SMILE is a web app for SNEd teachers to manage learners, IEPs, progress, attenda
 
 Confirm field requiredness and school-specific document requirements before finalizing forms.
 
+Non-graded enrollment may proceed during the school year with pending documents/assessment. Show follow-up items; teacher-accepted documents may arrive before year-end. Teachers may assess through observations/tests, with medical records as supporting evidence. Require teacher confirmation that parental consent is already obtained; the signed copy may follow.
+
 ## Reports
 
 - **Phase 3:** SF1/class list, monthly SF2, SF8, learner progress, IEP summary, class progress and missing documents.
