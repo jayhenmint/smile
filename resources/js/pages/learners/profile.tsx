@@ -29,10 +29,13 @@ type Props = {
     text: Record<string, string>;
     editing: boolean;
     updated: boolean;
+    lrnRecorded: boolean;
+    canRecordLrn: boolean;
 };
 
-export default function Profile({ learner, text: t, editing, updated }: Props) {
+export default function Profile({ learner, text: t, editing, updated, lrnRecorded, canRecordLrn }: Props) {
     const url = `/learners/${learner.id}`;
+    const lrnForm = useForm({ lrn: '' });
     const form = useForm<Identity>({
         first_name: learner.first_name ?? '',
         last_name: learner.last_name ?? '',
@@ -81,6 +84,47 @@ export default function Profile({ learner, text: t, editing, updated }: Props) {
                     <p role="status" className="rounded-xl border border-teal-200 bg-teal-50 p-4 text-sm text-teal-800">
                         {t.updated}
                     </p>
+                )}
+                {lrnRecorded && (
+                    <p role="status" className="rounded-xl border border-teal-200 bg-teal-50 p-4 text-sm text-teal-800">
+                        {t.lrn_recorded}
+                    </p>
+                )}
+                {!editing && canRecordLrn && (
+                    <WorkspaceCard>
+                        <h2 className="mb-3 font-semibold">{t.record_lrn}</h2>
+                        <p className="text-muted-foreground mb-4 text-sm leading-6">{t.record_lrn_hint}</p>
+                        <form
+                            onSubmit={(event) => {
+                                event.preventDefault();
+                                lrnForm.post(`${url}/lrn`, { preserveScroll: true, preserveState: 'errors' });
+                            }}
+                            className="space-y-4"
+                        >
+                            <InputError message={(lrnForm.errors as Record<string, string>).form} />
+                            <div className="space-y-2">
+                                <Label htmlFor="issued-lrn">{t.lrn}</Label>
+                                <Input
+                                    id="issued-lrn"
+                                    type="text"
+                                    inputMode="numeric"
+                                    pattern="[0-9]{12}"
+                                    minLength={12}
+                                    maxLength={12}
+                                    required
+                                    value={lrnForm.data.lrn}
+                                    onChange={(event) => lrnForm.setData('lrn', event.target.value)}
+                                    aria-invalid={!!lrnForm.errors.lrn}
+                                    aria-describedby="issued-lrn-error"
+                                    className="min-h-11 rounded-xl"
+                                />
+                                <InputError id="issued-lrn-error" message={lrnForm.errors.lrn} />
+                            </div>
+                            <Button type="submit" disabled={lrnForm.processing} className="min-h-11 rounded-xl">
+                                {t.record_lrn}
+                            </Button>
+                        </form>
+                    </WorkspaceCard>
                 )}
                 <form onSubmit={submit} className="space-y-6">
                     <WorkspaceCard>

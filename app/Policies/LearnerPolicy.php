@@ -32,6 +32,11 @@ class LearnerPolicy
         return $this->view($user, $learner);
     }
 
+    public function recordLrn(User $user, Learner $learner): bool
+    {
+        return $this->update($user, $learner) && $learner->lrn === null && $learner->lrn_status === 'pending';
+    }
+
     public function delete(User $user, Learner $learner): bool
     {
         return false;

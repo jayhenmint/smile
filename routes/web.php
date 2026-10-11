@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\LearnerAssessmentController;
 use App\Http\Controllers\LearnerGuardianController;
+use App\Http\Controllers\LearnerLrnController;
 use App\Http\Controllers\LearnerProfileController;
 use App\Http\Controllers\LearnerWorkspaceController;
 use Illuminate\Support\Facades\Route;
@@ -16,6 +17,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('learners/create', [LearnerWorkspaceController::class, 'create'])->name('learners.create');
     Route::post('learners', [LearnerWorkspaceController::class, 'store'])->name('learners.store');
     Route::get('learners/{learner}', [LearnerProfileController::class, 'show'])->whereUuid('learner')->name('learners.show');
+    Route::post('learners/{learner}/lrn', [LearnerLrnController::class, 'store'])->whereUuid('learner')->name('learners.lrn.store');
     Route::get('learners/{learner}/edit', [LearnerProfileController::class, 'edit'])->whereUuid('learner')->name('learners.edit');
     Route::patch('learners/{learner}', [LearnerProfileController::class, 'update'])->whereUuid('learner')->name('learners.update');
     Route::get('learners/{learner}/guardians', [LearnerGuardianController::class, 'index'])->whereUuid('learner')->name('learners.guardians.index');
