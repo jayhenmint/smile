@@ -102,6 +102,7 @@ CREATE TABLE sections (
   adviser_id     UUID,   -- the class adviser: sees only this section's learners
   UNIQUE (school_id, school_year_id, name),
   UNIQUE (school_id, id),
+  UNIQUE (school_id, school_year_id, id),
   FOREIGN KEY (school_id, school_year_id) REFERENCES school_years(school_id, id) ON DELETE RESTRICT,
   FOREIGN KEY (school_id, adviser_id) REFERENCES users(school_id, id) ON DELETE RESTRICT
 );
@@ -148,9 +149,7 @@ CREATE TABLE learners (
   -- Random and not built from name, birthdate, or LRN, so it reveals nothing about the learner.
   -- Suggested format: 'SM-' + 8 characters from A-Z (minus I, O) and 2-9, e.g. 'SM-7K3QX9PD'.
   -- Generate it in the app (retry on collision). The unique constraint is the safety net.
-  -- Future learner migration must link this field to smile_id_reservations and
-  -- prevent learner ID edits; the registry alone does not enforce that link yet.
-  smile_id        TEXT NOT NULL UNIQUE CHECK (smile_id ~ '^SM-[A-HJ-NP-Z2-9]{8}$'),
+  smile_id        VARCHAR(11) NOT NULL UNIQUE REFERENCES smile_id_reservations(smile_id) ON DELETE RESTRICT,
   -- LRN is optional. The SMILE ID identifies the learner when there is no LRN yet.
   lrn_status      TEXT NOT NULL DEFAULT 'pending' CHECK (lrn_status IN ('pending','issued','needs_correction')),
   CHECK (lrn_status <> 'issued' OR lrn IS NOT NULL),   -- 'issued' requires an LRN
@@ -166,8 +165,25 @@ CREATE TABLE learners (
   health_notes    TEXT,                -- allergies, medication (encrypt at app level)
   photo_url       TEXT,
   status          TEXT NOT NULL DEFAULT 'enrolled' CHECK (status IN ('enrolled','transferred_out','dropped','graduated')),
-  created_at      TIMESTAMPTZ NOT NULL DEFAULT now()
+  consent_confirmed_by UUID NOT NULL,
+  consent_confirmed_at TIMESTAMPTZ NOT NULL,
+  created_at      TIMESTAMPTZ NOT NULL DEFAULT now(),
+  UNIQUE (school_id, id),
+  FOREIGN KEY (school_id, consent_confirmed_by) REFERENCES users(school_id, id) ON DELETE RESTRICT
 );
+
+-- Consent already obtained; signed copy may follow. This records the teacher's
+-- confirmation, not the guardian's signed consent record planned for Phase 4.
+CREATE OR REPLACE FUNCTION prevent_learner_smile_id_change() RETURNS trigger AS $$
+BEGIN
+  IF NEW.smile_id IS DISTINCT FROM OLD.smile_id THEN
+    RAISE EXCEPTION 'A learner SMILE ID cannot be changed';
+  END IF;
+  RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+CREATE TRIGGER learners_smile_id_immutable BEFORE UPDATE ON learners
+  FOR EACH ROW EXECUTE FUNCTION prevent_learner_smile_id_change();
 
 CREATE TABLE guardians (
   id           UUID PRIMARY KEY DEFAULT gen_random_uuid(),
@@ -193,9 +209,10 @@ CREATE INDEX idx_learner_dup_check ON learners(school_id, lower(last_name), lowe
 
 CREATE TABLE enrollments (
   id             SERIAL PRIMARY KEY,
-  learner_id     UUID NOT NULL REFERENCES learners(id),
-  school_year_id INT NOT NULL REFERENCES school_years(id),
-  section_id     INT REFERENCES sections(id),
+  school_id      INT NOT NULL REFERENCES schools(id) ON DELETE RESTRICT,
+  learner_id     UUID NOT NULL,
+  school_year_id INT NOT NULL,
+  section_id     INT,
   -- Non-graded learners are re-enrolled every year in the same kind of class.
   -- A learner stays 'non_graded' until a documented, approved level change (see learner_level_changes).
   level_status   TEXT NOT NULL DEFAULT 'non_graded' CHECK (level_status IN ('non_graded','graded')),
@@ -204,7 +221,13 @@ CREATE TABLE enrollments (
   enrolled_on    DATE NOT NULL DEFAULT CURRENT_DATE,
   is_transferee  BOOLEAN DEFAULT FALSE,
   previous_school TEXT,
-  UNIQUE (learner_id, school_year_id)
+  UNIQUE (learner_id, school_year_id),
+  FOREIGN KEY (school_id, learner_id) REFERENCES learners(school_id, id) ON DELETE RESTRICT,
+  FOREIGN KEY (school_id, school_year_id) REFERENCES school_years(school_id, id) ON DELETE RESTRICT,
+  FOREIGN KEY (school_id, school_year_id, section_id) REFERENCES sections(school_id, school_year_id, id) ON DELETE RESTRICT,
+  -- Phase 1 has no approved level-change workflow. Phase 4 must replace this
+  -- safeguard with enforcement of an approved learner_level_changes record.
+  CONSTRAINT enrollments_non_graded_only CHECK (level_status = 'non_graded' AND grade_level IS NULL)
 );
 
 -- ============ DISABILITY & DIAGNOSIS ============
@@ -423,15 +446,23 @@ CREATE TABLE consents (
   file_url    TEXT
 );
 
-CREATE TABLE audit_log (
-  id          BIGSERIAL PRIMARY KEY,
-  user_id     UUID REFERENCES users(id),
-  action      TEXT NOT NULL,           -- view, create, update, delete, export
-  table_name  TEXT NOT NULL,
-  record_id   TEXT,
-  at          TIMESTAMPTZ NOT NULL DEFAULT now(),
-  ip_address  INET
+-- Spatie activitylog; references only, no learner attributes or request payload.
+CREATE TABLE activity_log (
+  id BIGSERIAL PRIMARY KEY,
+  school_id INT NOT NULL REFERENCES schools(id) ON DELETE RESTRICT,
+  log_name VARCHAR(255),
+  description TEXT NOT NULL,
+  subject_type VARCHAR(255), subject_id UUID,
+  event VARCHAR(255),
+  causer_type VARCHAR(255), causer_id UUID,
+  properties JSON,
+  batch_uuid UUID,
+  created_at TIMESTAMPTZ, updated_at TIMESTAMPTZ
 );
+CREATE INDEX activity_log_log_name_index ON activity_log(log_name);
+CREATE INDEX activity_log_subject_type_subject_id_index ON activity_log(subject_type, subject_id);
+CREATE INDEX activity_log_causer_type_causer_id_index ON activity_log(causer_type, causer_id);
+CREATE INDEX activity_log_school_id_created_at_index ON activity_log(school_id, created_at);
 
 -- ============ USEFUL INDEXES ============
 CREATE INDEX idx_attendance_date ON attendance(date);

@@ -10,6 +10,8 @@ Route::get('/', function () {
 
 Route::middleware(['auth'])->group(function () {
     Route::get('learners', [LearnerWorkspaceController::class, 'index'])->name('learners.index');
+    Route::get('learners/create', [LearnerWorkspaceController::class, 'create'])->name('learners.create');
+    Route::post('learners', [LearnerWorkspaceController::class, 'store'])->name('learners.store');
     Route::get('dashboard', function () {
         return Inertia::render('dashboard');
     })->name('dashboard');

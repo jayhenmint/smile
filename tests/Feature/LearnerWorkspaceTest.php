@@ -17,7 +17,7 @@ test('teachers can open the learner layout without receiving placeholder learner
     $this->actingAs($teacher)->get('/learners')->assertOk()
         ->assertInertia(fn (Assert $page) => $page->component('learners/index')
             ->where('workspace.canViewLearners', true)->where('workspace.schoolName', $teacher->school->name)
-            ->missing('learners')->missing('learnerRecords')->missing('statistics'));
+            ->has('learners.data', 0)->where('learners.total', 0)->missing('learnerRecords')->missing('statistics'));
 })->with([[['sped_teacher']], [['sped_teacher', 'school_admin']]]);
 
 test('learner workspace denies other roles including a system admin with teacher roles', function (array $roles) {

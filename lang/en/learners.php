@@ -1,0 +1,26 @@
+<?php
+
+return [
+    'learners' => 'Learners',
+    'add' => 'Add learner', 'identity' => 'Learner identity', 'enrollment' => 'Initial enrollment',
+    'first_name' => 'First name', 'last_name' => 'Last name', 'middle_name' => 'Middle name (optional)',
+    'birthdate' => 'Date of birth', 'sex' => 'Sex (optional)', 'M' => 'Male', 'F' => 'Female',
+    'address' => 'Address (optional)', 'mother_tongue' => 'Mother tongue (optional)',
+    'lrn' => 'LRN (optional)', 'lrn_status' => 'LRN status', 'pending' => 'Pending', 'issued' => 'Issued', 'needs_correction' => 'Needs correction',
+    'id_hint' => 'SMILE generates a permanent SMILE ID when you save. Enter an LRN only if issued by DepEd LIS; use exactly 12 digits.',
+    'section_id' => 'Your section and school year', 'choose' => 'Select an option',
+    'enrolled_on' => 'Enrollment date', 'is_transferee' => 'Transferee', 'previous_school' => 'Previous school (optional)',
+    'non_graded' => 'Non-graded', 'level_hint' => 'Initial enrollment is non-graded. SMILE never automatically promotes a learner.',
+    'health_notes' => 'Health notes (optional)', 'health_hint' => 'Record necessary allergies, medication or health support information. Notes are encrypted and excluded from the roster.',
+    'consent_confirmed' => 'I confirm that parental consent was obtained before collecting this learner’s data.',
+    'documents_hint' => 'The signed consent copy and other teacher-accepted documents may follow before the school year ends. Missing attachments do not block enrollment.',
+    'no_sections' => 'Create a school year and a section with yourself as adviser before adding learners.',
+    'save' => 'Save learner', 'cancel' => 'Cancel', 'created' => 'Learner and initial non-graded enrollment saved.',
+    'duplicate' => 'A learner with the same name and birthdate already exists in this school. Review for a possible duplicate; this enrollment was saved.',
+    'consent_required' => 'Confirm that parental consent has already been obtained.',
+    'lrn_unavailable' => 'This LRN is unavailable. Verify it with the school before continuing.',
+    'save_failed' => 'The learner could not be saved. Please try again or contact your administrator.',
+    'unavailable' => 'The learner roster is temporarily unavailable.',
+    'roster_empty' => 'No learners enrolled yet', 'roster_detail' => 'Add a learner to one of your advised sections to start your roster.',
+    'visible_total' => 'Learners in your sections', 'showing' => 'Showing', 'of' => 'of',
+];

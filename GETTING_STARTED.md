@@ -68,6 +68,17 @@ To check teacher access management, sign in as a school administrator and open *
 
 ## 4. Add the project files
 
+### Test the current learner creation stage
+
+1. Open `http://localhost:8001/login` and use your existing teacher account.
+2. In **Settings → School years**, add the school year if needed. In **Settings → Sections**, create a section for that year and select yourself as adviser.
+3. Open **Learners → Add learner**. Use fictional details, leave LRN empty with status Pending, choose your section, and confirm that consent was obtained. Save.
+4. The roster should show a generated `SM-` ID, the selected school year/section, and Non-graded status. Missing attachments should not block saving.
+5. Test an invalid LRN and Issued without an LRN: both should fail. Add the same fictional name/birthdate without an LRN: saving should succeed with a duplicate warning.
+6. A second teacher should see only learners enrolled in their own advised sections, even if they also have school-admin access.
+
+This stage includes initial enrollment and roster viewing. Guardian/disability records, learner detail/editing, yearly re-enrollment, document checklist/uploads, search/filter, exports and live Overview metrics remain pending. The learner form follows the supplied design's card layout; mobile/browser visual review remains required. Automated backend tests run only on SQLite or the isolated `smile_testing` database, never `smile_dev`.
+
 For section setup, open **Settings → Sections** (`http://localhost:8001/settings/sections`) as a school administrator. Add a school year first, then enter the section name, placement and optional adviser. Only active SNEd teachers from your school are eligible. New sections are non-graded; placement choices do not assign graded levels. You can edit the name/placement or reassign/clear the adviser, but the school year stays fixed. Teachers without school-admin access can view only sections they advise. Adviser changes synchronize the section_teachers adviser row; other staff assignment screens and learner access for co-teachers/aides/therapists remain pending. Test with fake sections and accounts.
 
 For school-year setup, sign in as a school administrator and open **Settings → School years** (`http://localhost:8001/settings/school-years`). Enter the school-approved label, start date and end date, then choose whether to make it current. Selecting a current year clears the previous selection in your school. Teachers without school-admin access can view the calendar but cannot change it. School-year selection does not enroll or promote learners. Then use Settings → Sections for section/adviser setup; term dates are not generated automatically.

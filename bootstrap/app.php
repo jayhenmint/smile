@@ -19,5 +19,5 @@ return Application::configure(basePath: dirname(__DIR__))
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {
-        //
+        $exceptions->dontFlash(['first_name', 'last_name', 'middle_name', 'birthdate', 'lrn', 'address', 'health_notes', 'mother_tongue', 'previous_school']);
     })->create();

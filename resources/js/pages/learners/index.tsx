@@ -5,7 +5,20 @@ import { type SharedData } from '@/types';
 import { Head, Link, usePage } from '@inertiajs/react';
 import { ChevronDown, ChevronLeft, ChevronRight, ClipboardCheck, Clock3, Download, Plus, Search, SlidersHorizontal, Users } from 'lucide-react';
 
-export default function Learners() {
+type RosterProps = {
+    text: Record<string, string>;
+    created: boolean;
+    duplicateWarning: boolean;
+    learners: {
+        data: { id: string; name: string; smile_id: string; lrn: string | null; enrollments: { section: string; year: string }[] }[];
+        total: number;
+        from: number | null;
+        to: number | null;
+        prev_page_url: string | null;
+        next_page_url: string | null;
+    };
+};
+export default function Learners({ learners, text, created, duplicateWarning }: RosterProps) {
     const { workspace, sectionSettingsNav } = usePage<SharedData>().props;
     const t = workspace.text;
     return (
@@ -22,21 +35,33 @@ export default function Learners() {
                             <Download className="size-4" />
                             {t.export}
                         </Button>
-                        <Button disabled title={t.unavailable} className="rounded-xl">
-                            <Plus className="size-4" />
-                            {t.add}
+                        <Button asChild className="min-h-11 rounded-xl">
+                            <Link href="/learners/create">
+                                <Plus className="size-4" />
+                                {t.add}
+                            </Link>
                         </Button>
                     </div>
                 </div>
+                {created && (
+                    <p role="status" className="rounded-xl border border-teal-200 bg-teal-50 p-4 text-sm text-teal-800">
+                        {text.created}
+                    </p>
+                )}
+                {duplicateWarning && (
+                    <p role="alert" className="rounded-xl border border-amber-200 bg-amber-50 p-4 text-sm text-amber-900">
+                        {text.duplicate}
+                    </p>
+                )}
                 <div className="bg-card grid gap-5 rounded-2xl border px-5 py-6 shadow-xs sm:grid-cols-3 sm:px-6">
                     {[
-                        { label: t.supported, icon: Users, tone: 'text-primary' },
+                        { label: text.visible_total, icon: Users, tone: 'text-primary' },
                         { label: t.plans, icon: ClipboardCheck, tone: 'text-teal-600' },
                         { label: t.reviews, icon: Clock3, tone: 'text-amber-700' },
                     ].map(({ label, icon: Icon, tone }) => (
                         <div key={label} className="flex items-center gap-4">
                             <Icon className={`size-5 ${tone}`} aria-hidden="true" />
-                            <span className="text-2xl font-semibold">—</span>
+                            <span className="text-2xl font-semibold">{label === text.visible_total ? learners.total : '—'}</span>
                             <span className="text-muted-foreground text-xs">{label}</span>
                         </div>
                     ))}
@@ -88,29 +113,66 @@ export default function Learners() {
                                     ))}
                                 </tr>
                             </thead>
+                            <tbody>
+                                {learners.data.map((learner) => (
+                                    <tr key={learner.id} className="border-b text-xs last:border-0">
+                                        <td className="px-5 py-5">
+                                            <span className="font-semibold">{learner.name}</span>
+                                            <span className="text-muted-foreground mt-1 block">{learner.smile_id}</span>
+                                        </td>
+                                        <td className="text-muted-foreground px-5 py-5">{learner.lrn ?? '—'}</td>
+                                        <td className="px-5 py-5">{learner.enrollments.map((enrollment) => enrollment.year).join(', ')}</td>
+                                        <td className="px-5 py-5">{learner.enrollments.map((enrollment) => enrollment.section).join(', ')}</td>
+                                        <td className="px-5 py-5">
+                                            <span className="rounded-md bg-teal-50 px-2 py-1 text-teal-700">{text.non_graded}</span>
+                                        </td>
+                                        {[t.plan, t.review, t.guardians].map((label) => (
+                                            <td key={label} className="text-muted-foreground px-5 py-5">
+                                                —
+                                            </td>
+                                        ))}
+                                    </tr>
+                                ))}
+                            </tbody>
                         </table>
                     </div>
-                    <WorkspaceEmpty icon={Users} title={t.roster_empty} detail={t.roster_detail}>
-                        {sectionSettingsNav.visible && (
-                            <Button asChild variant="outline" className="rounded-xl">
-                                <Link href="/settings/sections">
-                                    {t.setup}
-                                    <ChevronRight className="size-4" />
-                                </Link>
-                            </Button>
-                        )}
-                    </WorkspaceEmpty>
+                    {learners.data.length === 0 && (
+                        <WorkspaceEmpty icon={Users} title={text.roster_empty} detail={text.roster_detail}>
+                            {sectionSettingsNav.visible && (
+                                <Button asChild variant="outline" className="rounded-xl">
+                                    <Link href="/settings/sections">
+                                        {t.setup}
+                                        <ChevronRight className="size-4" />
+                                    </Link>
+                                </Button>
+                            )}
+                        </WorkspaceEmpty>
+                    )}
                     <div className="flex flex-wrap items-center justify-between gap-3 border-t px-5 py-5 sm:px-6">
-                        <span className="text-muted-foreground text-xs">{t.roster_pending}</span>
+                        <span className="text-muted-foreground text-xs">
+                            {text.showing} {learners.from ?? 0}–{learners.to ?? 0} {text.of} {learners.total}
+                        </span>
                         <div className="flex gap-2">
-                            <Button variant="outline" disabled className="rounded-xl text-xs">
-                                <ChevronLeft className="size-4" />
-                                {t.previous}
-                            </Button>
-                            <Button variant="outline" disabled className="rounded-xl text-xs">
-                                {t.next}
-                                <ChevronRight className="size-4" />
-                            </Button>
+                            {learners.prev_page_url ? (
+                                <Button asChild variant="outline" className="min-h-11 rounded-xl text-xs">
+                                    <Link href={learners.prev_page_url}>{t.previous}</Link>
+                                </Button>
+                            ) : (
+                                <Button variant="outline" disabled className="rounded-xl text-xs">
+                                    <ChevronLeft className="size-4" />
+                                    {t.previous}
+                                </Button>
+                            )}
+                            {learners.next_page_url ? (
+                                <Button asChild variant="outline" className="min-h-11 rounded-xl text-xs">
+                                    <Link href={learners.next_page_url}>{t.next}</Link>
+                                </Button>
+                            ) : (
+                                <Button variant="outline" disabled className="rounded-xl text-xs">
+                                    {t.next}
+                                    <ChevronRight className="size-4" />
+                                </Button>
+                            )}
                         </div>
                     </div>
                 </section>
