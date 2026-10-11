@@ -57,6 +57,7 @@ The **teacher is the main user.** In a one-teacher school there is no SPED coord
 Done when: the teacher can enroll learners, see the roster, and see missing documents.
 
 ### Phase 2: Core value
+- Use the owner-supplied local `IEP SAMPLE.docx` as the IEP form basis; see `docs/IEP_REFERENCE.md` for its structure, proposed improvements, schema gaps, and questions. Preserve its section order and six domain labels until the school confirms changes. Obtain a blank/anonymized version before committing a template.
 - IEP builder (baseline, goals, objectives, accommodations, services)
 - Progress logging (not started, emerging, developing, mastered) with note and optional evidence
 - Learner progress timeline and trend view
@@ -165,6 +166,7 @@ These tests must exist and pass before any release:
 
 ## 10. Open questions (confirm with the school or division)
 
+- IEP sample approval status, annual review label, approval/amendment workflow, required domains/objectives, service schedule, and participants/signatures; see `docs/IEP_REFERENCE.md`.
 - Exact forms and fields required for non-graded SNEd learners (SF9 and SF10 especially)
 - Whether LIS offers any integration for outside tools (assume manual export or import)
 - Who may see which records (principal, regular teachers, therapists)
