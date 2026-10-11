@@ -20,6 +20,7 @@ test('a teacher can hold both roles and be retrieved through each role', functio
     $this->seed(DatabaseSeeder::class);
     $teacher = User::factory()->create();
     $teacher->assignRole(['sped_teacher', 'school_admin']);
+    $this->actingAs($teacher);
 
     expect(Str::isUuid($teacher->id))->toBeTrue();
     expect($teacher->fresh()->hasAllRoles(['sped_teacher', 'school_admin']))->toBeTrue();

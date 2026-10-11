@@ -29,7 +29,9 @@ export interface SharedData {
 }
 
 export interface User {
-    id: number;
+    id: string;
+    school_id: number | null;
+    is_active: boolean;
     name: string;
     email: string;
     avatar?: string;

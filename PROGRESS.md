@@ -5,7 +5,7 @@ The agent reads this file at the start of every session and updates it at the en
 ## Current status
 
 - **Current phase:** Phase 1 (Foundation)
-- **Current step:** Dependency security update complete and awaiting push approval; next: schools and school_id scoping, then first accounts
+- **Current step:** Schools and school_id scoping complete; stage awaits push approval. Next: first administrator account provisioning and school setup screens.
 - **Last updated:** 2026-10-11
 
 ## Phase checklist
@@ -17,7 +17,7 @@ The agent reads this file at the start of every session and updates it at the en
 - [x] Roles set up (spatie/laravel-permission), including teacher dual-role support
 - [x] Composer dependency security update (audit clear on 2026-10-11)
 - [ ] First administrator accounts provisioned after school membership is established
-- [ ] Schools table and school_id scoping
+- [x] Schools table and school_id scoping
 - [ ] School years, sections, section_teachers
 - [ ] Learners, guardians, disabilities, enrollments (generated SMILE ID, optional LRN rules)
 - [ ] Roster and learner screens
@@ -54,6 +54,9 @@ Not started. See `PROJECT_SPEC.md`.
 - Default seeding creates only the five required roles, with no permissions or default accounts. Optional principal is not seeded until requested. No system-admin permission bypass is installed.
 - Each tested completion stage is committed locally. Every GitHub push requires the owner's explicit approval after review of the stage and checks; permission to continue development does not authorize a push.
 - schema.sql uses Laravel's name/password/email verification fields instead of full_name/password_hash to preserve built-in authentication conventions; the role enum/user_roles table is replaced by Spatie's tables in the same change as their migration.
+- School and user queries are globally scoped to the signed-in user's school; guests, inactive users, and accounts without a school receive no school-owned records. System administrators can access school metadata but receive no school-owned records, even when also assigned a teacher role.
+- Authentication, remember-token, and password-broker account lookups bypass only the school scope so login can establish a school context; these lookups require an active account. School membership and activation cannot be mass-assigned.
+- User school_id may be null for global system administrators or parents as the schema permits. Parent access to linked learners remains to be implemented separately; no learner records exist yet.
 
 ## Open questions (waiting on the school or division)
 
@@ -65,10 +68,10 @@ Not started. See `PROJECT_SPEC.md`.
 
 ## Known issues and notes
 
-- SMILE domain features and the five required authorization tests are not implemented. School membership and safe administrator account creation remain unfinished; there is no public account creation.
-- Starter tests use in-memory SQLite; PostgreSQL connection is checked separately with container Artisan commands.
+- Learner features and the five required learner authorization tests are not implemented. School metadata, user membership, school policies, and isolation tests exist; administrator provisioning and school management screens remain unfinished. There is no public account creation.
+- Backend tests pass using both in-memory SQLite and the separate PostgreSQL test database.
 - Frontend Vitest and a dedicated type-check script are not configured.
-- Schema reconciliation is still needed: school_id on school-owned tables, Spatie audit storage, system-admin school membership, consent timing, and preservation of retired SMILE IDs. User school_id, phone and is_active fields await the school foundation step.
+- Schema reconciliation is still needed: school_id on remaining school-owned tables, Spatie audit storage, consent timing, and preservation of retired SMILE IDs. User school_id, phone, and is_active fields are now implemented; school deletion is restricted while users reference it.
 - Composer audit --locked reports no security advisories after the 2026-10-11 update. Updated 57 packages within existing constraints, including Laravel 12.55.1 to 12.69.3 and Symfony 7.4 components. No major framework migration or application/schema changes were required. The obsolete boost:update Composer hook was removed earlier because Laravel Boost is not installed.
 - smile_testing is a separate PostgreSQL database used for backend tests; never point test commands at smile_dev.
 - Existing unused smile-db container on port 5432 is left untouched; the new Compose database is smile-postgres on port 5433.
@@ -82,3 +85,4 @@ Not started. See `PROJECT_SPEC.md`.
 | 2026-10-11 | Read the provided Markdown planning files and compared current code. Removed public registration routes, controller, page, and login/home links; retained other authentication flows. Added guest and signed-in denial tests proving no accounts are created. Backend: 29 passed (69 assertions); frontend build, Pint, and changed-file Prettier checks passed. | Roles and first-account setup; reconcile user IDs, school membership, and Spatie tables before their migrations. |
 | 2026-10-11 | Installed Spatie roles; added five role definitions, dual-role tests, and no automatic role/permission grants. Aligned empty starter user/session keys to UUIDs in place with a locked guard; updated schema.sql for Laravel auth names and Spatie tables. Removed the default shared-password account seed and nonexistent Boost hook. SQLite and isolated PostgreSQL: 33 tests passed each (80 assertions); Pint and Composer validation passed. Dev migrations and role seed applied. | Address 41 existing dependency advisories, then build school membership and initial account provisioning. |
 | 2026-10-11 | Updated the 12 advisory-affected Composer packages and required dependencies (57 version updates). Audit now has zero advisories; Composer validation and platform requirements passed. SQLite and isolated PostgreSQL: 33 tests passed each (80 assertions). Frontend build passed, login HTTP 200, and dev migration status verified. Recorded mandatory owner approval before every push in AGENTS.md. Stage committed locally; push awaits approval. | Obtain push approval; then build schools and school_id scoping before initial administrator accounts. |
+| 2026-10-11 | Dependency update b91ffbd was pushed with owner approval. Added schools, user membership fields, school metadata policy, global school scopes, and active-only authentication lookup. Added isolation, policy, inactive-account, login, and protected membership tests. SQLite and isolated PostgreSQL: 43 tests passed each (130 assertions); Pint, TypeScript, and frontend build passed. Fixed starter form typings and expressed the existing blend mode through Tailwind to pass TypeScript; corrected frontend UUID user ID type. Dev migration applied and login HTTP 200. | Obtain approval before pushing this school foundation stage; then provision first administrators and add school setup screens. |
