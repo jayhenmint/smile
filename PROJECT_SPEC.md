@@ -4,7 +4,7 @@ Project spec. SMILE is built first for SNEd (SPED) classes.
 
 Status: planning. Source of truth for what to build and in what order. Database design lives in `schema.sql`.
 
-> This spec comes from general knowledge of DepEd policy (RA 11650, LIS, SF forms), not from official forms. Confirm exact forms and rules with the school head, SPED coordinator, or division office. Items needing confirmation are listed in section 10.
+> The original spec was based on general knowledge of DepEd policy. Owner-supplied IEP, curriculum, and approved non-graded SF9 references now supplement it; see `docs/IEP_REFERENCE.md` and `docs/CURRICULUM_REPORT_REFERENCE.md`. Confirm unresolved rules and form adaptations with the school or division. Items needing confirmation are listed in section 10.
 
 ---
 
@@ -41,6 +41,8 @@ The **teacher is the main user.** In a one-teacher school there is no SPED coord
 - **LRN**: DepEd's 12-digit Learner Reference Number. **Optional.** Unique when present, permanent, issued through the LIS. The tool stores it and does not generate it. It can be empty while a learner waits for approval or has none yet (`lrn_status`). A learner without an LRN is still fully identified by the SMILE ID. `lrn_status = 'issued'` requires an LRN.
 - **Duplicates without an LRN:** when adding a learner with no LRN, warn (never block) if the same name and birthdate already exist in the school.
 - **Non-graded learners**: SNEd learners are non-graded and are re-enrolled every year in a non-graded class. `grade_level` stays empty until a formal change.
+- **School groupings**: Level 1 means 2–3 years studied in the school; Level 2 means 3–4 years; Level 3 means 4–6 years. Transition Program means ages 15–21. These owner-confirmed school groupings are separate from graded levels. Overlapping boundaries and year-counting rules remain unresolved; never assign or promote automatically. See `docs/CURRICULUM_REPORT_REFERENCE.md`.
+- **Reporting periods**: SF9 indicator columns 1–3 mean Term 1, Term 2, and Term 3. Plan periods per school year, with three terms for SY 2026–2027 and historical periods preserved. Dates and remaining legacy quarter rows require confirmation.
 - **Non-graded to graded**: needs the SPED assessment form and Schools Division Office (SDO) approval. Tracked in `learner_level_changes`. The tool records evidence and decisions. It never decides readiness.
 - **Health and nutrition**: height and weight at baseline and endline each school year. BMI is calculated. Nutritional status and height-for-age categories use WHO growth standards by age and sex, computed in the app. A nurse or clinic confirms them. DepEd reports this on SF8.
 - **Multi-school ready**: all school-owned data carries `school_id`. Another school can adopt the tool without seeing your data.
@@ -77,6 +79,7 @@ Done when: the teacher can produce the reports DepEd and the school ask for with
 **Phases 1 to 3 are the first usable release. Test with one teacher before building more.**
 
 ### Phase 4: Transitions and approvals
+- Separate learner-specific Individualized Transition Plan (ITP), informed by the supplied transition curriculum; not a replacement for the IEP. Confirm its fields and approval workflow before implementation.
 - Non-graded to graded workflow (SPED assessment form, SDO status, LIS updated)
 - Mainstreaming transition plan (gradual hours, accommodations, review dates, path back to SPED)
 - Level-change packet for the SDO
@@ -86,7 +89,7 @@ Done when: the teacher can produce the reports DepEd and the school ask for with
 - Parent portal (own child only)
 - Reminders by email or SMS
 - Vision, hearing, and dental screenings and referrals
-- SF9 and SF10 templates for non-graded learners, after the division confirms the format
+- SF9 for non-graded learners based on the owner-approved Annex, after confirming its three-term print adaptation; SF10 after its format is confirmed. See `docs/CURRICULUM_REPORT_REFERENCE.md`.
 
 ### Phase 6: Later
 - Multi-school onboarding and per-school settings (headers, logos, local document rules)
@@ -115,8 +118,9 @@ Done when: the teacher can produce the reports DepEd and the school ask for with
 | SF2 Daily Attendance | `attendance` | Monthly |
 | SF8 Health and Nutrition | `health_measurements` | Baseline and endline |
 | SF1 / class list export | enrollments | LIS owns the official one. Export to match it. |
-| SF9 / SF10 | progress and IEP data | Format for non-graded learners unconfirmed. Build as configurable templates. |
-| IEP summary and progress report | IEP tables | Quarterly, printable for parents |
+| SF9 | report-card assessments and attendance | Owner-approved Annex basis; Terms 1–3, separate P/AP/D/B/NO/NA scale. Legacy quarter rows need confirmed adaptation. |
+| SF10 | confirmed report data | Non-graded template still unconfirmed. |
+| IEP summary and progress report | IEP tables | Printable for parents by school-year reporting period; Terms 1–3 for SY 2026–2027. Keep IEP ratings separate from SF9 ratings. |
 | Learner progress report | `progress_entries` | Charts plus teacher notes |
 | Class progress summary | `progress_entries` | Counts by rating per domain |
 | Missing documents | `learner_documents` | Per section |
@@ -167,7 +171,9 @@ These tests must exist and pass before any release:
 ## 10. Open questions (confirm with the school or division)
 
 - IEP sample approval status, annual review label, approval/amendment workflow, required domains/objectives, service schedule, and participants/signatures; see `docs/IEP_REFERENCE.md`.
-- Exact forms and fields required for non-graded SNEd learners (SF9 and SF10 especially)
+- Overlapping school-level boundaries, how years studied are counted, and Transition Program placement; see `docs/CURRICULUM_REPORT_REFERENCE.md`.
+- SF9 three-term adaptation of legacy remarks/signature rows, assessment With/Without meaning, NO/NA handling, and attendance layout; SF10 template remains unconfirmed.
+- Separate ITP fields, review, approvals, and signatures.
 - Whether LIS offers any integration for outside tools (assume manual export or import)
 - Who may see which records (principal, regular teachers, therapists)
 - Parent access method: email, mobile number, or in person

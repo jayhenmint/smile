@@ -12,6 +12,8 @@ This review examined document text, table cells, and header/footer text. It did 
 
 ## Sections to preserve
 
+The owner confirmed on 2026-10-11 that each learner's IEP remains separate from their ITP. See `CURRICULUM_REPORT_REFERENCE.md` for the approved report-card basis, school groupings, and three-term reporting clarification. Its seven report-card domains and rating scale do not replace this sample's six IEP domains or the IEP progress scale. This clarification does not resolve the sample's remaining approval, label, schedule, or signature questions.
+
 1. School heading and IEP status: Draft, Approved, Amended.
 2. Learner and school information: learner name, level, LRN, address, guardian, guardian address, contact number.
 3. IEP meeting date, most recent evaluation date, projected annual review date, case manager, and special needs/difficulties.

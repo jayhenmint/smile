@@ -27,6 +27,8 @@ The main user is the SNEd teacher, who is also the school admin in this first re
 
 ## Session start and end (you have no memory between sessions)
 
+Before learner grouping, reporting-period, SF9, or transition-plan work, also read `docs/CURRICULUM_REPORT_REFERENCE.md` for owner-confirmed requirements and unresolved source-form questions. It does not change phase order.
+
 At the **start** of every session:
 1. Read `AGENTS.md`, `PROJECT_SPEC.md`, and `PROGRESS.md`.
 2. Check the real state of the project: `git log --oneline -10`, `git status`, and run the tests.
