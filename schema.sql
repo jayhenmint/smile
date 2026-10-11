@@ -295,15 +295,20 @@ INSERT INTO document_types (name, required_for, from_party) VALUES
  ('SDO approval for non-graded to graded change','mainstreaming','school'),
  ('Height/weight record (baseline)','enrollment','school');
 
+-- One current checklist state per learner/type; file_url is reserved for private storage.
 CREATE TABLE learner_documents (
   id               SERIAL PRIMARY KEY,
-  learner_id       UUID NOT NULL REFERENCES learners(id) ON DELETE CASCADE,
-  document_type_id INT NOT NULL REFERENCES document_types(id),
+  school_id        INT NOT NULL REFERENCES schools(id) ON DELETE RESTRICT,
+  learner_id       UUID NOT NULL,
+  document_type_id INT NOT NULL REFERENCES document_types(id) ON DELETE RESTRICT,
   status           TEXT NOT NULL DEFAULT 'missing' CHECK (status IN ('missing','submitted','verified','expired')),
   file_url         TEXT,
   submitted_on     DATE,
-  verified_by      UUID REFERENCES users(id),
-  notes            TEXT
+  verified_by      UUID,
+  notes            TEXT, -- encrypted (may contain health information)
+  FOREIGN KEY (school_id, learner_id) REFERENCES learners(school_id, id) ON DELETE CASCADE,
+  FOREIGN KEY (school_id, verified_by) REFERENCES users(school_id, id) ON DELETE RESTRICT,
+  UNIQUE (learner_id, document_type_id)
 );
 
 -- ============ IEP ============

@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\LearnerAssessmentController;
+use App\Http\Controllers\LearnerDocumentController;
 use App\Http\Controllers\LearnerEnrollmentController;
 use App\Http\Controllers\LearnerGuardianController;
 use App\Http\Controllers\LearnerLrnController;
@@ -26,6 +27,8 @@ Route::middleware(['auth'])->group(function () {
     Route::get('learners/{learner}/guardians', [LearnerGuardianController::class, 'index'])->whereUuid('learner')->name('learners.guardians.index');
     Route::post('learners/{learner}/guardians', [LearnerGuardianController::class, 'store'])->whereUuid('learner')->name('learners.guardians.store');
     Route::patch('learners/{learner}/guardians/{guardian}', [LearnerGuardianController::class, 'update'])->whereUuid(['learner', 'guardian'])->name('learners.guardians.update');
+    Route::get('learners/{learner}/documents', [LearnerDocumentController::class, 'index'])->whereUuid('learner')->name('learners.documents.index');
+    Route::put('learners/{learner}/documents/{documentType}', [LearnerDocumentController::class, 'save'])->whereUuid('learner')->whereNumber('documentType')->name('learners.documents.save');
     Route::get('learners/{learner}/assessments', [LearnerAssessmentController::class, 'index'])->whereUuid('learner')->name('learners.assessments.index');
     Route::post('learners/{learner}/assessments', [LearnerAssessmentController::class, 'store'])->whereUuid('learner')->name('learners.assessments.store');
     Route::patch('learners/{learner}/assessments/teacher/{assessment}', [LearnerAssessmentController::class, 'updateTeacher'])->whereUuid('learner')->whereNumber('assessment')->name('learners.assessments.teacher.update');

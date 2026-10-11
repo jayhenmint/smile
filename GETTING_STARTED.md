@@ -94,7 +94,9 @@ To check teacher access management, sign in as a school administrator and open *
 
 16. Set up another school year and a section with yourself as adviser. Open the existing fictional learner profile, choose **Enroll in a school year**, select that section and an enrollment date, and save. Enrollment history should contain both years, with the same SMILE ID and unchanged learner details. Both enrollments stay non-graded. The same year cannot be added twice, even through another section; only your advised eligible sections appear. Missing LRN or attachments do not block this flow.
 
-This stage includes initial enrollment, roster, learner detail/identity editing, guardian contacts and separate teacher/disability assessment records. Contact/assessment deletion, issued-LRN corrections, learner return/status workflows, document checklist/uploads, search/filter, exports and live Overview metrics remain pending. The learner forms follow the supplied design's card layout; mobile/browser visual review remains required. Automated backend tests run only on SQLite or the isolated `smile_testing` database, never `smile_dev`.
+17. Open **Learners**, choose a fictional learner, then **Documents**. All 17 reference items initially show Missing. Use **Update checklist** to record a paper document as Submitted (with its submission date), Verified, or Expired, and add optional teacher notes. Save and reload to check persistence; returning to Missing clears its submission date and verifier. No upload is offered in this stage. Optional/conditional items are not blanket requirements, and missing items do not block enrollment. Another adviser/school must not see this checklist.
+
+This stage includes initial enrollment, roster, learner detail/identity editing, guardian contacts, separate teacher/disability assessment records, annual enrollment and the document checklist. Contact/assessment deletion, issued-LRN corrections, learner return/status workflows, private document uploads, search/filter, exports and live Overview metrics remain pending. The learner forms follow the supplied design's card layout; mobile/browser visual review remains required. Automated backend tests run only on SQLite or the isolated `smile_testing` database, never `smile_dev`.
 
 For section setup, open **Settings → Sections** (`http://localhost:8001/settings/sections`) as a school administrator. Add a school year first, then enter the section name, placement and optional adviser. Only active SNEd teachers from your school are eligible. New sections are non-graded; placement choices do not assign graded levels. You can edit the name/placement or reassign/clear the adviser, but the school year stays fixed. Teachers without school-admin access can view only sections they advise. Adviser changes synchronize the section_teachers adviser row; other staff assignment screens and learner access for co-teachers/aides/therapists remain pending. Test with fake sections and accounts.
 
@@ -106,6 +108,7 @@ Copy these into the project root (the `smile/` folder):
 - `schema.sql`
 
 Keep `.env` out of Git (Laravel's `.gitignore` already does this). Never put real learner data in the repo.
+
 
 ## 5. Install the packages from the spec
 

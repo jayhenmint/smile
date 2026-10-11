@@ -85,6 +85,9 @@ export default function Profile({ learner, text: t, editing, updated, lrnRecorde
                         <Button asChild variant="outline" className="min-h-11 rounded-xl">
                             <Link href={`${url}/assessments`}>{t.assessments}</Link>
                         </Button>
+                        <Button asChild variant="outline" className="min-h-11 rounded-xl">
+                            <Link href={`${url}/documents`}>{t.documents}</Link>
+                        </Button>
                     </div>
                 </div>
                 {enrollmentSaved && (

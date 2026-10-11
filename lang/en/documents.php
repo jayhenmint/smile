@@ -1,0 +1,33 @@
+<?php
+
+return [
+    'title' => 'Document checklist', 'learners' => 'Learners', 'profile' => 'Learner profile',
+    'hint' => 'Missing documents do not block non-graded enrollment. Teacher-accepted documents may follow before school-year end. Consent must already be obtained; its signed copy may follow.',
+    'scope_hint' => 'Enrollment and regular-class transition items are reference follow-up lists. Optional and conditional items apply only when needed. Recording a document does not approve a placement or level change.',
+    'paper_hint' => 'Record paper or otherwise accepted documents here. Private attachment uploads are the next step.',
+    'missing' => 'Missing', 'submitted' => 'Submitted', 'verified' => 'Verified', 'expired' => 'Expired',
+    'enrollment' => 'Enrollment', 'mainstreaming' => 'Regular-class transition', 'both' => 'Enrollment / transition',
+    'parent' => 'From parent', 'school' => 'From school', 'status' => 'Status', 'submitted_on' => 'Date submitted',
+    'notes' => 'Teacher notes (optional)', 'edit' => 'Update checklist', 'save' => 'Save status', 'cancel' => 'Cancel',
+    'saved' => 'Document checklist updated.', 'unavailable' => 'Document checklist is temporarily unavailable.',
+    'save_failed' => 'The checklist could not be saved. Please try again.',
+    'types' => [
+        1 => 'Enrollment form',
+        2 => 'PSA birth certificate',
+        3 => 'Previous report card / SF9 / SF10',
+        4 => 'Medical/diagnostic report',
+        5 => 'Parental consent (enrollment, data privacy, media)',
+        6 => 'PWD ID (optional)',
+        7 => 'Prior IEP (if any)',
+        8 => 'Written request for regular class',
+        9 => 'Signed transition plan consent',
+        10 => 'Updated assessment (if required)',
+        11 => 'Updated IEP / progress summary',
+        12 => 'SPED teacher recommendation',
+        13 => 'IEP team meeting record',
+        14 => 'Placement decision record',
+        15 => 'SPED assessment form (may follow non-graded enrollment; required for graded level change)',
+        16 => 'SDO approval for non-graded to graded change',
+        17 => 'Height/weight record (baseline)',
+    ],
+];

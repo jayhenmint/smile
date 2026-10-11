@@ -176,6 +176,8 @@ These tests must exist and pass before any release:
 
 ## 10. Open questions (confirm with the school or division)
 
+- Reconcile the 17 document types in `schema.sql` with section 5 (photos, therapy records, medication information, LIS/screening/IEP and additional transition documents). Confirm which apply per learner/school; optional and conditional items are not blanket requirements. The first checklist uses the schema catalogue without enrollment blocking or automatic expiry.
+
 - SF1/SF2 current version and cutoffs, applicable learner fields, attendance symbols/counts, class-day calendar, historical enrollment summaries, rounding, and print layout; see `docs/SF1_SF2_REFERENCE.md`.
 
 - Final IEP template acceptance, annual review label, approval/amendment workflow, applicable domains/objectives, service schedule, and participants/signatures; the supplied sample is confirmed as a non-approved school reference. See `docs/IEP_REFERENCE.md`.

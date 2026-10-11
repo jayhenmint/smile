@@ -1,6 +1,7 @@
 <?php
 
 return [
+    'documents' => 'Documents',
     'learners' => 'Learners',
     'profile' => 'Learner profile', 'edit' => 'Edit identity', 'updated' => 'Learner identity updated.',
     'back' => 'Back to learners', 'enrollments' => 'Enrollment history', 'smile_id' => 'SMILE ID',
