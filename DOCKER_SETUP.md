@@ -34,4 +34,4 @@ docker compose up -d
 
 Stopping preserves the database. Avoid `docker compose down -v`, which deletes it. SNEDY uses different containers and ports; these commands manage only the `smile` Compose project.
 
-Public registration is still enabled in the starter kit and must be disabled in the next Phase 1 step. No SMILE learner tables exist yet.
+Public registration is disabled. Role setup and administrator account creation are the next Phase 1 step. No SMILE learner tables exist yet.

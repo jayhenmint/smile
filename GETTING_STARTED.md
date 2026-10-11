@@ -1,6 +1,6 @@
 # SMILE: Getting Started
 
-The current local setup uses separate SMILE Docker services. Follow [DOCKER_SETUP.md](DOCKER_SETUP.md) for the working commands and database-client connection. The walkthrough below describes the original scaffold setup; public registration must be disabled before use.
+The current local setup uses separate SMILE Docker services. Follow [DOCKER_SETUP.md](DOCKER_SETUP.md) for the working commands and database-client connection. The walkthrough below describes the original scaffold setup. Public registration has now been disabled.
 
 Follow these steps in order. Commands are from general knowledge of Laravel's tooling. Versions change, so if a command fails, check the official docs (laravel.com/docs, "Installation" and "Starter Kits") before debugging.
 
@@ -62,7 +62,7 @@ php artisan serve
 npm run dev
 ```
 
-Open `http://localhost:8000`. If you can register and log in, the base works.
+For the current Docker setup, open `http://localhost:8001/login`. Accounts must be created by an administrator; first-account setup is still pending.
 
 ## 4. Add the project files
 

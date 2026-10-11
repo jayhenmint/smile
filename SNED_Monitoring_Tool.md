@@ -1,5 +1,7 @@
 # SMILE: Student Monitoring for Inclusive Learning Education (Planning Summary)
 
+This is the original planning summary. Use `PROJECT_SPEC.md` for the current phase order and `PROGRESS.md` for implementation status.
+
 > Draft based on general knowledge of DepEd policy (RA 11650 Inclusive Education Act, LIS, SF2/SF9/SF10). Confirm exact forms and requirements with your school head, SPED coordinator, and division office before launch.
 
 ## 1. Goal

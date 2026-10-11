@@ -5,7 +5,7 @@ The agent reads this file at the start of every session and updates it at the en
 ## Current status
 
 - **Current phase:** Phase 1 (Foundation)
-- **Current step:** Isolated SMILE Docker setup complete; next: disable public registration
+- **Current step:** Public registration disabled; next: roles and first-account setup
 - **Last updated:** 2026-10-11
 
 ## Phase checklist
@@ -13,7 +13,7 @@ The agent reads this file at the start of every session and updates it at the en
 ### Phase 1: Foundation
 - [x] Scaffold Laravel + Inertia + React (starter kit, built-in auth, Pest)
 - [x] PostgreSQL connected and base migrations run
-- [ ] Public registration disabled
+- [x] Public registration disabled
 - [ ] Roles set up (spatie/laravel-permission) and first accounts seeded
 - [ ] Schools table and school_id scoping
 - [ ] School years, sections, section_teachers
@@ -41,7 +41,7 @@ Not started. See `PROJECT_SPEC.md`.
 ## Decisions made
 
 - Single project: Laravel + Inertia + React (not a separate API and SPA)
-- Laravel built-in authentication; public registration must be disabled next
+- Laravel built-in authentication; public registration disabled. Keep login, logout, password reset, and email verification.
 - Pest for tests
 - Teacher is the main user and also `school_admin` in the first release
 - Project name: SMILE (Student Monitoring for Inclusive Learning Education)
@@ -58,14 +58,16 @@ Not started. See `PROJECT_SPEC.md`.
 
 ## Known issues and notes
 
-- Public registration is still enabled in the starter kit. SMILE domain features and the five required authorization tests are not implemented.
+- SMILE domain features and the five required authorization tests are not implemented. Admin account creation and initial accounts are the next foundation step; there is currently no public account creation.
 - Starter tests use in-memory SQLite; PostgreSQL connection is checked separately with container Artisan commands.
 - Frontend Vitest and a dedicated type-check script are not configured.
 - Schema reconciliation is still needed: school_id on school-owned tables, UUID users versus starter IDs, Spatie role/audit storage, system-admin school membership, consent timing, and preservation of retired SMILE IDs.
 - Existing unused smile-db container on port 5432 is left untouched; the new Compose database is smile-postgres on port 5433.
+- Downloads/claude_smile contains the original planning copies. Use this repository's PROGRESS.md for actual status. SNED_Monitoring_Tool.md has an older phase breakdown; PROJECT_SPEC.md controls implementation order.
 
 ## Session history
 
 | Date | What was done | Next step |
 |---|---|---|
 | 2026-10-11 | Established separate smile-php and smile-postgres services, network and volume; generated local DB password and app key; ran all three starter migrations. Backend: 27 tests passed (64 assertions); frontend build passed; login HTTP 200. Initialized Git with the owner's supplied identity. | Disable public registration as the next small Phase 1 step; resolve schema questions before domain migrations. |
+| 2026-10-11 | Read the provided Markdown planning files and compared current code. Removed public registration routes, controller, page, and login/home links; retained other authentication flows. Added guest and signed-in denial tests proving no accounts are created. Backend: 29 passed (69 assertions); frontend build, Pint, and changed-file Prettier checks passed. | Roles and first-account setup; reconcile user IDs, school membership, and Spatie tables before their migrations. |
