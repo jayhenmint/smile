@@ -5,7 +5,7 @@ import { Label } from '@/components/ui/label';
 import { WorkspaceCard } from '@/components/workspace-ui';
 import AppLayout from '@/layouts/app-layout';
 import { Head, Link, useForm } from '@inertiajs/react';
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 
 type Item = {
     id: number;
@@ -15,15 +15,20 @@ type Item = {
     status: string;
     submitted_on: string | null;
     notes: string | null;
+    record_id: number | null;
+    has_file: boolean;
+    download_url: string | null;
 };
 type Props = {
     learner: { id: string; name: string; smile_id: string };
     items: Item[];
     text: Record<string, string>;
     saved: boolean;
+    uploaded: boolean;
+    maxUploadKb: number;
 };
 
-export default function Documents({ learner, items, text: t, saved }: Props) {
+export default function Documents({ learner, items, text: t, saved, uploaded, maxUploadKb }: Props) {
     const url = `/learners/${learner.id}`;
     const [editing, setEditing] = useState<number | null>(null);
     const form = useForm({ status: 'missing', submitted_on: '', notes: '' });
@@ -51,6 +56,11 @@ export default function Documents({ learner, items, text: t, saved }: Props) {
                 {saved && (
                     <p role="status" className="rounded-xl border border-teal-200 bg-teal-50 p-4 text-sm text-teal-800">
                         {t.saved}
+                    </p>
+                )}
+                {uploaded && (
+                    <p role="status" className="rounded-xl border border-teal-200 bg-teal-50 p-4 text-sm text-teal-800">
+                        {t.uploaded}
                     </p>
                 )}
                 <div className="space-y-4">
@@ -174,6 +184,7 @@ export default function Documents({ learner, items, text: t, saved }: Props) {
                                     </Button>
                                 </div>
                             )}
+                            <Attachment item={item} url={url} text={t} maxUploadKb={maxUploadKb} />
                         </WorkspaceCard>
                     ))}
                 </div>
@@ -182,5 +193,58 @@ export default function Documents({ learner, items, text: t, saved }: Props) {
                 </Button>
             </div>
         </AppLayout>
+    );
+}
+
+function Attachment({ item, url, text: t, maxUploadKb }: { item: Item; url: string; text: Record<string, string>; maxUploadKb: number }) {
+    const form = useForm<{ file: File | null }>({ file: null });
+    const input = useRef<HTMLInputElement>(null);
+    if (item.has_file && item.download_url)
+        return (
+            <div className="mt-5 border-t pt-4">
+                <Button asChild variant="outline" className="min-h-11 rounded-xl">
+                    <a href={item.download_url}>{t.download}</a>
+                </Button>
+                <p className="text-muted-foreground mt-2 text-xs leading-6">{t.download_hint}</p>
+            </div>
+        );
+    if (!item.record_id || item.status === 'missing') return <p className="text-muted-foreground mt-4 text-xs leading-6">{t.record_submission}</p>;
+    return (
+        <form
+            className="mt-5 space-y-3 border-t pt-4"
+            onSubmit={(event) => {
+                event.preventDefault();
+                form.post(`${url}/documents/files/${item.record_id}`, {
+                    forceFormData: true,
+                    preserveScroll: true,
+                    onSuccess: () => {
+                        form.reset();
+                        if (input.current) input.current.value = '';
+                    },
+                });
+            }}
+        >
+            <Label htmlFor={`file-${item.id}`}>{t.file}</Label>
+            <Input
+                ref={input}
+                id={`file-${item.id}`}
+                type="file"
+                accept=".pdf,.jpg,.jpeg,.png"
+                required
+                disabled={form.processing}
+                onChange={(event) => form.setData('file', event.target.files?.[0] ?? null)}
+                aria-invalid={!!form.errors.file}
+                aria-describedby={`file-hint-${item.id} file-error-${item.id}`}
+                className="min-h-11 rounded-xl"
+            />
+            <p id={`file-hint-${item.id}`} className="text-muted-foreground text-xs">
+                {t.file_hint} {maxUploadKb / 1024}
+            </p>
+            <InputError id={`file-error-${item.id}`} message={form.errors.file} />
+            {form.progress && <progress aria-label={t.upload} value={form.progress.percentage} max={100} className="w-full" />}
+            <Button type="submit" disabled={form.processing || !form.data.file} className="min-h-11 rounded-xl">
+                {t.upload}
+            </Button>
+        </form>
     );
 }

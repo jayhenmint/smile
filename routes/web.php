@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\LearnerAssessmentController;
 use App\Http\Controllers\LearnerDocumentController;
+use App\Http\Controllers\LearnerDocumentFileController;
 use App\Http\Controllers\LearnerEnrollmentController;
 use App\Http\Controllers\LearnerGuardianController;
 use App\Http\Controllers\LearnerLrnController;
@@ -27,6 +28,8 @@ Route::middleware(['auth'])->group(function () {
     Route::get('learners/{learner}/guardians', [LearnerGuardianController::class, 'index'])->whereUuid('learner')->name('learners.guardians.index');
     Route::post('learners/{learner}/guardians', [LearnerGuardianController::class, 'store'])->whereUuid('learner')->name('learners.guardians.store');
     Route::patch('learners/{learner}/guardians/{guardian}', [LearnerGuardianController::class, 'update'])->whereUuid(['learner', 'guardian'])->name('learners.guardians.update');
+    Route::post('learners/{learner}/documents/files/{document}', [LearnerDocumentFileController::class, 'store'])->whereUuid('learner')->whereNumber('document')->name('learners.documents.files.store');
+    Route::get('learners/{learner}/documents/files/{document}', [LearnerDocumentFileController::class, 'download'])->whereUuid('learner')->whereNumber('document')->middleware('signed')->name('learners.documents.files.download');
     Route::get('learners/{learner}/documents', [LearnerDocumentController::class, 'index'])->whereUuid('learner')->name('learners.documents.index');
     Route::put('learners/{learner}/documents/{documentType}', [LearnerDocumentController::class, 'save'])->whereUuid('learner')->whereNumber('documentType')->name('learners.documents.save');
     Route::get('learners/{learner}/assessments', [LearnerAssessmentController::class, 'index'])->whereUuid('learner')->name('learners.assessments.index');

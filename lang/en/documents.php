@@ -1,10 +1,18 @@
 <?php
 
 return [
+    'upload' => 'Upload attachment', 'file' => 'Attachment', 'uploaded' => 'Private attachment uploaded.',
+    'download' => 'Download attachment', 'download_hint' => 'Download links expire. Refresh this page to get a new link.',
+    'file_hint' => 'PDF, JPEG or PNG. Maximum size (MB):',
+    'already_attached' => 'This item already has an attachment. Replacement is not available yet.',
+    'record_submission' => 'Record the submitted document and its submission date before adding an attachment.',
+    'invalid_file' => 'Choose a PDF, JPEG or PNG file.',
+    'upload_failed' => 'The attachment could not be saved. Please try again.',
+
     'title' => 'Document checklist', 'learners' => 'Learners', 'profile' => 'Learner profile',
     'hint' => 'Missing documents do not block non-graded enrollment. Teacher-accepted documents may follow before school-year end. Consent must already be obtained; its signed copy may follow.',
     'scope_hint' => 'Enrollment and regular-class transition items are reference follow-up lists. Optional and conditional items apply only when needed. Recording a document does not approve a placement or level change.',
-    'paper_hint' => 'Record paper or otherwise accepted documents here. Private attachment uploads are the next step.',
+    'paper_hint' => 'Record paper or otherwise accepted documents here. You may attach one PDF, JPEG or PNG per checklist item; attachments are optional.',
     'missing' => 'Missing', 'submitted' => 'Submitted', 'verified' => 'Verified', 'expired' => 'Expired',
     'enrollment' => 'Enrollment', 'mainstreaming' => 'Regular-class transition', 'both' => 'Enrollment / transition',
     'parent' => 'From parent', 'school' => 'From school', 'status' => 'Status', 'submitted_on' => 'Date submitted',
