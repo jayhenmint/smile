@@ -6,13 +6,14 @@ import { Label } from '@/components/ui/label';
 import AppLayout from '@/layouts/app-layout';
 import SettingsLayout from '@/layouts/settings/layout';
 import { Head, Link, useForm } from '@inertiajs/react';
-import { FormEventHandler } from 'react';
+import { FormEventHandler, useState } from 'react';
 
 type Account = { id: string; name: string; email: string; is_active: boolean; roles: string[] };
 type Accounts = { data: Account[]; prev_page_url: string | null; next_page_url: string | null };
 type AccountForm = { name: string; email: string; password: string; password_confirmation: string; school_admin: boolean };
 
 export default function Accounts({ accounts, labels }: { accounts: Accounts; labels: Record<string, string> }) {
+    const [showPassword, setShowPassword] = useState(false);
     const { data, setData, post, reset, errors, processing, recentlySuccessful } = useForm<AccountForm>({
         name: '',
         email: '',
@@ -20,12 +21,21 @@ export default function Accounts({ accounts, labels }: { accounts: Accounts; lab
         password_confirmation: '',
         school_admin: false,
     });
+    const generatePassword = () => {
+        const bytes = crypto.getRandomValues(new Uint8Array(16));
+        const password = Array.from(bytes, (byte) => byte.toString(16).padStart(2, '0')).join('');
+        setData((current) => ({ ...current, password, password_confirmation: password }));
+        setShowPassword(true);
+    };
     const submit: FormEventHandler = (event) => {
         event.preventDefault();
         post(route('accounts.store'), {
             preserveScroll: true,
             onSuccess: () => reset(),
-            onFinish: () => reset('password', 'password_confirmation'),
+            onFinish: () => {
+                reset('password', 'password_confirmation');
+                setShowPassword(false);
+            },
         });
     };
 
@@ -44,7 +54,7 @@ export default function Accounts({ accounts, labels }: { accounts: Accounts; lab
                                     name={field}
                                     value={data[field]}
                                     required
-                                    type={field.startsWith('password') ? 'password' : field === 'email' ? 'email' : 'text'}
+                                    type={field.startsWith('password') ? (showPassword ? 'text' : 'password') : field === 'email' ? 'email' : 'text'}
                                     autoComplete={field.startsWith('password') ? 'new-password' : field === 'email' ? 'off' : 'name'}
                                     minLength={field.startsWith('password') ? 8 : undefined}
                                     maxLength={255}
@@ -58,6 +68,23 @@ export default function Accounts({ accounts, labels }: { accounts: Accounts; lab
                                 </div>
                             </div>
                         ))}
+                        <div className="flex flex-wrap gap-3">
+                            <Button type="button" variant="outline" onClick={generatePassword} disabled={processing} className="min-h-11">
+                                {labels.generate_password}
+                            </Button>
+                            <Button
+                                type="button"
+                                variant="outline"
+                                onClick={() => setShowPassword((visible) => !visible)}
+                                disabled={processing}
+                                aria-pressed={showPassword}
+                                aria-controls="account-password account-password_confirmation"
+                                className="min-h-11"
+                            >
+                                {showPassword ? labels.hide_password : labels.show_password}
+                            </Button>
+                        </div>
+                        <p className="text-muted-foreground text-sm">{labels.generate_help}</p>
                         <p className="text-muted-foreground text-sm">{labels.password_help}</p>
                         <p className="text-muted-foreground text-sm">{labels.teacher_help}</p>
                         <div className="space-y-2">
