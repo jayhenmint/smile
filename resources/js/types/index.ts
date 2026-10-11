@@ -22,6 +22,12 @@ export interface NavItem {
 }
 
 export interface SharedData {
+    workspace: {
+        schoolName: string | null;
+        schoolYear: string | null;
+        canViewLearners: boolean;
+        text: Record<string, string>;
+    };
     name: string;
     quote: { message: string; author: string };
     auth: Auth;

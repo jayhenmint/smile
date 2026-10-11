@@ -18,7 +18,7 @@ return new class extends Migration
         if (DB::getDriverName() === 'pgsql') {
             DB::statement("ALTER TABLE smile_id_reservations ADD CONSTRAINT smile_id_reservations_format CHECK (smile_id ~ '^SM-[A-HJ-NP-Z2-9]{8}$')");
             DB::unprepared(<<<'SQL'
-                CREATE FUNCTION prevent_smile_id_reservation_change() RETURNS trigger AS $$
+                CREATE OR REPLACE FUNCTION prevent_smile_id_reservation_change() RETURNS trigger AS $$
                 BEGIN
                     RAISE EXCEPTION 'Reserved SMILE IDs cannot be changed or removed';
                 END;

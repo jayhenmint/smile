@@ -46,6 +46,12 @@ class HandleInertiaRequests extends Middleware
         return array_merge(parent::share($request), [
             ...parent::share($request),
             'name' => config('app.name'),
+            'workspace' => [
+                'schoolName' => $school?->name,
+                'schoolYear' => SchoolYear::query()->where('is_current', true)->value('label'),
+                'canViewLearners' => Gate::allows('viewLearnerWorkspace', User::class),
+                'text' => __('workspace'),
+            ],
             'quote' => ['message' => trim($message), 'author' => trim($author)],
             'schoolSettingsNav' => [
                 'visible' => $school !== null && Gate::allows('update', $school),

@@ -71,7 +71,7 @@ Non-graded enrollment may proceed during the school year with pending documents/
 
 ## Priority and designer deliverables
 
-**Built:** authentication, school/account/year/section settings. Dashboard is currently a placeholder.
+**Built:** authentication, school/account/year/section settings, plus reference-based Overview/Learners visual shells. Learner saving and live dashboard/roster data are still pending.
 
 **Design next, in order:** Phase 1 learner/enrollment/documents → Phase 2 IEP/progress → Phase 3 daily work/reports. Parent portal and transition workflows are later.
 

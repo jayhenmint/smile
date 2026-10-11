@@ -6,6 +6,12 @@ use App\Models\User;
 
 class UserPolicy
 {
+    public function viewLearnerWorkspace(User $user): bool
+    {
+        return $user->is_active && $user->school_id !== null
+            && $user->hasRole('sped_teacher') && ! $user->hasRole('system_admin');
+    }
+
     public function viewAny(User $user): bool
     {
         return $user->is_active && $user->school_id !== null
