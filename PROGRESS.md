@@ -5,7 +5,7 @@ The agent reads this file at the start of every session and updates it at the en
 ## Current status
 
 - **Current phase:** Phase 1 (Foundation)
-- **Current step:** Existing teacher role and activation management completed and tested; app remains in Phase 1. Local stages await push approval. Next: school years, sections, and adviser assignment, with schema reconciliation and school/section authorization.
+- **Current step:** School-year management completed, tested and migrated locally; app remains in Phase 1. Local stages await push approval. Next: sections, section_teachers and adviser assignment, with schema reconciliation and school/section authorization.
 - **Last updated:** 2026-10-11
 
 ## Phase checklist
@@ -21,7 +21,9 @@ The agent reads this file at the start of every session and updates it at the en
 - [x] School account list and teacher account creation
 - [x] Existing teacher account role and activation management
 - [x] Schools table and school_id scoping
-- [ ] School years, sections, section_teachers
+- [x] School years: scoped calendar, administrator creation/editing, manual current-year selection
+- [ ] Sections and adviser assignment
+- [ ] section_teachers
 - [ ] Learners, guardians, disabilities, enrollments (generated SMILE ID, optional LRN rules)
 - [ ] Roster and learner screens
 - [ ] Documents checklist and private file upload
@@ -44,6 +46,9 @@ The agent reads this file at the start of every session and updates it at the en
 Not started. See `PROJECT_SPEC.md`.
 
 ## Decisions made
+
+- School years use schema.sql's fields with no added timestamps. Added school/label uniqueness and a partial unique current-year index in both migration and schema.sql to prevent duplicate labels and multiple current years in the same school. School rows serialize writes, and validation/current selection are handled in the transaction with fresh actor authorization.
+- Settings → School years is readable by active school_admin/sped_teacher accounts in their own school, with edits restricted to school_admin and no system_admin access. School membership is server-assigned, request school/record IDs are rejected, and no deletion route exists. Dates are manually entered, never inferred; current-year selection does not enroll/promote learners. Term/calendar-day rules remain pending for their respective future features.
 
 - School administrators can PATCH existing teacher access from Accounts: optional school_admin and is_active only, retaining sped_teacher. Policy requires the same school, an active administrator without system_admin, a different target account, and no roles beyond sped_teacher/school_admin on that target. Own-account access changes and special-role accounts are protected. Other identity, credential, school, permission, and verification fields cannot be changed through this action.
 - Access changes lock the school row and re-authorize freshly loaded actor/target records inside a transaction. Deactivation clears remember_token and deletes target database sessions; reactivation requires fresh login. No schema change or development-account modification was needed. Learner audit logging remains a later unfinished Phase 1 step.
@@ -93,7 +98,7 @@ Not started. See `PROJECT_SPEC.md`.
 
 ## Known issues and notes
 
-- Learner features and the five required learner authorization tests are not implemented. School settings, scoped account listing, teacher creation/access management, and local first-account provisioning exist. Production provisioning and global school onboarding remain unfinished. There is no public account creation.
+- Learner features and the five required learner authorization tests are not implemented. School settings, school-year management, scoped account listing, teacher creation/access management, and local first-account provisioning exist. Sections/adviser assignment, production provisioning and global school onboarding remain unfinished. There is no public account creation.
 - Backend tests pass using both in-memory SQLite and the separate PostgreSQL test database.
 - Frontend Vitest and a dedicated type-check script are not configured.
 - Browser automation is unavailable in the current tool session. School settings and Accounts passed frontend build/type/lint checks and authenticated HTTP checks; visual and mobile interaction review remains for the owner.
@@ -107,6 +112,7 @@ Not started. See `PROJECT_SPEC.md`.
 
 | Date | What was done | Next step |
 |---|---|---|
+| 2026-10-11 | Added school_years migration, scoped model/factory, school relationship, policy, transactional create/update actions, translated School years screen and authorized settings navigation. Reconciled duplicate-label and single-current-year safeguards in schema.sql. Added 19 tests for calendar CRUD, school isolation, role restrictions, dates, injection, pagination and database constraints. SQLite and isolated PostgreSQL: 118 tests passed each (720 assertions); Pint, TypeScript, changed-file ESLint/Prettier and frontend build passed. Applied dev migration; migration status verified and local login HTTP 200. No year records or learner changes created; visual/mobile review remains pending. | Owner tests Settings → School years. Obtain explicit approval before pushing. Next: sections, section_teachers and adviser assignment. |
 | 2026-10-11 | Applied the owner's latest correction: SF9 uses exactly three terms and three remarks/signature rows, labeled Term 1, Term 2, Term 3. Each requires teacher remarks and a parent signature; preserve the remaining Annex format. Updated spec and references and removed the extra-row mapping question. This supersedes the earlier retained-four-row interpretation; source documents, application and schema unchanged. Backend: 99 tests passed (533 assertions); diff whitespace checks passed. | Continue Phase 1 with school years and sections; implement the confirmed three-row report in Phase 5. Explicit approval required before pushing. |
 | 2026-10-11 | Added policy-authorized own-school access updates for other teacher accounts, optional school-admin access and activation controls, protected own/special-role accounts, transactional school locking with fresh authorization, and deactivation session/remember-token revocation. Added 27 meaningful access/security tests and testing instructions; corrected stale first-account status in GETTING_STARTED.md. SQLite and isolated PostgreSQL: 99 tests passed each (533 assertions); Pint, TypeScript, changed-file ESLint/Prettier, and frontend build passed. Local login HTTP 200. Browser/mobile visual review remains pending; development accounts unchanged. | Owner tests Settings → Accounts. Obtain explicit approval before pushing. Next development: school years, sections, and adviser assignment. |
 | 2026-10-11 | Recorded owner confirmation that exactly three and four years studied are Level 2. Updated spec and report references to preserve the supplied Annex layout, with teacher remarks and required parent signature each term. Removed resolved boundary/redesign questions; retained year-counting, legacy-row mapping and signature-recording questions. Application/schema unchanged. Backend: 72 tests passed (409 assertions); diff whitespace checks passed. | Continue Phase 1 in order; confirm remaining counting/print workflow details before their implementation. Explicit approval required before pushing. |

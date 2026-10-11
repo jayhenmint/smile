@@ -4,6 +4,7 @@ use App\Http\Controllers\Settings\AccountController;
 use App\Http\Controllers\Settings\PasswordController;
 use App\Http\Controllers\Settings\ProfileController;
 use App\Http\Controllers\Settings\SchoolController;
+use App\Http\Controllers\Settings\SchoolYearController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
@@ -16,6 +17,10 @@ Route::middleware('auth')->group(function () {
 
     Route::get('settings/school', [SchoolController::class, 'edit'])->name('school.edit');
     Route::patch('settings/school', [SchoolController::class, 'update'])->name('school.update');
+
+    Route::get('settings/school-years', [SchoolYearController::class, 'index'])->name('school-years.index');
+    Route::post('settings/school-years', [SchoolYearController::class, 'store'])->name('school-years.store');
+    Route::patch('settings/school-years/{schoolYear}', [SchoolYearController::class, 'update'])->name('school-years.update');
 
     Route::get('settings/accounts', [AccountController::class, 'index'])->name('accounts.index');
     Route::post('settings/accounts', [AccountController::class, 'store'])->name('accounts.store');

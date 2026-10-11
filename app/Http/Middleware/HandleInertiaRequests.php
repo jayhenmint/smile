@@ -2,6 +2,7 @@
 
 namespace App\Http\Middleware;
 
+use App\Models\SchoolYear;
 use App\Models\User;
 use Illuminate\Foundation\Inspiring;
 use Illuminate\Http\Request;
@@ -52,6 +53,10 @@ class HandleInertiaRequests extends Middleware
             'accountSettingsNav' => [
                 'visible' => Gate::allows('viewAny', User::class),
                 'label' => __('account_settings.title'),
+            ],
+            'schoolYearSettingsNav' => [
+                'visible' => Gate::allows('viewAny', SchoolYear::class),
+                'label' => __('school_year_settings.title'),
             ],
             'auth' => [
                 'user' => $request->user(),

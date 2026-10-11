@@ -1,0 +1,25 @@
+<?php
+
+return [
+    'title' => 'School years',
+    'description' => 'Set your school calendar dates and choose the current school year.',
+    'create_title' => 'Add a school year',
+    'label' => 'School year label',
+    'label_help' => 'For example, 2026-2027. Enter the dates approved for your school.',
+    'start_date' => 'Start date',
+    'end_date' => 'End date',
+    'is_current' => 'Use as the current school year',
+    'current_help' => 'Selecting this clears the current selection from other years in your school. It does not enroll or promote learners.',
+    'create' => 'Add school year',
+    'creating' => 'Adding…',
+    'created' => 'School year added.',
+    'save' => 'Save school year',
+    'saving' => 'Saving…',
+    'saved' => 'School year updated.',
+    'list_title' => 'School calendar',
+    'current' => 'Current school year',
+    'not_current' => 'Not current',
+    'empty' => 'No school years have been added.',
+    'previous' => 'Previous',
+    'next' => 'Next',
+];

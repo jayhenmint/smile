@@ -84,8 +84,11 @@ CREATE TABLE school_years (
   label      TEXT NOT NULL,            -- e.g. '2026-2027'
   start_date DATE NOT NULL,
   end_date   DATE NOT NULL,
-  is_current BOOLEAN NOT NULL DEFAULT FALSE
+  is_current BOOLEAN NOT NULL DEFAULT FALSE,
+  UNIQUE (school_id, label)           -- prevent duplicate year labels within one school
 );
+-- At most one manually selected current year per school; no automatic enrollment/promotion.
+CREATE UNIQUE INDEX school_years_one_current_per_school ON school_years(school_id) WHERE is_current;
 
 CREATE TABLE sections (
   id             SERIAL PRIMARY KEY,

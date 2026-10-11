@@ -68,6 +68,8 @@ To check teacher access management, sign in as a school administrator and open *
 
 ## 4. Add the project files
 
+For school-year setup, sign in as a school administrator and open **Settings → School years** (`http://localhost:8001/settings/school-years`). Enter the school-approved label, start date and end date, then choose whether to make it current. Selecting a current year clears the previous selection in your school. Teachers without school-admin access can view the calendar but cannot change it. School-year selection does not enroll or promote learners. Section and adviser setup is the next step; term dates are not generated automatically.
+
 Copy these into the project root (the `smile/` folder):
 - `AGENTS.md`
 - `PROJECT_SPEC.md`
