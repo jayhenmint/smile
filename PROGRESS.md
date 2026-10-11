@@ -5,7 +5,7 @@ The agent reads this file at the start of every session and updates it at the en
 ## Current status
 
 - **Current phase:** Phase 1 (Foundation)
-- **Current step:** Supplied SF1/SF2 formats reviewed and mapped in docs/SF1_SF2_REFERENCE.md; source spreadsheets remain local. App remains in Phase 1. Account creation, password generation, and reference documentation await push approval. Next development: existing account role and activation management, then school years and sections.
+- **Current step:** SF1/SF2 references documented; owner confirmed Level 2 endpoints and retaining Annex layout with remarks/signature every term. App remains in Phase 1. Account creation, password generation, and reference documentation await push approval. Next development: existing account role and activation management, then school years and sections.
 - **Last updated:** 2026-10-11
 
 ## Phase checklist
@@ -45,6 +45,9 @@ Not started. See `PROJECT_SPEC.md`.
 
 ## Decisions made
 
+- Owner resolved level endpoints: exactly 3 and exactly 4 years studied in the school are Level 2; Level 1 is 2 to under 3, Level 3 is more than 4 through 6. Counting years and placement workflow still require confirmation.
+- Owner declined redesigning the Annex remarks/signature section into three rows. Preserve its supplied format, with teacher remarks and a required parent signature every term. Retaining a fourth legacy row does not create a fourth term; its mapping/display and signature recording method remain open.
+
 - Owner-supplied SF1/SF2 non-graded spreadsheets are the report basis for Phase 3. Read docs/SF1_SF2_REFERENCE.md before enrollment field reconciliation or report work. Preserve original files locally and ignore them in Git because populated cells have not been verified as anonymized. Blank printed SF2 presence must never imply unrecorded attendance is present. SF9.docx was also added but is not reviewed in this stage.
 
 - Single project: Laravel + Inertia + React (not a separate API and SPA)
@@ -76,8 +79,8 @@ Not started. See `PROJECT_SPEC.md`.
 
 - SF1/SF2 cutoff/calendar rules, applicable fields, attendance symbol/count mapping, enrollment history/summary definitions, rounding, sheet choice, and print layout (docs/SF1_SF2_REFERENCE.md).
 
-- Overlapping levels at three/four years, year-counting rules, other duration/age boundaries, and relationship between level and Transition Program.
-- SF9 adaptation of its legacy four-quarter remarks/signature rows, With/Without assessment field, NO/NA handling, and attendance calendar; SF10 format remains unconfirmed.
+- Year-counting rules, other duration/age boundaries, and relationship between level and Transition Program; exactly three and four years are confirmed Level 2.
+- SF9 retained-layout term/extra-row mapping, required parent signature recording, With/Without assessment field, NO/NA handling, and attendance calendar; SF10 format remains unconfirmed.
 - ITP fields, review schedule, approvals, and signatures.
 - LIS integration (assume manual export or import)
 - Who may see which records
@@ -101,6 +104,7 @@ Not started. See `PROJECT_SPEC.md`.
 
 | Date | What was done | Next step |
 |---|---|---|
+| 2026-10-11 | Recorded owner confirmation that exactly three and four years studied are Level 2. Updated spec and report references to preserve the supplied Annex layout, with teacher remarks and required parent signature each term. Removed resolved boundary/redesign questions; retained year-counting, legacy-row mapping and signature-recording questions. Application/schema unchanged. Backend: 72 tests passed (409 assertions); diff whitespace checks passed. | Continue Phase 1 in order; confirm remaining counting/print workflow details before their implementation. Explicit approval required before pushing. |
 | 2026-10-11 | Reviewed both local SF1/SF2 XLS files read-only with Excel macros and link updates disabled. Documented report labels, legends, SF2 summary calculations, schema gaps and confirmation questions in docs/SF1_SF2_REFERENCE.md; linked the workflow from spec and agent instructions. Ignored populated originals without editing them. No application or schema changes; print fidelity remains unverified. Backend: 72 tests passed (409 assertions). | Confirm report-specific rules before Phase 3; continue Phase 1 in order. Obtain explicit approval before pushing. |
 | 2026-10-11 | Recorded the owner's corrected school-duration levels, age-based Transition Program, Terms 1–3, approved Annex SF9 basis, and separate learner-specific IEP/ITP. Added docs/CURRICULUM_REPORT_REFERENCE.md with source summaries, phase mapping, separate assessment scales, and unresolved boundaries/form adaptations. Verified DepEd's three-term calendar clarification for SY 2026–2027. Application and schema unchanged. Backend: 72 tests passed (409 assertions); diff whitespace checks passed. The newly added SF1 spreadsheet was left untouched and excluded from this documentation commit. | Confirm overlapping level boundaries and the Annex's legacy quarter-row adaptation. Continue Phase 1; explicit approval required before pushing. |
 | 2026-10-11 | Established separate smile-php and smile-postgres services, network and volume; generated local DB password and app key; ran all three starter migrations. Backend: 27 tests passed (64 assertions); frontend build passed; login HTTP 200. Initialized Git with the owner's supplied identity. | Disable public registration as the next small Phase 1 step; resolve schema questions before domain migrations. |

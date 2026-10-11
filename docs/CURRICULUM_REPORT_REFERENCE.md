@@ -15,12 +15,14 @@ The three local source files are in the owner's Downloads folder and remain unch
 
 | School grouping | Owner's definition |
 |---|---|
-| Level 1 | Learner has stayed/studied in the school for 2–3 years |
-| Level 2 | Learner has stayed/studied in the school for 3–4 years |
-| Level 3 | Learner has stayed/studied in the school for 4–6 years |
+| Level 1 | From 2 years up to, but excluding, 3 years studied in the school |
+| Level 2 | From 3 through 4 years studied in the school, including exactly 3 and exactly 4 |
+| Level 3 | More than 4 through 6 years studied in the school |
 | Transition Program | Learner is aged 15–21 years |
 
 Level 3 corrects the text file's earlier five-year wording. Levels 1–3 describe time in the school, not learner age or graded year level. Treat these as school-specific groupings, not nationally established eligibility rules. The 2020 transition curriculum does not establish these exact ranges or limit all transition support to ages 15–21.
+
+The owner resolved the overlapping endpoints: exactly three years and exactly four years both belong to Level 2. This resolves the range boundaries but not how years studied are measured or how placement decisions are recorded.
 
 Keep the grouping separate from `grade_level` and non-graded/graded enrollment status. Record human placement decisions; never auto-promote or decide readiness from years studied, age, ratings, or completed competencies. An approved level-change record is still required to become graded. Schema and migrations must be reconciled together before implementing groupings.
 
@@ -32,7 +34,7 @@ The Annex has learner/school details, monthly attendance totals, teacher remarks
 
 Its ratings are P (Proficient), AP (Approaching Proficiency), D (Developing), B (Beginning), and NO/NA (Not Observed/Not Applicable). These are distinct from the IEP progress scale of not started, emerging, developing, and mastered. No automatic conversion or numeric average is approved. Preserve the distinction between an empty result, not observed, and not applicable; confirm how the combined printed NO/NA code should represent the latter two.
 
-The supplied form still has four-quarter teacher-remarks and parent-signature rows, despite three indicator columns. The owner has clarified the columns' meaning, but the exact adaptation of those other rows remains to be confirmed. Do not silently reproduce a fourth term or invent an approved layout. Attendance month headings must follow the relevant school year, not permanently hard-code the sample's June–April headings.
+The owner instructed SMILE to preserve the supplied Annex format rather than replace its four-quarter remarks/signature rows with a newly designed three-row layout. For every actual reporting term, the teacher adds remarks and a parent signature is required. The reporting year still has Terms 1–3; retaining the supplied layout does not create a fourth term. How the extra legacy row is used/displayed and how term labels map to the retained rows remain to be confirmed before printing. Attendance month headings must follow the relevant school year, not permanently hard-code the sample's June–April headings. The signature requirement does not yet specify electronic signature capture or a technical approval gate.
 
 ## Individual plans and curriculum
 
@@ -42,19 +44,18 @@ The transition curriculum offers seven packages: Care Skills, Life Skills, Funct
 
 ## Workflow in phase order
 
-1. Phase 1: resolve grouping boundaries and year-counting rules before enrollment/grouping implementation; plan school-year reporting periods before reports depend on them.
+1. Phase 1: use the confirmed Level 2 endpoints and resolve year-counting rules before enrollment/grouping implementation; plan school-year reporting periods before reports depend on them.
 2. Phase 2: build the individual IEP from the supplied IEP reference, keeping its six domains and progress scale separate from the seven report-card domains.
 3. Phase 3: attendance and progress reporting use the relevant school-year calendar and confirmed periods.
 4. Phase 4: implement separate ITP and human transition/placement decisions after the required fields and approval workflow are confirmed.
-5. Phase 5: implement SF9 from this approved Annex basis after confirming its three-term adaptation; SF10 still needs a supplied/confirmed template.
+5. Phase 5: implement SF9 using the supplied Annex layout, teacher remarks and required parent signature every term; confirm legacy-row mapping before printing. SF10 still needs a supplied/confirmed template.
 6. Phase 6: consider the reusable competency/rubric library without moving it into earlier phases.
 
 ## Remaining questions
 
-- At exactly three or four years, which overlapping level applies? Does the teacher decide the grouping?
 - How are years studied counted: completed school years, elapsed time, or cumulative attendance? How are transfers and interrupted enrollment handled?
 - What grouping applies before two years or after six years? Can the Transition Program coexist with a Level 1–3 grouping, and how are age boundaries applied during a school year?
-- Should all four-quarter remarks/comment/signature rows become three term rows, and what is the approved attendance calendar/layout?
+- Within the retained Annex layout, how should term labels and the extra fourth legacy row be used/displayed? What is the approved attendance calendar, and how is the required parent signature recorded?
 - What does the form's assessment With/Without field mean, and how should NO/NA and domain applicability be recorded?
 - What are the approved ITP fields, participants, signatures, review schedule, and relationship to IEP goals?
 

@@ -70,4 +70,4 @@ Reconcile migrations and schema.sql together when approved requirements are impl
 - Which SF1 legend items are used locally, and is mother tongue/religion applicable to non-graded learners?
 - Where should SMILE ID appear, and what paper size and signature layout must be preserved?
 
-The previously recorded level-boundary and SF9 three-term adaptation questions remain open.
+Level endpoints are now resolved: exactly three and four years belong to Level 2. SF9 retains its supplied layout with teacher remarks and a required parent signature every term; legacy-row mapping and signature recording remain open. See `CURRICULUM_REPORT_REFERENCE.md`.
