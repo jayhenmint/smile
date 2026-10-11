@@ -2,6 +2,10 @@
 
 return [
     'learners' => 'Learners',
+    'profile' => 'Learner profile', 'edit' => 'Edit identity', 'updated' => 'Learner identity updated.',
+    'back' => 'Back to learners', 'enrollments' => 'Enrollment history', 'smile_id' => 'SMILE ID',
+    'identity_readonly' => 'SMILE ID and LRN details are read-only on this screen. Enrollment and level changes use separate workflows.',
+    'consent_recorded' => 'Prior parental consent confirmed on',
     'contacts' => 'Manage contacts',
     'assessments' => 'Assessments',
     'current_school_year' => 'Current school year', 'enrollment_school_year' => 'Enrollment school year',

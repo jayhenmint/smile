@@ -27,10 +27,9 @@ class LearnerPolicy
                 ->where('enrollments.learner_id', $learner->id)->where('sections.adviser_id', $user->id)->exists();
     }
 
-    // Editing/deleting/exporting need their own audited workflows in subsequent steps.
     public function update(User $user, Learner $learner): bool
     {
-        return false;
+        return $this->view($user, $learner);
     }
 
     public function delete(User $user, Learner $learner): bool

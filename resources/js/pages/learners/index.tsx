@@ -117,7 +117,12 @@ export default function Learners({ learners, text, created, duplicateWarning }: 
                                 {learners.data.map((learner) => (
                                     <tr key={learner.id} className="border-b text-xs last:border-0">
                                         <td className="px-5 py-5">
-                                            <span className="font-semibold">{learner.name}</span>
+                                            <Link
+                                                href={`/learners/${learner.id}`}
+                                                className="text-primary inline-flex min-h-11 items-center font-semibold hover:underline"
+                                            >
+                                                {learner.name}
+                                            </Link>
                                             <span className="text-muted-foreground mt-1 block">{learner.smile_id}</span>
                                             <Link
                                                 href={`/learners/${learner.id}/assessments`}
