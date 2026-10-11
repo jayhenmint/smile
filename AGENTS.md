@@ -46,6 +46,7 @@ Never rely on remembering a previous conversation. Anything that matters goes in
 3. **Ask before guessing** on anything in the spec's "Open questions" section, or any DepEd form layout, rule, or term. Do not invent form layouts, field names, or policy details. Write the question down and use a configurable placeholder.
 4. **Do not add features** that are not in the current phase.
 5. Prefer plain, readable code and the framework's conventions over clever abstractions.
+6. Commit each tested completion stage locally with its PROGRESS.md update. Before every push to GitHub, report the completed stage, checks, and any unfinished work, then wait for the owner's explicit approval to push. Permission to continue development is not permission to push.
 
 ## Hard rules (domain)
 
