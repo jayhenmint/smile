@@ -38,14 +38,14 @@ The owner's latest correction supersedes the earlier instruction to retain the s
 
 ## Individual plans and curriculum
 
-The owner confirmed that IEP and ITP remain separate, learner-specific plans. The IEP sample remains the Phase 2 basis (see `IEP_REFERENCE.md`); the Individualized Transition Plan belongs to Phase 4. Detailed ITP fields, approval, review, and signature workflow still require confirmation. Do not equate a transition plan solely with mainstreaming.
+The owner confirmed that IEP and ITP remain separate, learner-specific plans. The IEP sample is a working reference used by one school, not the current approved form; improvements and final template acceptance are covered in `IEP_REFERENCE.md` for Phase 2. The Individualized Transition Plan belongs to Phase 4. Detailed ITP fields, approval, review, and signature workflow still require confirmation. Do not equate a transition plan solely with mainstreaming.
 
 The transition curriculum offers seven packages: Care Skills, Life Skills, Functional Academics, Pre-vocational Skills, Livelihood Skills, Career Skills, and Enrichment. Future transition work should retain selected competency codes, standards, goals, assessment evidence, services, and team decisions where required by the approved plan. Select competencies for the individual learner's strengths, needs, and aspirations; do not assign the entire curriculum or make eligibility decisions automatically. A full reusable curriculum/rubric library remains Phase 6 scope.
 
 ## Workflow in phase order
 
 1. Phase 1: use the confirmed Level 2 endpoints and resolve year-counting rules before enrollment/grouping implementation; plan school-year reporting periods before reports depend on them.
-2. Phase 2: build the individual IEP from the supplied IEP reference, keeping its six domains and progress scale separate from the seven report-card domains.
+2. Phase 2: build the individual IEP from the reviewed and confirmed template, keeping its applicable domains and progress scale separate from the seven report-card domains.
 3. Phase 3: attendance and progress reporting use the relevant school-year calendar and confirmed periods.
 4. Phase 4: implement separate ITP and human transition/placement decisions after the required fields and approval workflow are confirmed.
 5. Phase 5: implement SF9 using the supplied Annex basis adapted to exactly three term rows, with teacher remarks and a required parent signature each term. SF10 still needs a supplied/confirmed template.

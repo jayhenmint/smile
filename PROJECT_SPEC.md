@@ -59,7 +59,7 @@ The **teacher is the main user.** In a one-teacher school there is no SPED coord
 Done when: the teacher can enroll learners, see the roster, and see missing documents.
 
 ### Phase 2: Core value
-- Use the owner-supplied local `IEP SAMPLE.docx` as the IEP form basis; see `docs/IEP_REFERENCE.md` for its structure, proposed improvements, schema gaps, and questions. Preserve its section order and six domain labels until the school confirms changes. Obtain a blank/anonymized version before committing a template.
+- Use the owner-supplied local `IEP SAMPLE.docx` as a working reference used by one school, **not the current approved IEP form**. See `docs/IEP_REFERENCE.md` for its structure, proposed improvements, schema gaps, and questions. Propose a blank/anonymized improved draft and confirm the final template, domain choices and wording with the owner/school before implementation. Do not label the draft DepEd-approved.
 - IEP builder (baseline, goals, objectives, accommodations, services)
 - Progress logging (not started, emerging, developing, mastered) with note and optional evidence
 - Learner progress timeline and trend view
@@ -173,7 +173,7 @@ These tests must exist and pass before any release:
 
 - SF1/SF2 current version and cutoffs, applicable learner fields, attendance symbols/counts, class-day calendar, historical enrollment summaries, rounding, and print layout; see `docs/SF1_SF2_REFERENCE.md`.
 
-- IEP sample approval status, annual review label, approval/amendment workflow, required domains/objectives, service schedule, and participants/signatures; see `docs/IEP_REFERENCE.md`.
+- Final IEP template acceptance, annual review label, approval/amendment workflow, applicable domains/objectives, service schedule, and participants/signatures; the supplied sample is confirmed as a non-approved school reference. See `docs/IEP_REFERENCE.md`.
 - How years studied are counted and Transition Program placement; Level 2 includes exactly three and four years. See `docs/CURRICULUM_REPORT_REFERENCE.md`.
 - SF9 parent signature recording, assessment With/Without meaning, NO/NA handling, and attendance layout; its three term rows are confirmed. SF10 template remains unconfirmed.
 - Separate ITP fields, review, approvals, and signatures.

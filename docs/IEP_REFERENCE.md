@@ -4,15 +4,15 @@ Reviewed on 2026-10-11 against the owner-supplied `IEP SAMPLE.docx` in the repos
 
 ## Basis and scope
 
-The owner has designated this sample as the basis for SMILE's IEP builder and printable IEP. Follow its section order, domain labels, and school-specific wording when Phase 2 begins. PROJECT_SPEC.md still controls build order, security, SMILE ID, optional LRN, and non-graded enrollment rules. Reviewing this reference does not start Phase 2.
+The owner clarified on 2026-10-11 that this sample is used by one school and is **not the current approved IEP form**. Use it as a working reference for SMILE's IEP builder and printable IEP, not as an authoritative or mandatory layout. Its section order, six domains and wording are starting points for review; improvements may be proposed before the owner/school confirms the final template. Do not label the sample or a derived draft as DepEd-approved. PROJECT_SPEC.md still controls build order, security, SMILE ID, optional LRN, and non-graded enrollment rules. Reviewing this reference does not start Phase 2.
 
 The original contains filled-in names and health information of uncertain authenticity. Keep it local and ignored by Git; do not copy its narrative, contact details, images, or document metadata into fixtures, seeds, screenshots, or public documentation. Use a blank or anonymized copy before committing a printable template. The Word temporary lock file is also ignored.
 
 This review examined document text, table cells, and header/footer text. It did not visually render the pages or inspect embedded images, so page layout, logos, spacing, and print fidelity remain unverified. The original has not been edited.
 
-## Sections to preserve
+## Sample sections to use as a starting point
 
-The owner confirmed on 2026-10-11 that each learner's IEP remains separate from their ITP. See `CURRICULUM_REPORT_REFERENCE.md` for the approved report-card basis, school groupings, and three-term reporting clarification. Its seven report-card domains and rating scale do not replace this sample's six IEP domains or the IEP progress scale. This clarification does not resolve the sample's remaining approval, label, schedule, or signature questions.
+The owner confirmed on 2026-10-11 that each learner's IEP remains separate from their ITP. See `CURRICULUM_REPORT_REFERENCE.md` for the approved report-card basis, school groupings, and three-term reporting clarification. Its seven report-card domains and rating scale do not replace the reviewed IEP domains or the IEP progress scale. Plan separation does not resolve final template acceptance, review labels, schedules, or signature workflow.
 
 1. School heading and IEP status: Draft, Approved, Amended.
 2. Learner and school information: learner name, level, LRN, address, guardian, guardian address, contact number.
@@ -25,11 +25,25 @@ The owner confirmed on 2026-10-11 that each learner's IEP remains separate from 
 9. Placement decision, supporting documents/evidence, time and days in the SNEd class.
 10. Authorization wording, date, and printed-name/signature blocks for guardian, teacher/case manager, guidance coordinator, and principal.
 
-Preserve the sample's domain labels initially. Any additional domains should be configurable and confirmed with the owner. The app records decisions made by the team; it must not infer readiness from goals or service selections.
+Use the sample's domain labels as initial reference labels, with final domain choices and order confirmed with the owner. Support proposals for applicable, configurable domains rather than assuming all six apply to every learner. The app records decisions made by the team; it must not infer readiness from goals or service selections.
 
 ## Proposed improvements
 
 These are suggestions for review, not newly approved DepEd requirements.
+
+Prioritize these improvements when designing a blank draft for review:
+
+| Priority | Suggested improvement | Why it helps the teacher |
+|---|---|---|
+| 1 | One consistent learner header, including SMILE ID and optional LRN | Avoid mixed learner names and repeated identity entry |
+| 2 | Dated baseline per applicable domain, including strengths and support needs | Make the starting point clear before choosing goals |
+| 3 | Goal/objective grid: baseline, observable target, success criterion, support level, assessment method and review date | Make progress evidence comparable to a specific target |
+| 4 | Parent input and learner interests, with configurable domain applicability | Keep each plan individual instead of copying the same narratives/checklists |
+| 5 | Separate accommodations, services/providers/frequency and placement/class schedule | Avoid the sample's conflicting service and attendance descriptions |
+| 6 | Term review summary linked to actual progress evidence, alongside the annual review | Help the teacher explain changes without replacing the approved IEP progress scale with SF9 ratings |
+| 7 | Version and amendment history, team decisions and confirmed sign-off fields | Preserve earlier plans and explain what changed and who agreed |
+
+The three parent signatures confirmed for the report card apply to SF9's three terms. They do not establish an IEP signature count or approval workflow. The IEP review/signature rules still require school confirmation.
 
 - Replace all filled example narratives with blank fields or clearly fictional, consistent examples. Resolve mixed names and pronouns before using this form for another learner.
 - Correct spelling, repeated status text, stray text fragments, and inconsistent placeholder names. Confirm whether "PROJECTED IEP ANNNUAL PREVIEW DATE" means annual review date before changing the printed label.
@@ -64,7 +78,7 @@ Do not change schema.sql solely to settle these unresolved choices. When Phase 2
 
 ## Questions for the owner/school
 
-1. Is this the current approved school/division form, or a worked example supplied as guidance? Are its images and narrative fictional or anonymized?
+1. The sample's status is resolved: it is a reference used by one school, not the current approved form. Which blank final template should the owner/school accept for SMILE? Are the source's images and narrative fictional or anonymized?
 2. Should the annual date label read "annual review"? Which labels and exact authorization wording must remain unchanged?
 3. Who approves an IEP, when does it become active, and how should amendments and re-signing work?
 4. Are the six listed domains mandatory for every learner, and may the teacher add domains?
@@ -74,9 +88,9 @@ Do not change schema.sql solely to settle these unresolved choices. When Phase 2
 
 ## Workflow when Phase 2 begins
 
-1. Re-read this review and the local sample; obtain answers to the form questions and a blank/anonymized template.
+1. Re-read this review and the local sample as a non-approved reference. Propose a blank/anonymized improved draft, obtain answers to the form questions and confirm the final template with the owner/school before building its layout.
 2. Confirm the IEP data and version model, then reconcile schema.sql and migrations together.
-3. Build the six-domain baseline, parent input/preferences, goals/objectives/evaluation methods, accommodations, and services in small tested steps.
+3. Build the confirmed applicable domain baselines, parent input/preferences, goals/objectives/evaluation methods, accommodations, and services in small tested steps.
 4. Record meeting, approval/amendment, and placement decisions made by people, with the confirmed signature workflow.
 5. Generate the school-approved printable view from the same records and verify page layout in A4 and Letter.
 6. Verify school/section authorization, encryption of sensitive content, private evidence files, view/edit/export auditing, and SMILE ID on the report before declaring the IEP step done.
