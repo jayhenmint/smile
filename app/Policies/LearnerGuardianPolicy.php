@@ -14,7 +14,7 @@ class LearnerGuardianPolicy
 
     public function update(User $user, LearnerGuardian $link): bool
     {
-        return false;
+        return $this->view($user, $link);
     }
 
     public function delete(User $user, LearnerGuardian $link): bool

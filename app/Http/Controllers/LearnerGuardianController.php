@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Actions\AuditLearner;
 use App\Http\Requests\StoreGuardianRequest;
+use App\Http\Requests\UpdateGuardianRequest;
 use App\Models\Guardian;
 use App\Models\Learner;
 use App\Models\LearnerGuardian;
@@ -35,6 +36,7 @@ class LearnerGuardianController extends Controller
                         'relationship' => $link->guardian->relationship, 'phone' => $link->guardian->phone,
                         'email' => $link->guardian->email, 'address' => $link->guardian->address,
                         'is_primary' => $link->is_primary, 'is_emergency' => $link->is_emergency,
+                        'can_edit' => Gate::allows('update', $link->guardian) && Gate::allows('update', $link),
                     ];
                 });
                 app(AuditLearner::class)->record(request()->user(), $learner, 'guardians_viewed');
@@ -75,6 +77,34 @@ class LearnerGuardianController extends Controller
             throw $exception;
         } catch (\Throwable $exception) {
             Log::error('Guardian creation failed', ['exception_type' => get_class($exception)]);
+            throw ValidationException::withMessages(['form' => __('guardians.save_failed')]);
+        }
+
+        return to_route('learners.guardians.index', $learner)->with('guardian_saved', true);
+    }
+
+    public function update(UpdateGuardianRequest $request, Learner $learner, Guardian $guardian): RedirectResponse
+    {
+        try {
+            DB::transaction(function () use ($request, $learner, $guardian) {
+                School::query()->whereKey($request->user()->school_id)->lockForUpdate()->firstOrFail();
+                $actor = User::query()->whereKey($request->user()->id)->lockForUpdate()->firstOrFail();
+                $learner = Learner::query()->whereKey($learner->id)->lockForUpdate()->firstOrFail();
+                $guardian = Guardian::query()->whereKey($guardian->id)->lockForUpdate()->firstOrFail();
+                $link = $learner->guardianLinks()->where('guardian_id', $guardian->id)->lockForUpdate()->firstOrFail();
+                Gate::forUser($actor)->authorize('view', $learner);
+                Gate::forUser($actor)->authorize('update', $guardian);
+                Gate::forUser($actor)->authorize('update', $link);
+                $data = $request->validated();
+                $guardian->fill(collect($data)->only(['full_name', 'relationship', 'phone', 'email', 'address'])->all())->save();
+                $link->setPivotKeys('learner_id', 'guardian_id');
+                $link->fill(collect($data)->only(['is_primary', 'is_emergency'])->all())->save();
+                app(AuditLearner::class)->record($actor, $learner, 'guardian_updated');
+            });
+        } catch (AuthorizationException|ModelNotFoundException $exception) {
+            throw $exception;
+        } catch (\Throwable $exception) {
+            Log::error('Guardian update failed', ['exception_type' => get_class($exception)]);
             throw ValidationException::withMessages(['form' => __('guardians.save_failed')]);
         }
 

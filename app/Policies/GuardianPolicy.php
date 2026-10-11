@@ -21,7 +21,8 @@ class GuardianPolicy
 
     public function update(User $user, Guardian $guardian): bool
     {
-        return false;
+        return $this->view($user, $guardian)
+            && $guardian->links()->withoutGlobalScope('learner_access')->count() === 1;
     }
 
     public function delete(User $user, Guardian $guardian): bool

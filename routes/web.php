@@ -20,6 +20,7 @@ Route::middleware(['auth'])->group(function () {
     Route::patch('learners/{learner}', [LearnerProfileController::class, 'update'])->whereUuid('learner')->name('learners.update');
     Route::get('learners/{learner}/guardians', [LearnerGuardianController::class, 'index'])->whereUuid('learner')->name('learners.guardians.index');
     Route::post('learners/{learner}/guardians', [LearnerGuardianController::class, 'store'])->whereUuid('learner')->name('learners.guardians.store');
+    Route::patch('learners/{learner}/guardians/{guardian}', [LearnerGuardianController::class, 'update'])->whereUuid(['learner', 'guardian'])->name('learners.guardians.update');
     Route::get('learners/{learner}/assessments', [LearnerAssessmentController::class, 'index'])->whereUuid('learner')->name('learners.assessments.index');
     Route::post('learners/{learner}/assessments', [LearnerAssessmentController::class, 'store'])->whereUuid('learner')->name('learners.assessments.store');
     Route::get('dashboard', function () {
