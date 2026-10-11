@@ -5,7 +5,7 @@ The agent reads this file at the start of every session and updates it at the en
 ## Current status
 
 - **Current phase:** Phase 1 (Foundation)
-- **Current step:** School foundation pushed with approval; initial local teacher account provisioned and login verified. Next: school setup screens and administrator account management.
+- **Current step:** School settings screen complete; stage awaits push approval. Next: administrator account management, then school years and sections.
 - **Last updated:** 2026-10-11
 
 ## Phase checklist
@@ -17,7 +17,8 @@ The agent reads this file at the start of every session and updates it at the en
 - [x] Roles set up (spatie/laravel-permission), including teacher dual-role support
 - [x] Composer dependency security update (audit clear on 2026-10-11)
 - [x] First local teacher account provisioned with school_admin and sped_teacher roles
-- [ ] Administrator account management and school setup screens
+- [x] School settings screen
+- [ ] Administrator account management
 - [x] Schools table and school_id scoping
 - [ ] School years, sections, section_teachers
 - [ ] Learners, guardians, disabilities, enrollments (generated SMILE ID, optional LRN rules)
@@ -59,6 +60,7 @@ Not started. See `PROJECT_SPEC.md`.
 - Authentication, remember-token, and password-broker account lookups bypass only the school scope so login can establish a school context; these lookups require an active account. School membership and activation cannot be mass-assigned.
 - User school_id may be null for global system administrators or parents as the schema permits. Parent access to linked learners remains to be implemented separately; no learner records exist yet.
 - The developer can bootstrap the first local teacher with smile:create-local-teacher. It requires APP_ENV=local and an empty users table, creates a development school, generates a cryptographic password, and grants only school_admin and sped_teacher. It does not verify email automatically or reset existing accounts. Production provisioning remains separate work.
+- School settings at /settings/school edit only the authenticated user's school, authorized by SchoolPolicy::update. Request IDs never select a school. The existing schema's name, DepEd school ID, division, region, and address are editable; DepEd school ID is optional, a six-digit string, and globally unique. New UI text is in lang/en/school_settings.php.
 
 ## Open questions (waiting on the school or division)
 
@@ -70,9 +72,10 @@ Not started. See `PROJECT_SPEC.md`.
 
 ## Known issues and notes
 
-- Learner features and the five required learner authorization tests are not implemented. School metadata, user membership, school policies, isolation tests, and local first-account provisioning exist; administrator account management, production provisioning, and school management screens remain unfinished. There is no public account creation.
+- Learner features and the five required learner authorization tests are not implemented. School metadata, user membership, school policies, isolation tests, local first-account provisioning, and the teacher's school settings screen exist; administrator account management, production provisioning, and global school onboarding remain unfinished. There is no public account creation.
 - Backend tests pass using both in-memory SQLite and the separate PostgreSQL test database.
 - Frontend Vitest and a dedicated type-check script are not configured.
+- Browser automation is unavailable in the current tool session. School settings passed frontend build/type/lint checks and a real authenticated HTTP check; visual and mobile interaction review remains for the owner.
 - Schema reconciliation is still needed: school_id on remaining school-owned tables, Spatie audit storage, consent timing, and preservation of retired SMILE IDs. User school_id, phone, and is_active fields are now implemented; school deletion is restricted while users reference it.
 - Composer audit --locked reports no security advisories after the 2026-10-11 update. Updated 57 packages within existing constraints, including Laravel 12.55.1 to 12.69.3 and Symfony 7.4 components. No major framework migration or application/schema changes were required. The obsolete boost:update Composer hook was removed earlier because Laravel Boost is not installed.
 - smile_testing is a separate PostgreSQL database used for backend tests; never point test commands at smile_dev.
@@ -89,3 +92,4 @@ Not started. See `PROJECT_SPEC.md`.
 | 2026-10-11 | Updated the 12 advisory-affected Composer packages and required dependencies (57 version updates). Audit now has zero advisories; Composer validation and platform requirements passed. SQLite and isolated PostgreSQL: 33 tests passed each (80 assertions). Frontend build passed, login HTTP 200, and dev migration status verified. Recorded mandatory owner approval before every push in AGENTS.md. Stage committed locally; push awaits approval. | Obtain push approval; then build schools and school_id scoping before initial administrator accounts. |
 | 2026-10-11 | Dependency update b91ffbd was pushed with owner approval. Added schools, user membership fields, school metadata policy, global school scopes, and active-only authentication lookup. Added isolation, policy, inactive-account, login, and protected membership tests. SQLite and isolated PostgreSQL: 43 tests passed each (130 assertions); Pint, TypeScript, and frontend build passed. Fixed starter form typings and expressed the existing blend mode through Tailwind to pass TypeScript; corrected frontend UUID user ID type. Dev migration applied and login HTTP 200. | Obtain approval before pushing this school foundation stage; then provision first administrators and add school setup screens. |
 | 2026-10-11 | Pushed school foundation 97614e0 with explicit approval. Added local-only first-teacher command with input validation, generated password, dual roles, and refusal to change existing accounts. Provisioned a fake development school and local teacher; real HTTP login reached dashboard with status 200. Credentials shared privately in the conversation, never committed. SQLite and PostgreSQL: 46 tests passed each (152 assertions); Pint passed. | Owner tests login; obtain approval before pushing the new account-setup commit. Next: school setup screens and administrator account management. |
+| 2026-10-11 | Account setup 2c55662 was pushed with owner approval. Added own-school settings page and navigation, policy-authorized read/update actions, schema-backed field validation, and English translation text. Added authorization, request ID tampering, optional fields, leading-zero IDs, and global uniqueness tests. SQLite and isolated PostgreSQL: 55 tests passed each (255 assertions). Pint, changed-file ESLint/Prettier, TypeScript, and frontend build passed. Existing local login opened /settings/school with HTTP 200. Backend school tests now run independently of the Vite manifest; visual browser review remains pending. | Owner tests School settings; obtain approval before pushing this stage. Next: administrator account management. |
