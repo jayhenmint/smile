@@ -68,6 +68,7 @@ Done when: the teacher can enroll learners, see the roster, and see missing docu
 Done when: the teacher can see each learner's progress and what to do next.
 
 ### Phase 3: Daily management and reports
+- Use the owner-supplied non-graded SF1/SF2 spreadsheet formats as the report basis; see `docs/SF1_SF2_REFERENCE.md`. Resolve calendar, attendance-code, summary, and layout questions before implementation. Use blank/anonymized templates and fake test data.
 - Daily attendance and the SF2 report
 - Behavior and incident log
 - Health and nutrition (height, weight, BMI, baseline and endline) and the SF8 report
@@ -115,9 +116,9 @@ Done when: the teacher can produce the reports DepEd and the school ask for with
 
 | Report | Source | Notes |
 |---|---|---|
-| SF2 Daily Attendance | `attendance` | Monthly |
+| SF2 Daily Attendance | `attendance`, enrollment history, class-day calendar | Monthly; supplied non-graded format, daily/monthly totals and summary calculations. See docs/SF1_SF2_REFERENCE.md. |
 | SF8 Health and Nutrition | `health_measurements` | Baseline and endline |
-| SF1 / class list export | enrollments | LIS owns the official one. Export to match it. |
+| SF1 / class list export | learners, guardians, enrollments | Supplied non-graded School Register format; LIS owns the official record. See docs/SF1_SF2_REFERENCE.md. |
 | SF9 | report-card assessments and attendance | Owner-approved Annex basis; Terms 1–3, separate P/AP/D/B/NO/NA scale. Legacy quarter rows need confirmed adaptation. |
 | SF10 | confirmed report data | Non-graded template still unconfirmed. |
 | IEP summary and progress report | IEP tables | Printable for parents by school-year reporting period; Terms 1–3 for SY 2026–2027. Keep IEP ratings separate from SF9 ratings. |
@@ -169,6 +170,8 @@ These tests must exist and pass before any release:
 5. A non-graded learner cannot be marked graded without an approved level change.
 
 ## 10. Open questions (confirm with the school or division)
+
+- SF1/SF2 current version and cutoffs, applicable learner fields, attendance symbols/counts, class-day calendar, historical enrollment summaries, rounding, and print layout; see `docs/SF1_SF2_REFERENCE.md`.
 
 - IEP sample approval status, annual review label, approval/amendment workflow, required domains/objectives, service schedule, and participants/signatures; see `docs/IEP_REFERENCE.md`.
 - Overlapping school-level boundaries, how years studied are counted, and Transition Program placement; see `docs/CURRICULUM_REPORT_REFERENCE.md`.

@@ -21,6 +21,8 @@ The main user is the SNEd teacher, who is also the school admin in this first re
 
 ## Source of truth
 
+- `docs/SF1_SF2_REFERENCE.md`: owner-supplied SF1/SF2 formats, field mapping, summary calculations, and unresolved attendance/calendar/layout rules. Read before enrollment field reconciliation or Phase 3 report work. Keep populated source spreadsheets out of Git.
+
 - `PROJECT_SPEC.md`: what to build, roles, rules, build order, acceptance checks
 - `schema.sql`: the intended data model. Convert it to Laravel migrations faithfully. If you must change it, change the migration and update `schema.sql` in the same commit and say why.
 - `docs/IEP_REFERENCE.md`: review of the owner-supplied local `IEP SAMPLE.docx`, the basis for Phase 2 IEP structure and print workflow. Read it before IEP work; resolve its form questions with the owner. The sample contains filled-in sensitive details and stays out of Git until a blank/anonymized template is available. Phase order remains unchanged.

@@ -5,7 +5,7 @@ The agent reads this file at the start of every session and updates it at the en
 ## Current status
 
 - **Current phase:** Phase 1 (Foundation)
-- **Current step:** Source review and owner-confirmed groupings, terms, SF9 basis, and separate IEP/ITP are documented; app remains in Phase 1. Account creation, password generation, and reference documentation await push approval. Next development: existing account role and activation management, then school years and sections.
+- **Current step:** Supplied SF1/SF2 formats reviewed and mapped in docs/SF1_SF2_REFERENCE.md; source spreadsheets remain local. App remains in Phase 1. Account creation, password generation, and reference documentation await push approval. Next development: existing account role and activation management, then school years and sections.
 - **Last updated:** 2026-10-11
 
 ## Phase checklist
@@ -45,6 +45,8 @@ Not started. See `PROJECT_SPEC.md`.
 
 ## Decisions made
 
+- Owner-supplied SF1/SF2 non-graded spreadsheets are the report basis for Phase 3. Read docs/SF1_SF2_REFERENCE.md before enrollment field reconciliation or report work. Preserve original files locally and ignore them in Git because populated cells have not been verified as anonymized. Blank printed SF2 presence must never imply unrecorded attendance is present. SF9.docx was also added but is not reviewed in this stage.
+
 - Single project: Laravel + Inertia + React (not a separate API and SPA)
 - Laravel built-in authentication; public registration disabled. Keep login, logout, password reset, and email verification.
 - Pest for tests
@@ -72,6 +74,8 @@ Not started. See `PROJECT_SPEC.md`.
 
 ## Open questions (waiting on the school or division)
 
+- SF1/SF2 cutoff/calendar rules, applicable fields, attendance symbol/count mapping, enrollment history/summary definitions, rounding, sheet choice, and print layout (docs/SF1_SF2_REFERENCE.md).
+
 - Overlapping levels at three/four years, year-counting rules, other duration/age boundaries, and relationship between level and Transition Program.
 - SF9 adaptation of its legacy four-quarter remarks/signature rows, With/Without assessment field, NO/NA handling, and attendance calendar; SF10 format remains unconfirmed.
 - ITP fields, review schedule, approvals, and signatures.
@@ -97,6 +101,7 @@ Not started. See `PROJECT_SPEC.md`.
 
 | Date | What was done | Next step |
 |---|---|---|
+| 2026-10-11 | Reviewed both local SF1/SF2 XLS files read-only with Excel macros and link updates disabled. Documented report labels, legends, SF2 summary calculations, schema gaps and confirmation questions in docs/SF1_SF2_REFERENCE.md; linked the workflow from spec and agent instructions. Ignored populated originals without editing them. No application or schema changes; print fidelity remains unverified. Backend: 72 tests passed (409 assertions). | Confirm report-specific rules before Phase 3; continue Phase 1 in order. Obtain explicit approval before pushing. |
 | 2026-10-11 | Recorded the owner's corrected school-duration levels, age-based Transition Program, Terms 1–3, approved Annex SF9 basis, and separate learner-specific IEP/ITP. Added docs/CURRICULUM_REPORT_REFERENCE.md with source summaries, phase mapping, separate assessment scales, and unresolved boundaries/form adaptations. Verified DepEd's three-term calendar clarification for SY 2026–2027. Application and schema unchanged. Backend: 72 tests passed (409 assertions); diff whitespace checks passed. The newly added SF1 spreadsheet was left untouched and excluded from this documentation commit. | Confirm overlapping level boundaries and the Annex's legacy quarter-row adaptation. Continue Phase 1; explicit approval required before pushing. |
 | 2026-10-11 | Established separate smile-php and smile-postgres services, network and volume; generated local DB password and app key; ran all three starter migrations. Backend: 27 tests passed (64 assertions); frontend build passed; login HTTP 200. Initialized Git with the owner's supplied identity. | Disable public registration as the next small Phase 1 step; resolve schema questions before domain migrations. |
 | 2026-10-11 | Read the provided Markdown planning files and compared current code. Removed public registration routes, controller, page, and login/home links; retained other authentication flows. Added guest and signed-in denial tests proving no accounts are created. Backend: 29 passed (69 assertions); frontend build, Pint, and changed-file Prettier checks passed. | Roles and first-account setup; reconcile user IDs, school membership, and Spatie tables before their migrations. |
