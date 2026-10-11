@@ -31,7 +31,7 @@ The **teacher is the main user.** In a one-teacher school there is no SPED coord
 | `parent` | Later | Own child only |
 | `principal` (optional) | Only if requested | Read-only dashboards and reports, plus sign-off on level changes |
 
-- One user can hold several roles (`user_roles`). Use `spatie/laravel-permission`.
+- One user can hold several roles through Spatie's `roles` and `model_has_roles` tables. Use `spatie/laravel-permission`.
 - The adviser is a teacher assigned to a section (`sections.adviser_id`), not a separate role.
 - An adviser sees only the learners in their own section(s).
 

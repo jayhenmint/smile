@@ -34,4 +34,12 @@ docker compose up -d
 
 Stopping preserves the database. Avoid `docker compose down -v`, which deletes it. SNEDY uses different containers and ports; these commands manage only the `smile` Compose project.
 
-Public registration is disabled. Role setup and administrator account creation are the next Phase 1 step. No SMILE learner tables exist yet.
+Public registration is disabled. Seed the five required role definitions with `docker compose exec php php artisan db:seed`; this creates no default accounts. School setup and administrator account creation remain unfinished. No SMILE learner tables exist yet.
+
+The existing `smile_testing` PostgreSQL database is reserved for tests. To run backend tests there instead of the default in-memory SQLite:
+
+```powershell
+docker compose exec -T -e DB_CONNECTION=pgsql -e DB_DATABASE=smile_testing php php artisan test
+```
+
+Never use `smile_dev` for tests: test migrations can reset their target database.
