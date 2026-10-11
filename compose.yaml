@@ -1,0 +1,38 @@
+name: smile
+
+services:
+  php:
+    build:
+      context: .
+      dockerfile: docker/php/Dockerfile
+    image: smile-php:local
+    container_name: smile-php
+    working_dir: /var/www/html
+    volumes:
+      - .:/var/www/html
+    ports:
+      - "127.0.0.1:8001:8000"
+    command: php artisan serve --host=0.0.0.0 --port=8000
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+  postgres:
+    image: postgres:16
+    container_name: smile-postgres
+    environment:
+      POSTGRES_DB: ${DB_DATABASE:?Set DB_DATABASE in .env}
+      POSTGRES_USER: ${DB_USERNAME:?Set DB_USERNAME in .env}
+      POSTGRES_PASSWORD: ${DB_PASSWORD:?Set DB_PASSWORD in .env}
+    ports:
+      - "127.0.0.1:5433:5432"
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $$POSTGRES_USER -d $$POSTGRES_DB"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+volumes:
+  postgres-data:
