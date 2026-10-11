@@ -247,11 +247,26 @@ INSERT INTO disability_categories (name) VALUES
 
 CREATE TABLE learner_disabilities (
   id             SERIAL PRIMARY KEY,
-  learner_id     UUID NOT NULL REFERENCES learners(id) ON DELETE CASCADE,
-  category_id    INT NOT NULL REFERENCES disability_categories(id),
-  diagnosis_date DATE,
-  assessed_by    TEXT,                 -- professional / clinic
-  notes          TEXT
+  school_id      INT NOT NULL REFERENCES schools(id) ON DELETE RESTRICT,
+  learner_id     UUID NOT NULL,
+  category_id    INT NOT NULL REFERENCES disability_categories(id) ON DELETE RESTRICT,
+  diagnosis_date TEXT,                 -- encrypted ISO date in Laravel
+  assessed_by    TEXT,                 -- encrypted professional / clinic
+  notes          TEXT,                 -- encrypted clinical notes
+  FOREIGN KEY (school_id, learner_id) REFERENCES learners(school_id, id) ON DELETE CASCADE
+);
+
+-- Teacher observations/tests are educational records, not medical diagnoses.
+CREATE TABLE teacher_assessments (
+  id SERIAL PRIMARY KEY,
+  school_id INT NOT NULL REFERENCES schools(id) ON DELETE RESTRICT,
+  learner_id UUID NOT NULL,
+  assessed_on DATE NOT NULL,
+  observations TEXT NOT NULL,          -- encrypted observations/test notes
+  recorded_by UUID NOT NULL,
+  created_at TIMESTAMPTZ NOT NULL DEFAULT now(),
+  FOREIGN KEY (school_id, learner_id) REFERENCES learners(school_id, id) ON DELETE CASCADE,
+  FOREIGN KEY (school_id, recorded_by) REFERENCES users(school_id, id) ON DELETE RESTRICT
 );
 
 -- ============ DOCUMENTS ============

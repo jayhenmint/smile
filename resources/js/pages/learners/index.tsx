@@ -119,6 +119,12 @@ export default function Learners({ learners, text, created, duplicateWarning }: 
                                         <td className="px-5 py-5">
                                             <span className="font-semibold">{learner.name}</span>
                                             <span className="text-muted-foreground mt-1 block">{learner.smile_id}</span>
+                                            <Link
+                                                href={`/learners/${learner.id}/assessments`}
+                                                className="text-primary inline-flex min-h-11 items-center hover:underline"
+                                            >
+                                                {text.assessments}
+                                            </Link>
                                         </td>
                                         <td className="text-muted-foreground px-5 py-5">{learner.lrn ?? '—'}</td>
                                         <td className="px-5 py-5">{learner.enrollments.map((enrollment) => enrollment.year).join(', ')}</td>

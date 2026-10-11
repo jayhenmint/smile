@@ -3,6 +3,7 @@
 return [
     'learners' => 'Learners',
     'contacts' => 'Manage contacts',
+    'assessments' => 'Assessments',
     'current_school_year' => 'Current school year', 'enrollment_school_year' => 'Enrollment school year',
     'current' => 'Current', 'no_current_year' => 'No current school year selected',
     'select_section_first' => 'Select your section first', 'setup_sections' => 'Set up sections',
