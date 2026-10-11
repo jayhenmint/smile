@@ -5,6 +5,7 @@ use App\Http\Controllers\Settings\PasswordController;
 use App\Http\Controllers\Settings\ProfileController;
 use App\Http\Controllers\Settings\SchoolController;
 use App\Http\Controllers\Settings\SchoolYearController;
+use App\Http\Controllers\Settings\SectionController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
@@ -21,6 +22,10 @@ Route::middleware('auth')->group(function () {
     Route::get('settings/school-years', [SchoolYearController::class, 'index'])->name('school-years.index');
     Route::post('settings/school-years', [SchoolYearController::class, 'store'])->name('school-years.store');
     Route::patch('settings/school-years/{schoolYear}', [SchoolYearController::class, 'update'])->name('school-years.update');
+
+    Route::get('settings/sections', [SectionController::class, 'index'])->name('sections.index');
+    Route::post('settings/sections', [SectionController::class, 'store'])->name('sections.store');
+    Route::patch('settings/sections/{section}', [SectionController::class, 'update'])->name('sections.update');
 
     Route::get('settings/accounts', [AccountController::class, 'index'])->name('accounts.index');
     Route::post('settings/accounts', [AccountController::class, 'store'])->name('accounts.store');

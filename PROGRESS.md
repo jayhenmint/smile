@@ -5,7 +5,7 @@ The agent reads this file at the start of every session and updates it at the en
 ## Current status
 
 - **Current phase:** Phase 1 (Foundation)
-- **Current step:** School-year management completed, tested and migrated locally; app remains in Phase 1. Local stages await push approval. Next: sections, section_teachers and adviser assignment, with schema reconciliation and school/section authorization.
+- **Current step:** Non-graded sections, adviser assignment and section_teachers structure completed and migrated locally; app remains in Phase 1. Local stages await push approval. Next: learner identity/profile, guardians, disabilities and annual enrollment, with remaining schema/privacy reconciliation.
 - **Last updated:** 2026-10-11
 
 ## Phase checklist
@@ -22,8 +22,8 @@ The agent reads this file at the start of every session and updates it at the en
 - [x] Existing teacher account role and activation management
 - [x] Schools table and school_id scoping
 - [x] School years: scoped calendar, administrator creation/editing, manual current-year selection
-- [ ] Sections and adviser assignment
-- [ ] section_teachers
+- [x] Sections and adviser assignment
+- [x] section_teachers structure, scoped model/policy and adviser synchronization
 - [ ] Learners, guardians, disabilities, enrollments (generated SMILE ID, optional LRN rules)
 - [ ] Roster and learner screens
 - [ ] Documents checklist and private file upload
@@ -46,6 +46,10 @@ The agent reads this file at the start of every session and updates it at the en
 Not started. See `PROJECT_SPEC.md`.
 
 ## Decisions made
+
+- Sections are school- and adviser-scoped. Active school administrators manage section setup metadata across their own school; teachers without school_admin see only sections where sections.adviser_id matches them, read-only. This metadata permission does not grant access to other advisers' learners; learner policies remain to be implemented. Parents, regular teachers, system administrators (even with school roles), inactive users and guests have no section access.
+- Sections default to Non-graded and sped_self_contained. The controller accepts the existing schema's placement choices and an optional active same-school sped_teacher adviser, excludes system administrators, rejects supplied school/grade/record IDs, and keeps school_year_id fixed after creation. Section names are unique per school/year. Adviser is an assignment, not a new Spatie role.
+- Added school_id to section_teachers, composite same-school foreign keys for section/year/adviser/staff links, and supporting unique indexes in migration and schema.sql together. Adviser changes transactionally synchronize the adviser pivot row and preserve other staff rows. Co-teacher/aide/therapist assignment screens and learner access for those assignments remain unimplemented pending confirmation; merely having a staff row grants no additional access.
 
 - School years use schema.sql's fields with no added timestamps. Added school/label uniqueness and a partial unique current-year index in both migration and schema.sql to prevent duplicate labels and multiple current years in the same school. School rows serialize writes, and validation/current selection are handled in the transaction with fresh actor authorization.
 - Settings → School years is readable by active school_admin/sped_teacher accounts in their own school, with edits restricted to school_admin and no system_admin access. School membership is server-assigned, request school/record IDs are rejected, and no deletion route exists. Dates are manually entered, never inferred; current-year selection does not enroll/promote learners. Term/calendar-day rules remain pending for their respective future features.
@@ -98,7 +102,7 @@ Not started. See `PROJECT_SPEC.md`.
 
 ## Known issues and notes
 
-- Learner features and the five required learner authorization tests are not implemented. School settings, school-year management, scoped account listing, teacher creation/access management, and local first-account provisioning exist. Sections/adviser assignment, production provisioning and global school onboarding remain unfinished. There is no public account creation.
+- Learner features and the five required learner authorization tests are not implemented. School settings, school-year and section/adviser management, scoped account listing, teacher creation/access management, and local first-account provisioning exist. Other staff assignment UI/access, production provisioning and global school onboarding remain unfinished. There is no public account creation.
 - Backend tests pass using both in-memory SQLite and the separate PostgreSQL test database.
 - Frontend Vitest and a dedicated type-check script are not configured.
 - Browser automation is unavailable in the current tool session. School settings and Accounts passed frontend build/type/lint checks and authenticated HTTP checks; visual and mobile interaction review remains for the owner.
@@ -112,6 +116,7 @@ Not started. See `PROJECT_SPEC.md`.
 
 | Date | What was done | Next step |
 |---|---|---|
+| 2026-10-11 | Added sections and section_teachers migration, scoped models, policies, section factory, transactional setup/adviser synchronization, translated Sections screen and navigation. Reconciled school-owned pivot scoping, same-school composite foreign keys, non-graded defaults and duplicate section names in schema.sql. Added 19 tests for metadata authorization, adviser choices/reassignment, protected fields, pagination and cross-school database links. SQLite and isolated PostgreSQL: 137 tests passed each (915 assertions); Pint, TypeScript, changed-file ESLint/Prettier and build passed. Initial full-check approval timed out; one retry succeeded. Applied dev migration; no section/learner records created. Visual/mobile review remains pending. | Owner tests Settings → Sections after adding a school year. Obtain explicit approval before pushing. Next: learner profile/identity, guardians, disabilities and annual enrollment. |
 | 2026-10-11 | Recorded owner clarification that IEP SAMPLE.docx is a reference used by one school, not the current approved IEP form. Updated agent/spec/reference wording, resolved source-status uncertainty and added prioritized improvements for a blank review draft: consistent identity, applicable baselines, measurable objectives, family input, services/schedule, term reviews and version history. Final template/domain/signature choices remain unconfirmed; SF9's three signatures are not IEP requirements. Source document, application and schema unchanged. Backend: 118 tests passed (720 assertions); diff whitespace checks passed. | Continue Phase 1 with sections/advisers. Review an improved blank IEP draft and confirm remaining rules when Phase 2 begins. Obtain explicit approval before pushing. |
 | 2026-10-11 | Added school_years migration, scoped model/factory, school relationship, policy, transactional create/update actions, translated School years screen and authorized settings navigation. Reconciled duplicate-label and single-current-year safeguards in schema.sql. Added 19 tests for calendar CRUD, school isolation, role restrictions, dates, injection, pagination and database constraints. SQLite and isolated PostgreSQL: 118 tests passed each (720 assertions); Pint, TypeScript, changed-file ESLint/Prettier and frontend build passed. Applied dev migration; migration status verified and local login HTTP 200. No year records or learner changes created; visual/mobile review remains pending. | Owner tests Settings → School years. Obtain explicit approval before pushing. Next: sections, section_teachers and adviser assignment. |
 | 2026-10-11 | Applied the owner's latest correction: SF9 uses exactly three terms and three remarks/signature rows, labeled Term 1, Term 2, Term 3. Each requires teacher remarks and a parent signature; preserve the remaining Annex format. Updated spec and references and removed the extra-row mapping question. This supersedes the earlier retained-four-row interpretation; source documents, application and schema unchanged. Backend: 99 tests passed (533 assertions); diff whitespace checks passed. | Continue Phase 1 with school years and sections; implement the confirmed three-row report in Phase 5. Explicit approval required before pushing. |

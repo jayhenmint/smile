@@ -68,7 +68,9 @@ To check teacher access management, sign in as a school administrator and open *
 
 ## 4. Add the project files
 
-For school-year setup, sign in as a school administrator and open **Settings → School years** (`http://localhost:8001/settings/school-years`). Enter the school-approved label, start date and end date, then choose whether to make it current. Selecting a current year clears the previous selection in your school. Teachers without school-admin access can view the calendar but cannot change it. School-year selection does not enroll or promote learners. Section and adviser setup is the next step; term dates are not generated automatically.
+For section setup, open **Settings → Sections** (`http://localhost:8001/settings/sections`) as a school administrator. Add a school year first, then enter the section name, placement and optional adviser. Only active SNEd teachers from your school are eligible. New sections are non-graded; placement choices do not assign graded levels. You can edit the name/placement or reassign/clear the adviser, but the school year stays fixed. Teachers without school-admin access can view only sections they advise. Adviser changes synchronize the section_teachers adviser row; other staff assignment screens and learner access for co-teachers/aides/therapists remain pending. Test with fake sections and accounts.
+
+For school-year setup, sign in as a school administrator and open **Settings → School years** (`http://localhost:8001/settings/school-years`). Enter the school-approved label, start date and end date, then choose whether to make it current. Selecting a current year clears the previous selection in your school. Teachers without school-admin access can view the calendar but cannot change it. School-year selection does not enroll or promote learners. Then use Settings → Sections for section/adviser setup; term dates are not generated automatically.
 
 Copy these into the project root (the `smile/` folder):
 - `AGENTS.md`

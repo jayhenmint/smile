@@ -35,6 +35,7 @@ CREATE TABLE users (
   updated_at    TIMESTAMPTZ
 );
 CREATE INDEX users_school_id_index ON users(school_id);
+CREATE UNIQUE INDEX users_school_id_id_unique ON users(school_id, id);
 
 -- A user can hold several roles, e.g. the only teacher is both sped_teacher and school_admin.
 -- Use Spatie's standard tables instead of a parallel user_roles enum/table.
@@ -89,23 +90,31 @@ CREATE TABLE school_years (
 );
 -- At most one manually selected current year per school; no automatic enrollment/promotion.
 CREATE UNIQUE INDEX school_years_one_current_per_school ON school_years(school_id) WHERE is_current;
+CREATE UNIQUE INDEX school_years_school_id_id_unique ON school_years(school_id, id);
 
 CREATE TABLE sections (
   id             SERIAL PRIMARY KEY,
   school_id      INT NOT NULL REFERENCES schools(id),
-  school_year_id INT NOT NULL REFERENCES school_years(id),
-  grade_level    TEXT NOT NULL,        -- 'Non-graded' for SNEd classes, or 'K','1',...,'12'
+  school_year_id INT NOT NULL,
+  grade_level    TEXT NOT NULL DEFAULT 'Non-graded', -- no automatic graded-level assignment
   name           TEXT NOT NULL,
-  placement_type TEXT NOT NULL CHECK (placement_type IN ('sped_self_contained','resource_room','regular')),
-  adviser_id     UUID REFERENCES users(id)   -- the class adviser: sees only this section's learners
+  placement_type TEXT NOT NULL DEFAULT 'sped_self_contained' CHECK (placement_type IN ('sped_self_contained','resource_room','regular')),
+  adviser_id     UUID,   -- the class adviser: sees only this section's learners
+  UNIQUE (school_id, school_year_id, name),
+  UNIQUE (school_id, id),
+  FOREIGN KEY (school_id, school_year_id) REFERENCES school_years(school_id, id) ON DELETE RESTRICT,
+  FOREIGN KEY (school_id, adviser_id) REFERENCES users(school_id, id) ON DELETE RESTRICT
 );
 
 -- Co-teachers, aides, and subject teachers who may also view/log progress for a section
 CREATE TABLE section_teachers (
-  section_id INT REFERENCES sections(id) ON DELETE CASCADE,
-  user_id    UUID REFERENCES users(id) ON DELETE CASCADE,
+  school_id  INT NOT NULL REFERENCES schools(id),
+  section_id INT NOT NULL,
+  user_id    UUID NOT NULL,
   role       TEXT NOT NULL DEFAULT 'co_teacher' CHECK (role IN ('adviser','co_teacher','aide','therapist')),
-  PRIMARY KEY (section_id, user_id)
+  PRIMARY KEY (section_id, user_id),
+  FOREIGN KEY (school_id, section_id) REFERENCES sections(school_id, id) ON DELETE CASCADE,
+  FOREIGN KEY (school_id, user_id) REFERENCES users(school_id, id) ON DELETE CASCADE
 );
 
 -- ============ LEARNERS ============

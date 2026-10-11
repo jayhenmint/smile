@@ -28,6 +28,7 @@ export interface SharedData {
     schoolSettingsNav: { visible: boolean; label: string };
     accountSettingsNav: { visible: boolean; label: string };
     schoolYearSettingsNav: { visible: boolean; label: string };
+    sectionSettingsNav: { visible: boolean; label: string };
     [key: string]: unknown;
 }
 

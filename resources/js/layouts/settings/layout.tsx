@@ -25,14 +25,17 @@ const sidebarNavItems: NavItem[] = [
 
 export default function SettingsLayout({ children }: { children: React.ReactNode }) {
     const currentPath = window.location.pathname;
-    const { schoolSettingsNav, accountSettingsNav, schoolYearSettingsNav } = usePage<SharedData>().props;
+    const { schoolSettingsNav, accountSettingsNav, schoolYearSettingsNav, sectionSettingsNav } = usePage<SharedData>().props;
     const items = schoolSettingsNav.visible
         ? [...sidebarNavItems, { title: schoolSettingsNav.label, url: '/settings/school', icon: null }]
         : sidebarNavItems;
     const accountItems = accountSettingsNav.visible ? [...items, { title: accountSettingsNav.label, url: '/settings/accounts', icon: null }] : items;
-    const navItems = schoolYearSettingsNav.visible
+    const yearItems = schoolYearSettingsNav.visible
         ? [...accountItems, { title: schoolYearSettingsNav.label, url: '/settings/school-years', icon: null }]
         : accountItems;
+    const navItems = sectionSettingsNav.visible
+        ? [...yearItems, { title: sectionSettingsNav.label, url: '/settings/sections', icon: null }]
+        : yearItems;
 
     return (
         <div className="px-4 py-6">
