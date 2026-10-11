@@ -42,7 +42,7 @@ The **teacher is the main user.** In a one-teacher school there is no SPED coord
 - **Duplicates without an LRN:** when adding a learner with no LRN, warn (never block) if the same name and birthdate already exist in the school.
 - **Non-graded learners**: SNEd learners are non-graded and are re-enrolled every year in a non-graded class. `grade_level` stays empty until a formal change.
 - **School groupings**: Level 1 means 2 to under 3 years studied in the school; Level 2 means 3 through 4 years, including exactly 3 and exactly 4; Level 3 means more than 4 through 6 years. Transition Program means ages 15–21. These owner-confirmed school groupings are separate from graded levels. Year-counting rules remain unresolved; never assign or promote automatically. See `docs/CURRICULUM_REPORT_REFERENCE.md`.
-- **Reporting periods**: SF9 indicator columns 1–3 mean Term 1, Term 2, and Term 3. Plan periods per school year, with three terms for SY 2026–2027 and historical periods preserved. Preserve the supplied Annex layout; teacher remarks and a parent signature are required every term. Dates, legacy-row mapping, and signature recording require confirmation.
+- **Reporting periods**: SF9 indicator columns 1–3 mean Term 1, Term 2, and Term 3. Use exactly three teacher-remarks/parent-signature rows with those labels, with no fourth row. Teacher remarks and a parent signature are required every term; preserve the rest of the supplied Annex format. Plan periods per school year, with three terms for SY 2026–2027 and historical periods preserved. Dates and signature recording require confirmation.
 - **Non-graded to graded**: needs the SPED assessment form and Schools Division Office (SDO) approval. Tracked in `learner_level_changes`. The tool records evidence and decisions. It never decides readiness.
 - **Health and nutrition**: height and weight at baseline and endline each school year. BMI is calculated. Nutritional status and height-for-age categories use WHO growth standards by age and sex, computed in the app. A nurse or clinic confirms them. DepEd reports this on SF8.
 - **Multi-school ready**: all school-owned data carries `school_id`. Another school can adopt the tool without seeing your data.
@@ -90,7 +90,7 @@ Done when: the teacher can produce the reports DepEd and the school ask for with
 - Parent portal (own child only)
 - Reminders by email or SMS
 - Vision, hearing, and dental screenings and referrals
-- SF9 for non-graded learners using the owner-approved Annex layout, with teacher remarks and required parent signature every term; confirm legacy-row mapping before printing. SF10 after its format is confirmed. See `docs/CURRICULUM_REPORT_REFERENCE.md`.
+- SF9 for non-graded learners using the owner-approved Annex basis adapted to exactly three term rows, with teacher remarks and required parent signature every term. SF10 after its format is confirmed. See `docs/CURRICULUM_REPORT_REFERENCE.md`.
 
 ### Phase 6: Later
 - Multi-school onboarding and per-school settings (headers, logos, local document rules)
@@ -119,7 +119,7 @@ Done when: the teacher can produce the reports DepEd and the school ask for with
 | SF2 Daily Attendance | `attendance`, enrollment history, class-day calendar | Monthly; supplied non-graded format, daily/monthly totals and summary calculations. See docs/SF1_SF2_REFERENCE.md. |
 | SF8 Health and Nutrition | `health_measurements` | Baseline and endline |
 | SF1 / class list export | learners, guardians, enrollments | Supplied non-graded School Register format; LIS owns the official record. See docs/SF1_SF2_REFERENCE.md. |
-| SF9 | report-card assessments and attendance | Preserve approved Annex layout; Terms 1–3, teacher remarks and parent signature each term, separate P/AP/D/B/NO/NA scale. Confirm legacy-row mapping. |
+| SF9 | report-card assessments and attendance | Approved Annex basis adapted to exactly three term rows: Terms 1–3, teacher remarks and parent signature each term, separate P/AP/D/B/NO/NA scale. No fourth row. |
 | SF10 | confirmed report data | Non-graded template still unconfirmed. |
 | IEP summary and progress report | IEP tables | Printable for parents by school-year reporting period; Terms 1–3 for SY 2026–2027. Keep IEP ratings separate from SF9 ratings. |
 | Learner progress report | `progress_entries` | Charts plus teacher notes |
@@ -175,7 +175,7 @@ These tests must exist and pass before any release:
 
 - IEP sample approval status, annual review label, approval/amendment workflow, required domains/objectives, service schedule, and participants/signatures; see `docs/IEP_REFERENCE.md`.
 - How years studied are counted and Transition Program placement; Level 2 includes exactly three and four years. See `docs/CURRICULUM_REPORT_REFERENCE.md`.
-- SF9 retained-layout term/extra-row mapping, parent signature recording, assessment With/Without meaning, NO/NA handling, and attendance layout; SF10 template remains unconfirmed.
+- SF9 parent signature recording, assessment With/Without meaning, NO/NA handling, and attendance layout; its three term rows are confirmed. SF10 template remains unconfirmed.
 - Separate ITP fields, review, approvals, and signatures.
 - Whether LIS offers any integration for outside tools (assume manual export or import)
 - Who may see which records (principal, regular teachers, therapists)

@@ -34,7 +34,7 @@ The Annex has learner/school details, monthly attendance totals, teacher remarks
 
 Its ratings are P (Proficient), AP (Approaching Proficiency), D (Developing), B (Beginning), and NO/NA (Not Observed/Not Applicable). These are distinct from the IEP progress scale of not started, emerging, developing, and mastered. No automatic conversion or numeric average is approved. Preserve the distinction between an empty result, not observed, and not applicable; confirm how the combined printed NO/NA code should represent the latter two.
 
-The owner instructed SMILE to preserve the supplied Annex format rather than replace its four-quarter remarks/signature rows with a newly designed three-row layout. For every actual reporting term, the teacher adds remarks and a parent signature is required. The reporting year still has Terms 1–3; retaining the supplied layout does not create a fourth term. How the extra legacy row is used/displayed and how term labels map to the retained rows remain to be confirmed before printing. Attendance month headings must follow the relevant school year, not permanently hard-code the sample's June–April headings. The signature requirement does not yet specify electronic signature capture or a technical approval gate.
+The owner's latest correction supersedes the earlier instruction to retain the sample's four-quarter rows: use exactly **three reporting rows**, labeled **Term 1, Term 2, and Term 3**, for teacher remarks and parent signatures. Each term requires teacher remarks and a parent signature. Do not include a fourth term or an extra fourth remarks/signature row in the three-term report. Preserve the rest of the supplied Annex format. Attendance month headings must follow the relevant school year, not permanently hard-code the sample's June–April headings. The signature requirement does not yet specify electronic signature capture or a technical approval gate.
 
 ## Individual plans and curriculum
 
@@ -48,14 +48,14 @@ The transition curriculum offers seven packages: Care Skills, Life Skills, Funct
 2. Phase 2: build the individual IEP from the supplied IEP reference, keeping its six domains and progress scale separate from the seven report-card domains.
 3. Phase 3: attendance and progress reporting use the relevant school-year calendar and confirmed periods.
 4. Phase 4: implement separate ITP and human transition/placement decisions after the required fields and approval workflow are confirmed.
-5. Phase 5: implement SF9 using the supplied Annex layout, teacher remarks and required parent signature every term; confirm legacy-row mapping before printing. SF10 still needs a supplied/confirmed template.
+5. Phase 5: implement SF9 using the supplied Annex basis adapted to exactly three term rows, with teacher remarks and a required parent signature each term. SF10 still needs a supplied/confirmed template.
 6. Phase 6: consider the reusable competency/rubric library without moving it into earlier phases.
 
 ## Remaining questions
 
 - How are years studied counted: completed school years, elapsed time, or cumulative attendance? How are transfers and interrupted enrollment handled?
 - What grouping applies before two years or after six years? Can the Transition Program coexist with a Level 1–3 grouping, and how are age boundaries applied during a school year?
-- Within the retained Annex layout, how should term labels and the extra fourth legacy row be used/displayed? What is the approved attendance calendar, and how is the required parent signature recorded?
+- What is the approved attendance calendar, and how is the required parent signature recorded? The three-term labels and row count are confirmed.
 - What does the form's assessment With/Without field mean, and how should NO/NA and domain applicability be recorded?
 - What are the approved ITP fields, participants, signatures, review schedule, and relationship to IEP goals?
 
