@@ -57,7 +57,7 @@ class LearnerWorkspaceController extends Controller
         Gate::authorize('viewAny', Learner::class);
 
         return Inertia::render('learners/create', [
-            'text' => __('learners'), 'today' => now()->toDateString(),
+            'text' => __('learners'), 'today' => now(config('app.school_timezone'))->toDateString(),
             'sections' => Section::query()->where('adviser_id', request()->user()->id)->orderBy('name')->get()->map(fn ($section) => [
                 'id' => $section->id, 'name' => $section->name,
                 'year' => SchoolYear::query()->find($section->school_year_id)?->label,

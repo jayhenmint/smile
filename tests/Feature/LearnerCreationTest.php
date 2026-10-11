@@ -10,6 +10,7 @@ use App\Models\User;
 use App\Support\SmileIdGenerator;
 use Database\Seeders\RolesSeeder;
 use Illuminate\Database\QueryException;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Log;
@@ -28,6 +29,23 @@ beforeEach(function () {
         'lrn_status' => 'pending', 'section_id' => $this->section->id, 'enrolled_on' => '2026-10-11',
         'is_transferee' => false, 'consent_confirmed' => true];
     $this->actingAs($this->teacher);
+});
+
+test('new learner enrollment defaults to the Philippine date across the UTC midnight boundary', function () {
+    $this->travelTo(Carbon::parse('2026-10-11 17:00:00', 'UTC'));
+
+    $this->get('/learners/create')->assertOk()->assertInertia(fn (Assert $page) => $page
+        ->where('today', '2026-10-12'));
+
+    $this->post('/learners', $this->data)->assertSessionHasNoErrors();
+    $learner = Learner::query()->firstOrFail();
+    expect($learner->consent_confirmed_at->toIso8601String())->toBe('2026-10-11T17:00:00+00:00');
+    $this->get('/learners/'.$learner->id)->assertOk()->assertInertia(fn (Assert $page) => $page
+        ->where('learner.consent_confirmed_at', '2026-10-12T01:00:00+08:00'));
+    $this->get('/learners/'.$learner->id.'/assessments')->assertOk()->assertInertia(fn (Assert $page) => $page
+        ->where('today', '2026-10-12'));
+    $this->get('/learners/'.$learner->id.'/enrollments/create')->assertOk()->assertInertia(fn (Assert $page) => $page
+        ->where('today', '2026-10-12'));
 });
 
 test('saving learner creates protected identity consent enrollment and a minimal audit entry atomically', function () {

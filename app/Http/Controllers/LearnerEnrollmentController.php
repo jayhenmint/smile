@@ -44,7 +44,7 @@ class LearnerEnrollmentController extends Controller
             abort(503, __('learners.enrollment_unavailable'));
         }
 
-        return Inertia::render('learners/enroll', [...$data, 'text' => __('learners'), 'today' => now()->toDateString()]);
+        return Inertia::render('learners/enroll', [...$data, 'text' => __('learners'), 'today' => now(config('app.school_timezone'))->toDateString()]);
     }
 
     public function store(StoreEnrollmentRequest $request, Learner $learner): RedirectResponse

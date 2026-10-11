@@ -51,7 +51,7 @@ class LearnerAssessmentController extends Controller
         return Inertia::render('learners/assessments', [
             'learner' => ['id' => $learner->id, 'name' => trim($learner->first_name.' '.$learner->last_name), 'smile_id' => $learner->smile_id],
             'records' => $records, 'categories' => DisabilityCategory::query()->orderBy('id')->get(['id', 'name']),
-            'text' => __('assessments'), 'today' => now()->toDateString(), 'saved' => session('assessment_saved', false),
+            'text' => __('assessments'), 'today' => now(config('app.school_timezone'))->toDateString(), 'saved' => session('assessment_saved', false),
         ]);
     }
 

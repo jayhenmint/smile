@@ -19,7 +19,7 @@ class SaveLearnerDocumentRequest extends FormRequest
         $missing = $this->input('status') === 'missing';
         $rules = [
             'status' => ['required', Rule::in(['missing', 'submitted', 'verified', 'expired'])],
-            'submitted_on' => $missing ? ['prohibited'] : ['required', 'date_format:Y-m-d', 'before_or_equal:today'],
+            'submitted_on' => $missing ? ['prohibited'] : ['required', 'date_format:Y-m-d', 'before_or_equal:'.now(config('app.school_timezone'))->toDateString()],
             'notes' => ['nullable', 'string', 'max:10000'],
         ];
         foreach (['id', 'school_id', 'learner_id', 'document_type_id', 'verified_by', 'file_url', 'file', 'created_at'] as $field) {

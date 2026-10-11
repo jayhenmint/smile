@@ -18,6 +18,8 @@ A web app that helps a SNEd (SPED) teacher:
 
 It is a **school-side working tool**. DepEd's LIS stays the official registry. This tool stores the LRN and enrollment status, and exports data for LIS encoding. It is never the official enrollment record.
 
+School dates use **Asia/Manila**, confirmed by the owner on 2026-10-12. Set `SCHOOL_TIMEZONE=Asia/Manila`; date defaults and validation must use the Philippine date even before 08:00, when UTC still falls on the previous day. Keep `APP_TIMEZONE=UTC` for stored event timestamps so existing audit times retain their meaning.
+
 ## 2. Users and roles
 
 The **teacher is the main user.** In a one-teacher school there is no SPED coordinator, so the teacher holds both the teacher and school admin roles.

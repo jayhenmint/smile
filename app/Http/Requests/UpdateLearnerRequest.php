@@ -17,7 +17,7 @@ class UpdateLearnerRequest extends FormRequest
     {
         $rules = [
             'first_name' => ['required', 'string', 'max:255'], 'last_name' => ['required', 'string', 'max:255'],
-            'middle_name' => ['nullable', 'string', 'max:255'], 'birthdate' => ['required', 'date_format:Y-m-d', 'before_or_equal:today'],
+            'middle_name' => ['nullable', 'string', 'max:255'], 'birthdate' => ['required', 'date_format:Y-m-d', 'before_or_equal:'.now(config('app.school_timezone'))->toDateString()],
             'sex' => ['nullable', Rule::in(['M', 'F'])], 'address' => ['nullable', 'string', 'max:2000'],
             'mother_tongue' => ['nullable', 'string', 'max:255'], 'health_notes' => ['nullable', 'string', 'max:5000'],
         ];

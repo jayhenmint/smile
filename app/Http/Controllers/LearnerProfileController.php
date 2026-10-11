@@ -39,7 +39,7 @@ class LearnerProfileController extends Controller
                     'first_name' => $learner->first_name, 'last_name' => $learner->last_name, 'middle_name' => $learner->middle_name,
                     'birthdate' => $learner->birthdate->toDateString(), 'sex' => $learner->sex, 'address' => $learner->address,
                     'mother_tongue' => $learner->mother_tongue, 'health_notes' => $learner->health_notes,
-                    'consent_confirmed_at' => $learner->consent_confirmed_at->toIso8601String(),
+                    'consent_confirmed_at' => $learner->consent_confirmed_at->copy()->timezone(config('app.school_timezone'))->toIso8601String(),
                     'enrollments' => $learner->enrollments()->with(['section', 'schoolYear'])->get()->map(fn ($enrollment) => [
                         'year' => $enrollment->schoolYear?->label, 'section' => $enrollment->section?->name,
                         'enrolled_on' => $enrollment->enrolled_on->toDateString(),
