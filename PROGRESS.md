@@ -5,7 +5,7 @@ The agent reads this file at the start of every session and updates it at the en
 ## Current status
 
 - **Current phase:** Phase 1 (Foundation)
-- **Current step:** SF1/SF2 references documented; owner confirmed Level 2 endpoints and retaining Annex layout with remarks/signature every term. App remains in Phase 1. Account creation, password generation, and reference documentation await push approval. Next development: existing account role and activation management, then school years and sections.
+- **Current step:** Existing teacher role and activation management completed and tested; app remains in Phase 1. Local stages await push approval. Next: school years, sections, and adviser assignment, with schema reconciliation and school/section authorization.
 - **Last updated:** 2026-10-11
 
 ## Phase checklist
@@ -19,7 +19,7 @@ The agent reads this file at the start of every session and updates it at the en
 - [x] First local teacher account provisioned with school_admin and sped_teacher roles
 - [x] School settings screen
 - [x] School account list and teacher account creation
-- [ ] Existing account role and activation management
+- [x] Existing teacher account role and activation management
 - [x] Schools table and school_id scoping
 - [ ] School years, sections, section_teachers
 - [ ] Learners, guardians, disabilities, enrollments (generated SMILE ID, optional LRN rules)
@@ -44,6 +44,9 @@ The agent reads this file at the start of every session and updates it at the en
 Not started. See `PROJECT_SPEC.md`.
 
 ## Decisions made
+
+- School administrators can PATCH existing teacher access from Accounts: optional school_admin and is_active only, retaining sped_teacher. Policy requires the same school, an active administrator without system_admin, a different target account, and no roles beyond sped_teacher/school_admin on that target. Own-account access changes and special-role accounts are protected. Other identity, credential, school, permission, and verification fields cannot be changed through this action.
+- Access changes lock the school row and re-authorize freshly loaded actor/target records inside a transaction. Deactivation clears remember_token and deletes target database sessions; reactivation requires fresh login. No schema change or development-account modification was needed. Learner audit logging remains a later unfinished Phase 1 step.
 
 - Owner resolved level endpoints: exactly 3 and exactly 4 years studied in the school are Level 2; Level 1 is 2 to under 3, Level 3 is more than 4 through 6. Counting years and placement workflow still require confirmation.
 - Owner declined redesigning the Annex remarks/signature section into three rows. Preserve its supplied format, with teacher remarks and a required parent signature every term. Retaining a fourth legacy row does not create a fourth term; its mapping/display and signature recording method remain open.
@@ -90,7 +93,7 @@ Not started. See `PROJECT_SPEC.md`.
 
 ## Known issues and notes
 
-- Learner features and the five required learner authorization tests are not implemented. School settings, scoped account listing and teacher creation, and local first-account provisioning exist. Existing account role/activation management, production provisioning, and global school onboarding remain unfinished. There is no public account creation.
+- Learner features and the five required learner authorization tests are not implemented. School settings, scoped account listing, teacher creation/access management, and local first-account provisioning exist. Production provisioning and global school onboarding remain unfinished. There is no public account creation.
 - Backend tests pass using both in-memory SQLite and the separate PostgreSQL test database.
 - Frontend Vitest and a dedicated type-check script are not configured.
 - Browser automation is unavailable in the current tool session. School settings and Accounts passed frontend build/type/lint checks and authenticated HTTP checks; visual and mobile interaction review remains for the owner.
@@ -104,6 +107,7 @@ Not started. See `PROJECT_SPEC.md`.
 
 | Date | What was done | Next step |
 |---|---|---|
+| 2026-10-11 | Added policy-authorized own-school access updates for other teacher accounts, optional school-admin access and activation controls, protected own/special-role accounts, transactional school locking with fresh authorization, and deactivation session/remember-token revocation. Added 27 meaningful access/security tests and testing instructions; corrected stale first-account status in GETTING_STARTED.md. SQLite and isolated PostgreSQL: 99 tests passed each (533 assertions); Pint, TypeScript, changed-file ESLint/Prettier, and frontend build passed. Local login HTTP 200. Browser/mobile visual review remains pending; development accounts unchanged. | Owner tests Settings → Accounts. Obtain explicit approval before pushing. Next development: school years, sections, and adviser assignment. |
 | 2026-10-11 | Recorded owner confirmation that exactly three and four years studied are Level 2. Updated spec and report references to preserve the supplied Annex layout, with teacher remarks and required parent signature each term. Removed resolved boundary/redesign questions; retained year-counting, legacy-row mapping and signature-recording questions. Application/schema unchanged. Backend: 72 tests passed (409 assertions); diff whitespace checks passed. | Continue Phase 1 in order; confirm remaining counting/print workflow details before their implementation. Explicit approval required before pushing. |
 | 2026-10-11 | Reviewed both local SF1/SF2 XLS files read-only with Excel macros and link updates disabled. Documented report labels, legends, SF2 summary calculations, schema gaps and confirmation questions in docs/SF1_SF2_REFERENCE.md; linked the workflow from spec and agent instructions. Ignored populated originals without editing them. No application or schema changes; print fidelity remains unverified. Backend: 72 tests passed (409 assertions). | Confirm report-specific rules before Phase 3; continue Phase 1 in order. Obtain explicit approval before pushing. |
 | 2026-10-11 | Recorded the owner's corrected school-duration levels, age-based Transition Program, Terms 1–3, approved Annex SF9 basis, and separate learner-specific IEP/ITP. Added docs/CURRICULUM_REPORT_REFERENCE.md with source summaries, phase mapping, separate assessment scales, and unresolved boundaries/form adaptations. Verified DepEd's three-term calendar clarification for SY 2026–2027. Application and schema unchanged. Backend: 72 tests passed (409 assertions); diff whitespace checks passed. The newly added SF1 spreadsheet was left untouched and excluded from this documentation commit. | Confirm overlapping level boundaries and the Annex's legacy quarter-row adaptation. Continue Phase 1; explicit approval required before pushing. |

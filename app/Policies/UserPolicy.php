@@ -16,4 +16,13 @@ class UserPolicy
     {
         return $this->viewAny($user);
     }
+
+    public function update(User $user, User $account): bool
+    {
+        return $this->viewAny($user)
+            && $user->school_id === $account->school_id
+            && $user->id !== $account->id
+            && $account->hasRole('sped_teacher')
+            && $account->getRoleNames()->diff(['sped_teacher', 'school_admin'])->isEmpty();
+    }
 }

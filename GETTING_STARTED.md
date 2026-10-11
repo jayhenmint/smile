@@ -62,7 +62,9 @@ php artisan serve
 npm run dev
 ```
 
-For the current Docker setup, open `http://localhost:8001/login`. Accounts must be created by an administrator; first-account setup is still pending.
+For the current Docker setup, open `http://localhost:8001/login`. The local first-teacher setup command and administrator account creation are available; see [DOCKER_SETUP.md](DOCKER_SETUP.md). Public registration is disabled.
+
+To check teacher access management, sign in as a school administrator and open **Settings → Accounts** (`http://localhost:8001/settings/accounts`). Create a fake teacher account for testing, using Generate password and copying it before submission. On that teacher's account card, toggle school-administrator access or Account is active, then choose **Save access**. Deactivation revokes the teacher's stored sessions and remembered login; reactivation allows a fresh login. Check the teacher's login in a separate browser profile so your administrator session remains open. Your own account cannot be changed through these controls; accounts with other roles are also protected. Never use real learner data for testing.
 
 ## 4. Add the project files
 

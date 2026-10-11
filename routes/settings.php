@@ -19,6 +19,7 @@ Route::middleware('auth')->group(function () {
 
     Route::get('settings/accounts', [AccountController::class, 'index'])->name('accounts.index');
     Route::post('settings/accounts', [AccountController::class, 'store'])->name('accounts.store');
+    Route::patch('settings/accounts/{account}', [AccountController::class, 'update'])->name('accounts.update');
 
     Route::get('settings/password', [PasswordController::class, 'edit'])->name('password.edit');
     Route::put('settings/password', [PasswordController::class, 'update'])->name('password.update');

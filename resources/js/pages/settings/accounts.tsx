@@ -8,9 +8,53 @@ import SettingsLayout from '@/layouts/settings/layout';
 import { Head, Link, useForm } from '@inertiajs/react';
 import { FormEventHandler, useState } from 'react';
 
-type Account = { id: string; name: string; email: string; is_active: boolean; roles: string[] };
+type Account = { id: string; name: string; email: string; is_active: boolean; roles: string[]; can_update: boolean };
 type Accounts = { data: Account[]; prev_page_url: string | null; next_page_url: string | null };
 type AccountForm = { name: string; email: string; password: string; password_confirmation: string; school_admin: boolean };
+
+function AccountAccess({ account, labels }: { account: Account; labels: Record<string, string> }) {
+    const { data, setData, patch, errors, processing, recentlySuccessful } = useForm({
+        school_admin: account.roles.includes('school_admin'),
+        is_active: account.is_active,
+    });
+    const submit: FormEventHandler = (event) => {
+        event.preventDefault();
+        patch(route('accounts.update', { account: account.id }), { preserveScroll: true });
+    };
+
+    return (
+        <form onSubmit={submit} className="mt-3 space-y-2" aria-label={`${labels.manage_title}: ${account.name}`}>
+            {(['school_admin', 'is_active'] as const).map((field) => (
+                <div key={field}>
+                    <Label htmlFor={`${account.id}-${field}`} className="flex min-h-11 items-center gap-3">
+                        <input
+                            id={`${account.id}-${field}`}
+                            type="checkbox"
+                            checked={data[field]}
+                            onChange={(event) => setData(field, event.target.checked)}
+                            disabled={processing}
+                            aria-invalid={!!errors[field]}
+                            aria-describedby={`${account.id}-${field}-error`}
+                            className="size-5"
+                        />
+                        {field === 'school_admin' ? labels.school_admin : labels.active_option}
+                    </Label>
+                    <div id={`${account.id}-${field}-error`}>
+                        <InputError message={errors[field]} />
+                    </div>
+                </div>
+            ))}
+            <div className="flex flex-wrap items-center gap-3">
+                <Button type="submit" variant="outline" disabled={processing} className="min-h-11">
+                    {processing ? labels.saving_access : labels.save_access}
+                </Button>
+                <p role="status" aria-live="polite" className="text-muted-foreground text-sm">
+                    {recentlySuccessful ? labels.access_saved : ''}
+                </p>
+            </div>
+        </form>
+    );
+}
 
 export default function Accounts({ accounts, labels }: { accounts: Accounts; labels: Record<string, string> }) {
     const [showPassword, setShowPassword] = useState(false);
@@ -115,7 +159,7 @@ export default function Accounts({ accounts, labels }: { accounts: Accounts; lab
                     </form>
                 </div>
                 <div className="space-y-4">
-                    <HeadingSmall title={labels.list_title} />
+                    <HeadingSmall title={labels.list_title} description={labels.manage_help} />
                     <ul className="space-y-3">
                         {accounts.data.map((account) => (
                             <li key={account.id} className="space-y-1 rounded-md border p-4">
@@ -127,6 +171,15 @@ export default function Accounts({ accounts, labels }: { accounts: Accounts; lab
                                         .join(', ')}
                                 </p>
                                 <p className="text-muted-foreground text-sm">{account.is_active ? labels.active : labels.inactive}</p>
+                                {account.can_update ? (
+                                    <AccountAccess
+                                        key={`${account.id}-${account.is_active}-${account.roles.join(',')}`}
+                                        account={account}
+                                        labels={labels}
+                                    />
+                                ) : (
+                                    <p className="text-muted-foreground text-sm">{labels.protected_account}</p>
+                                )}
                             </li>
                         ))}
                     </ul>
