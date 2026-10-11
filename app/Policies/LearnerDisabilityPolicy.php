@@ -20,7 +20,7 @@ class LearnerDisabilityPolicy
 
     public function update(User $user, LearnerDisability $record): bool
     {
-        return false;
+        return $this->view($user, $record);
     }
 
     public function delete(User $user, LearnerDisability $record): bool

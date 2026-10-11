@@ -5,7 +5,7 @@ import { Label } from '@/components/ui/label';
 import { WorkspaceCard } from '@/components/workspace-ui';
 import AppLayout from '@/layouts/app-layout';
 import { Head, Link, useForm } from '@inertiajs/react';
-import { type FormEvent } from 'react';
+import { type FormEvent, useState } from 'react';
 
 type Props = {
     learner: { id: string; name: string; smile_id: string };
@@ -14,22 +14,66 @@ type Props = {
     saved: boolean;
     categories: { id: number; name: string }[];
     records: {
-        teacher: { id: number; assessed_on: string; observations: string }[];
-        disabilities: { id: number; category: string; diagnosis_date: string | null; assessed_by: string | null; notes: string | null }[];
+        teacher: { id: number; assessed_on: string; observations: string; can_edit: boolean }[];
+        disabilities: {
+            id: number;
+            category: string;
+            category_id: number;
+            can_edit: boolean;
+            diagnosis_date: string | null;
+            assessed_by: string | null;
+            notes: string | null;
+        }[];
     };
 };
 
 export default function Assessments({ learner, text: t, today, saved, categories, records }: Props) {
     const url = `/learners/${learner.id}/assessments`;
+    const [editingTeacher, setEditingTeacher] = useState<number | null>(null);
+    const [editingDisability, setEditingDisability] = useState<number | null>(null);
     const teacher = useForm({ kind: 'teacher', assessed_on: today, observations: '' });
     const disability = useForm({ kind: 'disability', category_id: '', diagnosis_date: '', assessed_by: '', notes: '' });
     function saveTeacher(event: FormEvent) {
         event.preventDefault();
-        teacher.post(url, { preserveScroll: true, onSuccess: () => teacher.reset() });
+        const options = {
+            preserveScroll: true,
+            onSuccess: () => {
+                teacher.reset();
+                setEditingTeacher(null);
+            },
+        };
+        if (editingTeacher) teacher.patch(`${url}/teacher/${editingTeacher}`, options);
+        else teacher.post(url, options);
     }
     function saveDisability(event: FormEvent) {
         event.preventDefault();
-        disability.post(url, { preserveScroll: true, onSuccess: () => disability.reset() });
+        const options = {
+            preserveScroll: true,
+            onSuccess: () => {
+                disability.reset();
+                setEditingDisability(null);
+            },
+        };
+        if (editingDisability) disability.patch(`${url}/disability/${editingDisability}`, options);
+        else disability.post(url, options);
+    }
+    function editTeacher(record: Props['records']['teacher'][number]) {
+        teacher.clearErrors();
+        teacher.setData({ kind: 'teacher', assessed_on: record.assessed_on, observations: record.observations });
+        setEditingTeacher(record.id);
+        requestAnimationFrame(() => document.getElementById('assessed_on')?.focus());
+    }
+    function editDisability(record: Props['records']['disabilities'][number]) {
+        disability.clearErrors();
+        disability.setData({
+            kind: 'disability',
+            category_id: String(record.category_id),
+            diagnosis_date: record.diagnosis_date ?? '',
+            assessed_by: record.assessed_by ?? '',
+            notes: record.notes ?? '',
+        });
+        setEditingDisability(record.id);
+        requestAnimationFrame(() => document.getElementById('category_id')?.focus());
     }
     return (
         <AppLayout
@@ -56,7 +100,7 @@ export default function Assessments({ learner, text: t, today, saved, categories
                 <div className="grid items-start gap-6 lg:grid-cols-2">
                     <div className="space-y-4">
                         <WorkspaceCard>
-                            <h2 className="mb-5 font-semibold">{t.teacher_title}</h2>
+                            <h2 className="mb-5 font-semibold">{editingTeacher ? t.edit_teacher : t.teacher_title}</h2>
                             <form onSubmit={saveTeacher} className="space-y-5">
                                 <InputError message={(teacher.errors as Record<string, string>).form} />
                                 <div className="space-y-2">
@@ -89,6 +133,21 @@ export default function Assessments({ learner, text: t, today, saved, categories
                                 <Button type="submit" disabled={teacher.processing} className="min-h-11 rounded-xl">
                                     {t.save_teacher}
                                 </Button>
+                                {editingTeacher && (
+                                    <Button
+                                        type="button"
+                                        variant="outline"
+                                        className="ml-3 min-h-11 rounded-xl"
+                                        disabled={teacher.processing}
+                                        onClick={() => {
+                                            teacher.reset();
+                                            teacher.clearErrors();
+                                            setEditingTeacher(null);
+                                        }}
+                                    >
+                                        {t.cancel}
+                                    </Button>
+                                )}
                             </form>
                         </WorkspaceCard>
                         {records.teacher.length === 0 && <p className="text-muted-foreground text-sm">{t.empty_teacher}</p>}
@@ -96,12 +155,24 @@ export default function Assessments({ learner, text: t, today, saved, categories
                             <WorkspaceCard key={record.id}>
                                 <p className="text-muted-foreground text-xs">{record.assessed_on}</p>
                                 <p className="mt-3 text-sm break-words whitespace-pre-wrap">{record.observations}</p>
+                                {record.can_edit && (
+                                    <Button
+                                        type="button"
+                                        variant="outline"
+                                        className="mt-4 min-h-11 rounded-xl"
+                                        disabled={teacher.processing}
+                                        onClick={() => editTeacher(record)}
+                                    >
+                                        {t.edit_teacher}
+                                        <span className="sr-only">: {record.assessed_on}</span>
+                                    </Button>
+                                )}
                             </WorkspaceCard>
                         ))}
                     </div>
                     <div className="space-y-4">
                         <WorkspaceCard>
-                            <h2 className="mb-5 font-semibold">{t.disability_title}</h2>
+                            <h2 className="mb-5 font-semibold">{editingDisability ? t.edit_disability : t.disability_title}</h2>
                             <form onSubmit={saveDisability} className="space-y-5">
                                 <InputError message={(disability.errors as Record<string, string>).form} />
                                 <div className="space-y-2">
@@ -154,6 +225,21 @@ export default function Assessments({ learner, text: t, today, saved, categories
                                 <Button type="submit" disabled={disability.processing} className="min-h-11 rounded-xl">
                                     {t.save_disability}
                                 </Button>
+                                {editingDisability && (
+                                    <Button
+                                        type="button"
+                                        variant="outline"
+                                        className="ml-3 min-h-11 rounded-xl"
+                                        disabled={disability.processing}
+                                        onClick={() => {
+                                            disability.reset();
+                                            disability.clearErrors();
+                                            setEditingDisability(null);
+                                        }}
+                                    >
+                                        {t.cancel}
+                                    </Button>
+                                )}
                             </form>
                         </WorkspaceCard>
                         {records.disabilities.length === 0 && <p className="text-muted-foreground text-sm">{t.empty_disability}</p>}
@@ -168,6 +254,18 @@ export default function Assessments({ learner, text: t, today, saved, categories
                                         </div>
                                     ))}
                                 </dl>
+                                {record.can_edit && (
+                                    <Button
+                                        type="button"
+                                        variant="outline"
+                                        className="mt-4 min-h-11 rounded-xl"
+                                        disabled={disability.processing}
+                                        onClick={() => editDisability(record)}
+                                    >
+                                        {t.edit_disability}
+                                        <span className="sr-only">: {record.category}</span>
+                                    </Button>
+                                )}
                             </WorkspaceCard>
                         ))}
                     </div>

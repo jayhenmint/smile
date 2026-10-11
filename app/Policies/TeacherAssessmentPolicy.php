@@ -20,7 +20,7 @@ class TeacherAssessmentPolicy
 
     public function update(User $user, TeacherAssessment $record): bool
     {
-        return false;
+        return $this->view($user, $record);
     }
 
     public function delete(User $user, TeacherAssessment $record): bool
