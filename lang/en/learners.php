@@ -6,6 +6,7 @@ return [
     'back' => 'Back to learners', 'enrollments' => 'Enrollment history', 'smile_id' => 'SMILE ID',
     'identity_readonly' => 'SMILE ID and LRN details are read-only in the identity form. Enrollment and level changes use separate workflows.',
     'record_lrn' => 'Record issued LRN', 'record_lrn_hint' => 'Enter the 12-digit LRN issued by DepEd LIS. Saving sets its status to Issued. An existing LRN cannot be replaced through this form.', 'lrn_recorded' => 'DepEd-issued LRN recorded.',
+    'reenroll' => 'Enroll in a school year', 'reenroll_hint' => 'Keep the existing learner record and SMILE ID. Select your section for a school year without an enrollment. The new enrollment is non-graded; previous enrollment records stay unchanged.', 'enrollment_saved' => 'School-year enrollment saved.', 'already_enrolled' => 'This learner already has an enrollment for that school year.', 'no_enrollment_sections' => 'No eligible sections. Set up a section with yourself as adviser for a school year without an existing enrollment.', 'enrollment_unavailable' => 'The enrollment form is temporarily unavailable.',
     'consent_recorded' => 'Prior parental consent confirmed on',
     'contacts' => 'Manage contacts',
     'assessments' => 'Assessments',

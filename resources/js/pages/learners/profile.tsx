@@ -31,9 +31,11 @@ type Props = {
     updated: boolean;
     lrnRecorded: boolean;
     canRecordLrn: boolean;
+    canReenroll: boolean;
+    enrollmentSaved: boolean;
 };
 
-export default function Profile({ learner, text: t, editing, updated, lrnRecorded, canRecordLrn }: Props) {
+export default function Profile({ learner, text: t, editing, updated, lrnRecorded, canRecordLrn, canReenroll, enrollmentSaved }: Props) {
     const url = `/learners/${learner.id}`;
     const lrnForm = useForm({ lrn: '' });
     const form = useForm<Identity>({
@@ -67,6 +69,11 @@ export default function Profile({ learner, text: t, editing, updated, lrnRecorde
                         </p>
                     </div>
                     <div className="flex flex-wrap gap-3">
+                        {!editing && canReenroll && (
+                            <Button asChild variant="outline" className="min-h-11 rounded-xl">
+                                <Link href={`${url}/enrollments/create`}>{t.reenroll}</Link>
+                            </Button>
+                        )}
                         {!editing && (
                             <Button asChild className="min-h-11 rounded-xl">
                                 <Link href={`${url}/edit`}>{t.edit}</Link>
@@ -80,6 +87,11 @@ export default function Profile({ learner, text: t, editing, updated, lrnRecorde
                         </Button>
                     </div>
                 </div>
+                {enrollmentSaved && (
+                    <p role="status" className="rounded-xl border border-teal-200 bg-teal-50 p-4 text-sm text-teal-800">
+                        {t.enrollment_saved}
+                    </p>
+                )}
                 {updated && (
                     <p role="status" className="rounded-xl border border-teal-200 bg-teal-50 p-4 text-sm text-teal-800">
                         {t.updated}

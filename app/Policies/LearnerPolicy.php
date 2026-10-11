@@ -37,6 +37,11 @@ class LearnerPolicy
         return $this->update($user, $learner) && $learner->lrn === null && $learner->lrn_status === 'pending';
     }
 
+    public function reenroll(User $user, Learner $learner): bool
+    {
+        return $this->view($user, $learner) && $learner->status === 'enrolled';
+    }
+
     public function delete(User $user, Learner $learner): bool
     {
         return false;

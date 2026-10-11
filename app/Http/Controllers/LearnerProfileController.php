@@ -54,7 +54,7 @@ class LearnerProfileController extends Controller
             abort(503, __('learners.unavailable'));
         }
 
-        return Inertia::render('learners/profile', ['learner' => $data, 'editing' => $editing, 'text' => __('learners'), 'updated' => session('learner_updated', false), 'lrnRecorded' => session('lrn_recorded', false), 'canRecordLrn' => Gate::allows('recordLrn', $learner)]);
+        return Inertia::render('learners/profile', ['learner' => $data, 'editing' => $editing, 'text' => __('learners'), 'updated' => session('learner_updated', false), 'lrnRecorded' => session('lrn_recorded', false), 'canRecordLrn' => Gate::allows('recordLrn', $learner), 'canReenroll' => Gate::allows('reenroll', $learner), 'enrollmentSaved' => session('enrollment_saved', false)]);
     }
 
     public function update(UpdateLearnerRequest $request, Learner $learner): RedirectResponse
