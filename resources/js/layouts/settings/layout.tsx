@@ -25,10 +25,11 @@ const sidebarNavItems: NavItem[] = [
 
 export default function SettingsLayout({ children }: { children: React.ReactNode }) {
     const currentPath = window.location.pathname;
-    const { schoolSettingsNav } = usePage<SharedData>().props;
+    const { schoolSettingsNav, accountSettingsNav } = usePage<SharedData>().props;
     const items = schoolSettingsNav.visible
         ? [...sidebarNavItems, { title: schoolSettingsNav.label, url: '/settings/school', icon: null }]
         : sidebarNavItems;
+    const navItems = accountSettingsNav.visible ? [...items, { title: accountSettingsNav.label, url: '/settings/accounts', icon: null }] : items;
 
     return (
         <div className="px-4 py-6">
@@ -37,7 +38,7 @@ export default function SettingsLayout({ children }: { children: React.ReactNode
             <div className="flex flex-col space-y-8 lg:flex-row lg:space-y-0 lg:space-x-12">
                 <aside className="w-full max-w-xl lg:w-48">
                     <nav className="flex flex-col space-y-1 space-x-0">
-                        {items.map((item) => (
+                        {navItems.map((item) => (
                             <Button
                                 key={item.url}
                                 size="sm"

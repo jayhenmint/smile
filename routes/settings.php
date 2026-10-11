@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Settings\AccountController;
 use App\Http\Controllers\Settings\PasswordController;
 use App\Http\Controllers\Settings\ProfileController;
 use App\Http\Controllers\Settings\SchoolController;
@@ -15,6 +16,9 @@ Route::middleware('auth')->group(function () {
 
     Route::get('settings/school', [SchoolController::class, 'edit'])->name('school.edit');
     Route::patch('settings/school', [SchoolController::class, 'update'])->name('school.update');
+
+    Route::get('settings/accounts', [AccountController::class, 'index'])->name('accounts.index');
+    Route::post('settings/accounts', [AccountController::class, 'store'])->name('accounts.store');
 
     Route::get('settings/password', [PasswordController::class, 'edit'])->name('password.edit');
     Route::put('settings/password', [PasswordController::class, 'update'])->name('password.update');

@@ -26,6 +26,7 @@ export interface SharedData {
     quote: { message: string; author: string };
     auth: Auth;
     schoolSettingsNav: { visible: boolean; label: string };
+    accountSettingsNav: { visible: boolean; label: string };
     [key: string]: unknown;
 }
 
