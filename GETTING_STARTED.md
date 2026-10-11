@@ -72,7 +72,7 @@ To check teacher access management, sign in as a school administrator and open *
 
 1. Open `http://localhost:8001/login` and use your existing teacher account.
 2. In **Settings → School years**, add the school year if needed. In **Settings → Sections**, create a section for that year and select yourself as adviser.
-3. Open **Learners → Add learner**. Use fictional details, leave LRN empty with status Pending, choose your section, and confirm that consent was obtained. Save.
+3. Open **Learners → Add learner**. The form displays the configured **Current school year**. Choose your section; **Enrollment school year** shows that section's year, and current-year sections are marked Current. Use fictional details, leave LRN empty with status Pending, and confirm that consent was obtained. Save.
 4. The roster should show a generated `SM-` ID, the selected school year/section, and Non-graded status. Missing attachments should not block saving.
 5. Test an invalid LRN and Issued without an LRN: both should fail. Add the same fictional name/birthdate without an LRN: saving should succeed with a duplicate warning.
 6. A second teacher should see only learners enrolled in their own advised sections, even if they also have school-admin access.

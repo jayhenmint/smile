@@ -3,6 +3,10 @@
 return [
     'learners' => 'Learners',
     'contacts' => 'Manage contacts',
+    'current_school_year' => 'Current school year', 'enrollment_school_year' => 'Enrollment school year',
+    'current' => 'Current', 'no_current_year' => 'No current school year selected',
+    'select_section_first' => 'Select your section first', 'setup_sections' => 'Set up sections',
+    'year_hint' => 'Enrollment uses the school year of your selected section.',
     'add' => 'Add learner', 'identity' => 'Learner identity', 'enrollment' => 'Initial enrollment',
     'first_name' => 'First name', 'last_name' => 'Last name', 'middle_name' => 'Middle name (optional)',
     'birthdate' => 'Date of birth', 'sex' => 'Sex (optional)', 'M' => 'Male', 'F' => 'Female',

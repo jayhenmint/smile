@@ -4,11 +4,13 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { WorkspaceCard } from '@/components/workspace-ui';
 import AppLayout from '@/layouts/app-layout';
-import { Head, Link, useForm } from '@inertiajs/react';
+import { type SharedData } from '@/types';
+import { Head, Link, useForm, usePage } from '@inertiajs/react';
 import { type FormEvent } from 'react';
 
 type Props = { text: Record<string, string>; today: string; sections: { id: number; name: string; year: string }[] };
 export default function CreateLearner({ text: t, today, sections }: Props) {
+    const { workspace, sectionSettingsNav } = usePage<SharedData>().props;
     const form = useForm<{
         first_name: string;
         last_name: string;
@@ -42,6 +44,7 @@ export default function CreateLearner({ text: t, today, sections }: Props) {
         health_notes: '',
         consent_confirmed: false,
     });
+    const enrollmentYear = sections.find((section) => String(section.id) === form.data.section_id)?.year;
     const field = (
         key: 'first_name' | 'last_name' | 'middle_name' | 'birthdate' | 'address' | 'mother_tongue' | 'lrn' | 'enrolled_on' | 'previous_school',
         required = false,
@@ -100,9 +103,14 @@ export default function CreateLearner({ text: t, today, sections }: Props) {
             <form onSubmit={submit} className="mx-auto w-full max-w-6xl space-y-6 p-4 sm:p-6 lg:p-8">
                 <h1 className="text-2xl font-bold">{t.add}</h1>
                 {sections.length === 0 && (
-                    <p role="status" className="rounded-xl border p-4 text-sm">
-                        {t.no_sections}
-                    </p>
+                    <div role="status" className="rounded-xl border p-4 text-sm">
+                        <p>{t.no_sections}</p>
+                        {sectionSettingsNav.visible && (
+                            <Link href="/settings/sections" className="text-primary mt-2 inline-flex min-h-11 items-center underline">
+                                {t.setup_sections}
+                            </Link>
+                        )}
+                    </div>
                 )}
                 <InputError message={(form.errors as Record<string, string>).form} />
                 <div className="grid items-start gap-6 lg:grid-cols-[1.5fr_1fr]">
@@ -132,11 +140,33 @@ export default function CreateLearner({ text: t, today, sections }: Props) {
                         <WorkspaceCard>
                             <h2 className="mb-5 font-semibold">{t.enrollment}</h2>
                             <div className="space-y-5">
+                                <div className="space-y-2">
+                                    <Label htmlFor="current-school-year">{t.current_school_year}</Label>
+                                    <Input
+                                        id="current-school-year"
+                                        value={workspace.schoolYear ?? t.no_current_year}
+                                        readOnly
+                                        className="min-h-11 rounded-xl"
+                                    />
+                                </div>
                                 {select(
                                     'section_id',
-                                    sections.map((section) => ({ value: String(section.id), label: `${section.name} · ${section.year}` })),
+                                    sections.map((section) => ({
+                                        value: String(section.id),
+                                        label: `${section.name} · ${section.year}${section.year === workspace.schoolYear ? ` (${t.current})` : ''}`,
+                                    })),
                                     true,
                                 )}
+                                <div className="space-y-2">
+                                    <Label htmlFor="enrollment-school-year">{t.enrollment_school_year}</Label>
+                                    <Input
+                                        id="enrollment-school-year"
+                                        value={enrollmentYear ?? t.select_section_first}
+                                        readOnly
+                                        className="min-h-11 rounded-xl"
+                                    />
+                                    <p className="text-muted-foreground text-xs">{t.year_hint}</p>
+                                </div>
                                 <p className="text-muted-foreground text-sm">
                                     <span className="text-foreground font-medium">{t.non_graded}</span>
                                     <br />

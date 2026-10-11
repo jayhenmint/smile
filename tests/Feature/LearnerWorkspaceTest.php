@@ -55,3 +55,14 @@ test('dashboard shares null school year rather than guessing a calendar', functi
         ->assertInertia(fn (Assert $page) => $page->component('dashboard')
             ->where('workspace.schoolYear', null)->where('workspace.text.learners', 'Learners'));
 });
+
+test('add learner exposes the configured current school year even before sections exist', function () {
+    $teacher = User::factory()->create();
+    $teacher->assignRole(['sped_teacher', 'school_admin']);
+    $year = SchoolYear::factory()->create(['school_id' => $teacher->school_id, 'is_current' => true]);
+    SchoolYear::factory()->create(['is_current' => true, 'label' => 'Other school current year']);
+    $this->actingAs($teacher)->get('/learners/create')->assertOk()
+        ->assertInertia(fn (Assert $page) => $page->component('learners/create')
+            ->where('workspace.schoolYear', $year->label)->has('sections', 0)
+            ->where('text.current_school_year', 'Current school year'));
+});
