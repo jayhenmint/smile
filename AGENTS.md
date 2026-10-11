@@ -110,9 +110,9 @@ Fill these in once the project is scaffolded, and keep them current.
 # dev server:  http://localhost:8001 (PHP container); npm.cmd run dev for Vite
 # migrate:     docker compose exec php php artisan migrate
 # backend tests: docker compose exec php php artisan test
-# frontend tests: not configured yet (Vitest required)
+# frontend tests: npm.cmd test (once); npm.cmd run test:watch (watch)
 # lint/format: docker compose exec php ./vendor/bin/pint  and  npm.cmd run lint
-# type check:  npx.cmd tsc --noEmit (dedicated script not configured yet)
+# type check:  npm.cmd run typecheck
 ```
 
 ## Definition of done (per task)

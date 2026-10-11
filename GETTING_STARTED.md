@@ -68,6 +68,12 @@ To check teacher access management, sign in as a school administrator and open *
 
 ## 4. Add the project files
 
+### Automated frontend checks
+
+After `npm.cmd ci`, run `npm.cmd test`, `npm.cmd run typecheck` and `npm.cmd run build`. Use `npm.cmd run test:watch` while developing. Vitest 4 requires Node 20, 22 or 24+; this setup was verified with Node 24.13.0.
+
+Put frontend tests in `resources/js/tests/`, outside `pages/` so Inertia does not bundle them as application pages. The document tests use fictional fixtures and the real Inertia form hook; workspace/head rendering and router requests are isolated. They cover submission prerequisites, upload payloads, processing/progress, error retry, reset after success, signed download links, checklist date clearing/cancel and independent attachment drafts. They do not connect to a database. Native browser file validation, actual HTTP uploads/downloads and mobile/visual review still need the walkthrough below.
+
 ### Test the current learner creation stage
 
 1. Open `http://localhost:8001/login` and use your existing teacher account.
