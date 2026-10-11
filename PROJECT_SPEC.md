@@ -159,6 +159,7 @@ Learner data is sensitive: medical and disability records of minors, under the D
 - Every query scoped by `school_id`, and by section for advisers
 - Policies on every model. Parents see only their own child.
 - Audit log for views, edits, and exports of learner records
+- Phase 1 audit-history access (owner-confirmed): the teacher/admin sees only events for learners in their own advised sections. Require school_admin plus sped_teacher; no school-wide metadata bypass. Keep history read-only and audit its viewing.
 - Encrypt health and diagnosis fields
 - Parental consent recorded before data collection
 - Phase 1 records the teacher's confirmation that parental consent has already been obtained; the signed copy may be submitted later and tracked in the document checklist. Phase 4's broader transition consent workflow remains later work.

@@ -2,6 +2,7 @@
 
 namespace App\Http\Middleware;
 
+use App\Models\ActivityLog;
 use App\Models\SchoolYear;
 use App\Models\Section;
 use App\Models\User;
@@ -68,6 +69,10 @@ class HandleInertiaRequests extends Middleware
             'sectionSettingsNav' => [
                 'visible' => Gate::allows('viewAny', Section::class),
                 'label' => __('section_settings.title'),
+            ],
+            'auditLogNav' => [
+                'visible' => Gate::allows('viewAny', ActivityLog::class),
+                'label' => __('audit_log.title'),
             ],
             'auth' => [
                 'user' => $request->user(),

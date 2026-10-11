@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Settings\AccountController;
+use App\Http\Controllers\Settings\AuditLogController;
 use App\Http\Controllers\Settings\PasswordController;
 use App\Http\Controllers\Settings\ProfileController;
 use App\Http\Controllers\Settings\SchoolController;
@@ -27,6 +28,7 @@ Route::middleware('auth')->group(function () {
     Route::post('settings/sections', [SectionController::class, 'store'])->name('sections.store');
     Route::patch('settings/sections/{section}', [SectionController::class, 'update'])->name('sections.update');
 
+    Route::get('settings/audit-log', [AuditLogController::class, 'index'])->name('audit-log.index');
     Route::get('settings/accounts', [AccountController::class, 'index'])->name('accounts.index');
     Route::post('settings/accounts', [AccountController::class, 'store'])->name('accounts.store');
     Route::patch('settings/accounts/{account}', [AccountController::class, 'update'])->name('accounts.update');

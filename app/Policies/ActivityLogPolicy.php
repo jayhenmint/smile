@@ -3,19 +3,20 @@
 namespace App\Policies;
 
 use App\Models\ActivityLog;
+use App\Models\Learner;
 use App\Models\User;
 
 class ActivityLogPolicy
 {
-    // No audit browsing/editing UI is enabled in this stage.
     public function viewAny(User $user): bool
     {
-        return false;
+        return $user->hasRole('school_admin') && (new LearnerPolicy)->viewAny($user);
     }
 
     public function view(User $user, ActivityLog $entry): bool
     {
-        return false;
+        return $this->viewAny($user) && $entry->school_id === $user->school_id && $entry->subject instanceof Learner
+            && (new LearnerPolicy)->view($user, $entry->subject);
     }
 
     public function update(User $user, ActivityLog $entry): bool
