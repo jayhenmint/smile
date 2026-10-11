@@ -56,7 +56,7 @@ export function AppSidebarHeader({ breadcrumbs = [] }: { breadcrumbs?: Breadcrum
                 <Link
                     href="/settings/profile"
                     aria-label={t.profile}
-                    className="bg-primary/10 text-primary flex size-10 items-center justify-center rounded-full text-xs font-medium"
+                    className="bg-accent text-accent-foreground flex size-10 items-center justify-center rounded-full text-xs font-medium"
                 >
                     {initials(auth.user.name)}
                 </Link>

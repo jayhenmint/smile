@@ -25,7 +25,7 @@ export default function Dashboard() {
             <div className="mx-auto flex w-full max-w-[1440px] flex-1 flex-col gap-6 p-4 sm:p-6 lg:p-8">
                 <div className="flex flex-wrap items-start justify-between gap-4">
                     <div>
-                        <h1 className="text-2xl font-semibold tracking-tight sm:text-3xl">
+                        <h1 className="text-2xl leading-normal font-bold sm:text-[28px]">
                             {t.greeting.replace(':name', auth.user.name.split(' ')[0])}
                         </h1>
                         <p className="text-muted-foreground mt-2 text-sm">{t.subtitle}</p>
@@ -45,7 +45,7 @@ export default function Dashboard() {
                         )}
                     </div>
                 </div>
-                <div className="bg-primary/8 text-primary flex items-center gap-3 rounded-xl px-5 py-4 text-sm">
+                <div className="bg-accent text-accent-foreground flex items-center gap-3 rounded-xl px-5 py-4 text-sm">
                     <ClipboardCheck className="size-5 shrink-0" aria-hidden="true" />
                     <p>
                         <span className="font-medium">{t.banner}.</span> {t.banner_detail}

@@ -14,7 +14,7 @@ export default function Learners() {
             <div className="mx-auto flex w-full max-w-[1440px] flex-1 flex-col gap-6 p-4 sm:p-6 lg:p-8">
                 <div className="flex flex-wrap items-start justify-between gap-4">
                     <div>
-                        <h1 className="text-2xl font-semibold tracking-tight sm:text-3xl">{t.learners}</h1>
+                        <h1 className="text-2xl leading-normal font-bold sm:text-[28px]">{t.learners}</h1>
                         <p className="text-muted-foreground mt-2 text-sm">{t.learner_subtitle}</p>
                     </div>
                     <div className="flex gap-3">

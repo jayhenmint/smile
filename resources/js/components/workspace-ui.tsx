@@ -3,7 +3,7 @@ import { type LucideIcon } from 'lucide-react';
 import { type ReactNode } from 'react';
 
 export function WorkspaceCard({ children, className }: { children: ReactNode; className?: string }) {
-    return <section className={cn('bg-card rounded-2xl border p-5 shadow-xs sm:p-6', className)}>{children}</section>;
+    return <section className={cn('bg-card rounded-2xl border p-5 shadow-[0_3px_10px_rgba(23,34,59,0.02)] sm:p-6', className)}>{children}</section>;
 }
 
 export function WorkspaceStat({
